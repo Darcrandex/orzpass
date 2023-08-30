@@ -12,7 +12,18 @@ const StyledComponentsRegistry = ({ children }: { children: React.ReactNode }) =
 
   return (
     <StyleProvider cache={cache} hashPriority='high'>
-      <ConfigProvider theme={{ token: { colorPrimary: '#a21caf' } }}>{children}</ConfigProvider>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: '#ec4899',
+            colorLink: '#ec4899',
+            colorLinkHover: '#f472b6',
+            colorLinkActive: '#db2777',
+          },
+        }}
+      >
+        {children}
+      </ConfigProvider>
     </StyleProvider>
   )
 }
