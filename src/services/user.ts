@@ -11,15 +11,19 @@ export async function apiUserList() {
 }
 
 export async function apiUserlogin(data: { username: string; password: string }) {
+  if (!process.env.NEXT_APP_AUTH_KEY) {
+    throw new Error('auth key not found')
+  }
+
   await sleep(2000)
 
   const users = await apiUserList()
   const user = users.find((v) => v.username === data.username && v.code === data.password)
 
   if (user) {
-    cookies().set('authorization', user.id)
+    cookies().set(process.env.NEXT_APP_AUTH_KEY, user.id)
     return { msg: 'ok', data: user }
   } else {
-    return { msg: 'error', data: null }
+    throw new Error('invalid username or password')
   }
 }

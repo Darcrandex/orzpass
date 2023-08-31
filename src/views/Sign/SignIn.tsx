@@ -7,9 +7,13 @@
 'use client'
 import { apiUserlogin } from '@/services/user'
 import { useMutation } from '@tanstack/react-query'
-import { Button, Form, Input } from 'antd'
+import { App as AntdApp, Button, Form, Input } from 'antd'
+import { useRouter } from 'next/navigation'
 
 export default function SignIn() {
+  const { message } = AntdApp.useApp()
+
+  const router = useRouter()
   const [form] = Form.useForm()
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (values: any) => {
@@ -17,6 +21,16 @@ export default function SignIn() {
 
       const res = await apiUserlogin(values)
       console.log('res', res)
+    },
+
+    onSuccess() {
+      router.replace('/notes')
+    },
+    onError(err) {
+      if (err.message) {
+        // message.error(err.message)
+        console.error('ffff', err.message)
+      }
     },
   })
 
