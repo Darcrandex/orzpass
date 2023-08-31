@@ -1,6 +1,7 @@
+'use server'
+import { verifyToken } from '@/utils/jwt'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { apiUserList } from './services/user'
 
 export async function middleware(request: NextRequest) {
   // auth check
@@ -8,12 +9,10 @@ export async function middleware(request: NextRequest) {
     throw new Error('auth key not found')
   }
 
-  const allUsers = await apiUserList()
-  const authorization = request.cookies.get(process.env.NEXT_APP_AUTH_KEY)?.value
-  const isValidUser = allUsers.some((user) => user.id === authorization)
   const response = NextResponse.next()
+  const token = request.cookies.get(process.env.NEXT_APP_AUTH_KEY)?.value || ''
 
-  if (isValidUser) {
+  if (verifyToken(token)) {
     return response
   } else {
     return NextResponse.redirect(new URL('/sign', request.url))

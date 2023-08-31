@@ -20,7 +20,7 @@ export default function SignIn() {
       console.log('sign in', values)
 
       const res = await apiUserlogin(values)
-      console.log('res', res)
+      console.log('sign in success', res)
     },
 
     onSuccess() {
