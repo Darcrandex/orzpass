@@ -5,12 +5,9 @@ const nextConfig = {
     serverActions: true,
   },
 
-  webpack: function (config, options) {
-    console.log(options.webpack.version) // 5.x
-
-    config.resolve.fallback = { crypto: require.resolve('crypto-js') }
-
-    return config
+  // 默认情况下，env 不会被注入到前端项目
+  env: {
+    NEXT_APP_CLIENT_SECRET: process.env.NEXT_APP_CLIENT_SECRET,
   },
 }
 

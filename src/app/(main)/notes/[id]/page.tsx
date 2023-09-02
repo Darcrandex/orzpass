@@ -4,18 +4,11 @@
  * @author darcrand
  */
 
-import Link from 'next/link'
+import { apiGetNoteById } from '@/services/note'
+import NoteDetail from '@/views/NoteDetail'
 
-export default function Note() {
-  return (
-    <>
-      <section className='flex-1'>
-        <h1>Note detail</h1>
+export default async function Note(props: { params: { id: string } }) {
+  const data = await apiGetNoteById(props.params.id)
 
-        <p>
-          <Link href='/notes/1/edit'>go to edit</Link>
-        </p>
-      </section>
-    </>
-  )
+  return <NoteDetail data={data} />
 }

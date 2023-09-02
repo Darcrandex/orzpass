@@ -4,6 +4,9 @@ export type User = {
   username: string
   password: string
   code: string
+
+  // 用户用来加密的秘钥
+  secret: string
   avatarUrl?: string
 }
 
@@ -16,10 +19,11 @@ export type Issue = {
 }
 
 export function issueToUser(issue: Issue): User {
-  return {
+  const user: User = {
     id: String(issue.id),
-    username: issue.title,
     code: String(issue.number),
     ...JSON.parse(issue.body || '{}'),
   }
+
+  return user
 }

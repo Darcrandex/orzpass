@@ -1,3 +1,8 @@
+import CryptoJS from 'crypto-js'
+
+// 合并 className，别名
+export { twMerge as cls } from 'tailwind-merge'
+
 export function sleep(ms?: number) {
   return new Promise((resolve) => setTimeout(resolve, ms || 500))
 }
@@ -13,4 +18,14 @@ export function zeroFill(num: number, len = 2) {
     .fill('0')
     .join('')
   return zeros + num
+}
+
+export const aes = {
+  encrypt(content: string, key: string) {
+    return CryptoJS.AES.encrypt(content, key).toString()
+  },
+
+  decrypt(encrypted: string, key: string) {
+    return CryptoJS.AES.decrypt(encrypted, key).toString(CryptoJS.enc.Utf8)
+  },
 }

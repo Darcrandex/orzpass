@@ -1,3 +1,5 @@
+'use server'
+
 import CryptoJS from 'crypto-js'
 
 type Content = {
@@ -5,7 +7,7 @@ type Content = {
   expires: number
 }
 
-export function signToken(data: any, options?: { expiresIn?: number }) {
+export async function JWTsign(data: any, options?: { expiresIn?: number }) {
   if (!process.env.NEXT_APP_JWT_SECRET) {
     throw new Error('jwt secret not found')
   }
@@ -14,7 +16,7 @@ export function signToken(data: any, options?: { expiresIn?: number }) {
   return CryptoJS.AES.encrypt(content, process.env.NEXT_APP_JWT_SECRET).toString()
 }
 
-export function verifyToken(encrypted: string) {
+export async function JWTverify(encrypted: string) {
   if (!process.env.NEXT_APP_JWT_SECRET) {
     throw new Error('jwt secret not found')
   }
@@ -26,5 +28,20 @@ export function verifyToken(encrypted: string) {
   } catch (error) {
     console.error('verifyToken failed', error)
     return false
+  }
+}
+
+export async function JWTdecode<T = any>(token: string) {
+  if (!process.env.NEXT_APP_JWT_SECRET) {
+    throw new Error('jwt secret not found')
+  }
+
+  try {
+    const decrypted = CryptoJS.AES.decrypt(token, process.env.NEXT_APP_JWT_SECRET).toString(CryptoJS.enc.Utf8)
+    const content: Content = JSON.parse(decrypted)
+    return content.data as T
+  } catch (error) {
+    console.error('decode token failed', error)
+    throw new Error('decode token failed')
   }
 }

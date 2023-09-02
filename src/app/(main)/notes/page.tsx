@@ -4,8 +4,10 @@
  * @author darcrand
  */
 
+import { apiGetNotes } from '@/services/note'
 import NoteList from '@/views/NoteList'
 
-export default function Notes() {
-  return <NoteList />
+export default async function Notes() {
+  const data = await apiGetNotes()
+  return <NoteList list={data} />
 }

@@ -6,21 +6,26 @@
 
 'use client'
 import { apiUserlogin } from '@/services/user'
+import { useUser } from '@/stores/use-user'
+import { clientAES } from '@/utils/client-aes'
 import { useMutation } from '@tanstack/react-query'
 import { App as AntdApp, Button, Form, Input } from 'antd'
 import { useRouter } from 'next/navigation'
 
 export default function SignIn() {
+  const { setUser } = useUser()
   const { message } = AntdApp.useApp()
 
   const router = useRouter()
   const [form] = Form.useForm()
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (values: any) => {
-      console.log('sign in', values)
+      const res = await apiUserlogin({
+        username: values.username,
+        password: clientAES.encrypt(values.password),
+      })
 
-      const res = await apiUserlogin(values)
-      console.log('sign in success', res)
+      return res.user
     },
 
     onSuccess() {

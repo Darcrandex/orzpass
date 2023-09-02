@@ -4,10 +4,11 @@
  * @author darcrand
  */
 
-export default function NoteEdit() {
-  return (
-    <>
-      <h1>NoteEdit</h1>
-    </>
-  )
+import { apiGetNoteById } from '@/services/note'
+import NoteEdit from '@/views/NoteEdit'
+
+export default async function NoteEditPage(props: { params: { id: string } }) {
+  const data = await apiGetNoteById(props.params.id)
+
+  return <NoteEdit data={data} />
 }

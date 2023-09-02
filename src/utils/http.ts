@@ -1,28 +1,41 @@
-import qs from 'qs'
+import axios from 'axios'
 
-const baseURL = `https://api.github.com/repos/${process.env.NEXT_APP_GITHUB_USERNAME}/${process.env.NEXT_APP_REPOSITORY_NAME}`
+export const axiosInstance = axios.create({
+  baseURL: `https://api.github.com/repos/${process.env.NEXT_APP_GITHUB_USERNAME}/${process.env.NEXT_APP_REPOSITORY_NAME}`,
+  timeout: 10000,
+  headers: { Accept: 'application/vnd.github+json', Authorization: `Bearer ${process.env.NEXT_APP_GITHUB_TOKEN}` },
+})
 
-async function request<R = any>(
-  url: string,
-  options?: { method?: 'GET' | 'POST' | 'PATCH' | 'PUT'; params?: Record<string, any>; data?: Record<string, any> }
-) {
-  const query = qs.stringify(options?.params)
-
-  const res = await fetch(`${baseURL}${url}${query ? `?${query}` : ''}`, {
-    method: options?.method || 'GET',
-    body: options?.data ? JSON.stringify(options.data) : undefined,
-    headers: { Accept: 'application/vnd.github+json', Authorization: `Bearer ${process.env.NEXT_APP_GITHUB_TOKEN}` },
-  })
-
-  if (res.ok) {
-    return res.json() as Promise<R>
-  } else {
-    throw new Error(res.statusText)
+axiosInstance.interceptors.request.use((config) => {
+  if (config.method?.toUpperCase() === 'GET') {
+    config.params = { ...config.params, t: Date.now() }
   }
-}
+
+  return config
+})
+
+axiosInstance.interceptors.response.use((res) => {
+  return res.data
+})
 
 export const http = {
-  async get<R = any>(url: string, params?: Record<string, any>) {
-    return request<R>(url, { params, method: 'GET' })
+  get<R>(url: string, params?: any): Promise<R> {
+    return axiosInstance.get(url, { params })
+  },
+
+  post<R>(url: string, data?: any): Promise<R> {
+    return axiosInstance.post(url, data)
+  },
+
+  patch<R>(url: string, data?: any): Promise<R> {
+    return axiosInstance.patch(url, data)
+  },
+
+  put<R>(url: string, data?: any): Promise<R> {
+    return axiosInstance.put(url, data)
+  },
+
+  delete<R>(url: string): Promise<R> {
+    return axiosInstance.delete(url)
   },
 }
