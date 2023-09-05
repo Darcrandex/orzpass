@@ -1,10 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+
+async function getNotes() {
+  const res = await fetch("https://orzpass-api.netlify.app/notes");
+  const data = await res.json();
+  return data;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [data, setData] = useState("");
+
+  useEffect(() => {
+    const fn = async () => {
+      const res = await getNotes();
+      console.log("rrrrrrr", res);
+      setData(JSON.stringify(res));
+    };
+
+    fn();
+  }, []);
 
   return (
     <>
@@ -28,8 +45,10 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+
+      <p>{data}</p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
