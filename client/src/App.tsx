@@ -1,54 +1,67 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+/**
+ * @name App
+ * @description
+ * @author darcrand
+ */
 
-async function getNotes() {
-  const res = await fetch("https://orzpass-api.netlify.app/notes");
-  const data = await res.json();
-  return data;
+import { Suspense, lazy } from 'react'
+import { Navigate, RouterProvider, createHashRouter } from 'react-router-dom'
+
+import Home from './pages/Home'
+import NoteMain from './pages/NoteMain'
+
+/**
+ * @description 每个路由组件自己处理懒加载
+ * @param Component 通过 React.lazy 函数获得的懒加载组件
+ */
+function withSuspense(Component: React.LazyExoticComponent<React.FunctionComponent>) {
+  const LazyComponent = () => (
+    <Suspense fallback={null}>
+      <Component />
+    </Suspense>
+  )
+
+  return LazyComponent
 }
 
-function App() {
-  const [count, setCount] = useState(0);
-  const [data, setData] = useState("");
+const Notes = withSuspense(lazy(() => import('@/pages/Notes')))
+const Note = withSuspense(lazy(() => import('@/pages/Note')))
+const NoteEdit = withSuspense(lazy(() => import('@/pages/NoteEdit')))
+const Mine = withSuspense(lazy(() => import('@/pages/Mine')))
+const Tools = withSuspense(lazy(() => import('@/pages/Tools')))
+const About = withSuspense(lazy(() => import('@/pages/About')))
+const Sign = withSuspense(lazy(() => import('@/pages/Sign')))
+const NotFound = withSuspense(lazy(() => import('@/pages/404')))
 
-  useEffect(() => {
-    const fn = async () => {
-      const res = await getNotes();
-      console.log("rrrrrrr", res);
-      setData(JSON.stringify(res));
-    };
+const router = createHashRouter([
+  {
+    path: '/',
+    element: <Home />,
+    children: [
+      { index: true, element: <Navigate to='note' /> },
+      {
+        path: 'note',
+        element: <NoteMain />,
+        children: [
+          { index: true, element: <Notes /> },
+          { path: ':id', element: <Note /> },
+          { path: 'new', element: <NoteEdit /> },
+          { path: ':id/edit', element: <NoteEdit /> },
+        ],
+      },
+      { path: 'mine', element: <Mine /> },
+      { path: 'tools', element: <Tools /> },
+      { path: 'about', element: <About /> },
+    ],
+  },
+  { path: '/sign/:key', element: <Sign /> },
+  { path: '*', element: <NotFound /> },
+])
 
-    fn();
-  }, []);
-
+export default function App() {
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-
-      <p>{data}</p>
+      <RouterProvider router={router} />
     </>
-  );
+  )
 }
-
-export default App;
