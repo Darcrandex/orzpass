@@ -1,12 +1,12 @@
-export async function GET() {
-  const data = [{ id: "aa", title: "note aa" }];
+import { NextResponse, type NextRequest } from "next/server";
 
-  return new Response(JSON.stringify(data), {
-    status: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "https://orzpass.netlify.app",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    },
-  });
+export async function GET(request: NextRequest) {
+  const token = request.cookies.get("token");
+
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("id");
+
+  const data = [{ id, title: "note aa" }];
+
+  return new NextResponse(JSON.stringify(data));
 }
