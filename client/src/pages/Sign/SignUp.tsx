@@ -4,8 +4,7 @@
  * @author darcrand
  */
 
-import { apiAddUser, apiGetUsers } from '@/services/user'
-import { MAX_USER_COUNT } from '@/types/enum'
+import { apiUser } from '@/services/user'
 import { User } from '@/types/user'
 import { useMutation } from '@tanstack/react-query'
 import { App, Button, Form, Input } from 'antd'
@@ -14,25 +13,14 @@ import { useCopyToClipboard } from 'react-use'
 
 export default function SignUp() {
   const { message } = App.useApp()
-  const [userInfo, setUser] = useState<User | undefined>()
+  const [userInfo] = useState<User | undefined>()
   const [form] = Form.useForm()
 
   const { mutateAsync, isLoading } = useMutation(
     async (values: any) => {
-      const { username: name } = values || {}
-      const all = await apiGetUsers()
-      if (all.some((v) => v.name === name)) {
-        throw new Error('the user name already exists')
-      } else if (all.length >= MAX_USER_COUNT) {
-        throw new Error('the maximum number of users has been reached')
-      }
-
-      return apiAddUser({ name })
+      await apiUser.registry(values)
     },
     {
-      onSuccess(data) {
-        setUser(data)
-      },
       onError(error: Error) {
         message.error(error.message || 'sign up fail')
       },
@@ -50,9 +38,14 @@ export default function SignUp() {
   return (
     <>
       <Form form={form} autoComplete='off' layout='vertical' onFinish={mutateAsync}>
-        <Form.Item label='Name' name='username' rules={[{ required: true, message: 'Name is required' }]}>
+        <Form.Item label='Username' name='username' rules={[{ required: true, message: 'Username is required' }]}>
           <Input maxLength={20} allowClear />
         </Form.Item>
+
+        <Form.Item label='Password' name='password' rules={[{ required: true, message: 'Password is required' }]}>
+          <Input.Password maxLength={20} allowClear />
+        </Form.Item>
+
         <Form.Item>
           <Button type='primary' htmlType='submit' loading={isLoading}>
             OK

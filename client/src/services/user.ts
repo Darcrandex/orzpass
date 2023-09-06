@@ -3,15 +3,17 @@ import { Issue, User, codeToNumber, issueToUser } from '@/types/user'
 import { http } from '@/utils/http'
 
 export const apiUser = {
-  login() {
-    return http.post('/login')
+  login(data: { username: string; password: string }): Promise<string> {
+    return http.post('/user/login', data)
   },
 
-  registry() {},
+  registry(data: { username: string; password: string }) {
+    return http.post('user/registry', data)
+  },
 
-  update() {},
-
-  updatePassword() {},
+  getInfo(): Promise<User> {
+    return http.get('/user/info')
+  },
 }
 
 export async function apiGetUsers() {
