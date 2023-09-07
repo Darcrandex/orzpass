@@ -1,4 +1,3 @@
-import { TOKEN_KEY } from '@/enums'
 import { jwt } from '@/lib/auth'
 import { Issue, issueToUser } from '@/types/user.model'
 import { http } from '@/utils/http'
@@ -22,11 +21,5 @@ export async function POST(request: NextRequest) {
   }
 
   const token = jwt.sign(pick(['id', 'username'], user))
-  return NextResponse.json(token, {
-    headers: {
-      'Access-Control-Allow-Origin': process.env.NEXT_APP_CLIENT_ORIGIN || '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, PATCH',
-      'Access-Control-Allow-Headers': `Content-Type, ${TOKEN_KEY}`,
-    },
-  })
+  return NextResponse.json(token)
 }

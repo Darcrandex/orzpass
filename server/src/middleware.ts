@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
   // token 验证
   const token = request.headers.get(TOKEN_KEY)
   if (!token || !jwt.verify(token)) {
-    return new NextResponse(undefined, {
+    return new NextResponse(null, {
       status: 401,
       statusText: 'invalid token',
     })
