@@ -1,4 +1,5 @@
 import { Comment, Note, commentToNote } from '@/types/note.model'
+import { getIconFromUrl } from '@/utils/getIconFromUrl'
 import { http } from '@/utils/http'
 import { NextRequest, NextResponse } from 'next/server'
 import { omit } from 'ramda'
@@ -12,7 +13,11 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 // update note
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   const note = (await request.json()) as Note
-  const res = await http.patch<Comment>(`/issues/comments/${params.id}`, { body: JSON.stringify(omit(['id'], note)) })
+
+  const websiteUrl = note.website
+  const iconUrl = note.iconUrl || (await getIconFromUrl(websiteUrl))
+
+  const res = await http.patch<Comment>(`/issues/comments/${params.id}`, { body: JSON.stringify(omit(['id'], { ...note, iconUrl })) })
   return NextResponse.json({ data: res.data.id })
 }
 

@@ -2,6 +2,7 @@ import { MAX_NOTE_COUNT, TOKEN_KEY } from '@/enums'
 import { jwt } from '@/lib/auth'
 import { Comment, Note, commentToNote } from '@/types/note.model'
 import { User } from '@/types/user.model'
+import { getIconFromUrl } from '@/utils/getIconFromUrl'
 import { http } from '@/utils/http'
 import { NextResponse, type NextRequest } from 'next/server'
 
@@ -26,8 +27,11 @@ export async function POST(request: NextRequest) {
   }
 
   const note = (await request.json()) as Note
+  const websiteUrl = note.website
+  const iconUrl = note.iconUrl || (await getIconFromUrl(websiteUrl))
+
   const commentRes = await http.post<Comment>(`/issues/${payload.id}/comments`, {
-    body: JSON.stringify(note),
+    body: JSON.stringify({ ...note, iconUrl }),
   })
 
   return NextResponse.json({ data: commentRes.data.id })

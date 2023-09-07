@@ -1,4 +1,4 @@
-# onzpass
+# orzpass
 
 > 这是一个基于 GitHub API 并以 GitHub 仓库作为数据库使用的，简单的在线密码管理工具。
 
@@ -12,7 +12,7 @@
 
 ## 关于 token
 
-token 用于调用 github API，但 token 也是有安全性的。你可以选择一个永不过期的 token，也可以定期重新生成 token，然后更新部署（使用 netlify）。
+token 用于调用 github API，但 token 也是有安全性的。token 最长有效期为 90 天，过期之后重新在 GitHub 账号的配置中重新生成即可，然后更新部署（使用 netlify）。
 [如何创建一个 token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
 
 如何更新过期的 token

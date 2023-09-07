@@ -20,7 +20,7 @@ export default function About() {
           type='link'
           icon={<LinkOutlined />}
           target='_blank'
-          href='https://github.com/Darcrandex/onzpass'
+          href='https://github.com/Darcrandex/orzpass'
         >
           Powered by @darcrand
         </Button>

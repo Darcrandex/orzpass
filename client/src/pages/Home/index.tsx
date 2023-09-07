@@ -54,7 +54,7 @@ export default function Home() {
             onClick={() => navigate('/')}
           >
             <img src='/logo-white.png' alt='' className='w-8 mr-1' />
-            <span>onzpass</span>
+            <span>orzpass</span>
           </h1>
 
           {!!user && (
@@ -83,7 +83,7 @@ export default function Home() {
             style={{ fontFamily: 'Tangerine' }}
           >
             <img src='/logo-white.png' alt='' className='w-4 mr-1' />
-            <span>onzpass</span>
+            <span>orzpass</span>
           </h1>
 
           <Button type='text' icon={<MenuOutlined className='text-white' />} onClick={toggleMenu} />
