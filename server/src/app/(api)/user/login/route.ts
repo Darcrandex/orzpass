@@ -14,17 +14,9 @@ export async function POST(request: NextRequest) {
   const user = users.find((u) => u.username === username && bcrypt.compareSync(password, u.password))
 
   if (!user) {
-    return NextResponse.json(
-      {
-        msg: 'test not auth',
-      },
-      {
-        status: 401,
-        statusText: 'invalid username or password',
-      }
-    )
+    return NextResponse.json({ msg: 'invalid username or password' }, { status: 401 })
   }
 
   const token = jwt.sign(pick(['id', 'username'], user))
-  return NextResponse.json(token)
+  return NextResponse.json({ data: token })
 }

@@ -11,18 +11,8 @@ export async function middleware(request: NextRequest) {
   // token 验证
   const token = request.headers.get(TOKEN_KEY)
   if (!token || !jwt.verify(token)) {
-    return new NextResponse(null, {
-      status: 401,
-      statusText: 'invalid token',
-    })
+    return NextResponse.json({ msg: 'invalid token' }, { status: 401 })
   }
 
-  return NextResponse.next({
-    // 跨域处理
-    headers: {
-      'Access-Control-Allow-Origin': process.env.NEXT_APP_CLIENT_ORIGIN || '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, PATCH',
-      'Access-Control-Allow-Headers': `Content-Type, ${TOKEN_KEY}`,
-    },
-  })
+  return NextResponse.next()
 }

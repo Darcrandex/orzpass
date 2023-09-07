@@ -17,11 +17,11 @@ export async function PATCH(request: NextRequest) {
   const originUser = issueToUser(issueRes.data)
 
   if (!bcrypt.compareSync(oldPassword, originUser.password) || !password) {
-    return NextResponse.json(null, { status: 400, statusText: 'invalid password' })
+    return NextResponse.json({ msg: 'invalid password' }, { status: 400 })
   }
 
   await http.patch<Issue>(`/issues/${payload.id}`, {
     body: JSON.stringify({ ...originUser, password: bcrypt.hashSync(password, 10) }),
   })
-  return NextResponse.json(null)
+  return NextResponse.json({ msg: 'ok' })
 }

@@ -10,12 +10,12 @@ export async function POST(req: NextRequest) {
   const users = data.map((issue) => issueToUser(issue))
 
   if (users.length > MAX_USER_COUNT) {
-    return NextResponse.json(null, { status: 400, statusText: 'Too many users' })
+    return NextResponse.json({ msg: 'Too many users' }, { status: 400 })
   }
 
   const isExists = users.some((user) => user.username === username)
   if (isExists) {
-    return NextResponse.json(null, { status: 400, statusText: 'Already exists' })
+    return NextResponse.json({ msg: `"${username}" Already exists` }, { status: 400 })
   }
 
   await http.post('/issues', {
@@ -24,5 +24,5 @@ export async function POST(req: NextRequest) {
     labels: [DataLabels.User],
   })
 
-  return NextResponse.json(null, { statusText: 'ok' })
+  return NextResponse.json({ msg: 'ok' })
 }

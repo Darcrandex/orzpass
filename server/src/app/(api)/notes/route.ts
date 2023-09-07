@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
   const res = await http.get<Comment[]>(`/issues/${payload.id}/comments`)
   const data = res.data.map(commentToNote)
-  return NextResponse.json(data)
+  return NextResponse.json({ data })
 }
 
 // add new note
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
   const commentsRes = await http.get<Comment[]>(`/issues/${payload.id}/comments`)
   if (commentsRes.data.length > MAX_NOTE_COUNT) {
-    return NextResponse.json(null, { status: 400, statusText: 'Too many notes' })
+    return NextResponse.json({ msg: 'Too many notes' }, { status: 400 })
   }
 
   const note = (await request.json()) as Note
@@ -30,5 +30,5 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify(note),
   })
 
-  return NextResponse.json(commentRes.data.id)
+  return NextResponse.json({ data: commentRes.data.id })
 }

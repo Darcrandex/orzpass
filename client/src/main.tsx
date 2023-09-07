@@ -1,12 +1,24 @@
-import { StyleProvider, legacyLogicalPropertiesTransformer, } from '@ant-design/cssinjs'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { App as AntdApp, ConfigProvider } from 'antd'
+import { StyleProvider, legacyLogicalPropertiesTransformer } from '@ant-design/cssinjs'
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { App as AntdApp, ConfigProvider, message } from 'antd'
 import ReactDOM from 'react-dom/client'
 
 import App from './App.tsx'
 import './index.css'
 
 const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError(error) {
+      console.error('query error', error)
+    },
+  }),
+
+  mutationCache: new MutationCache({
+    onError(error: any) {
+      message.error(error?.response?.data.msg || error?.response?.statusText || 'request error')
+    },
+  }),
+
   defaultOptions: { queries: { refetchOnWindowFocus: false, cacheTime: 2 * 60 * 1000, staleTime: 60 * 1000 } },
 })
 

@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const res = await http.get<Issue>(`/issues/${payload.id}`)
   const user = issueToUser(res.data)
 
-  return NextResponse.json(omit(['password'], user))
+  return NextResponse.json({ data: omit(['password'], user) })
 }
 
 // update user info
@@ -29,5 +29,5 @@ export async function PATCH(request: NextRequest) {
     title: userInfo.username,
     body: JSON.stringify({ ...originUser, ...userInfo }),
   })
-  return NextResponse.json(userInfo)
+  return NextResponse.json({ data: userInfo })
 }

@@ -6,18 +6,18 @@ import { omit } from 'ramda'
 // get note by id
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   const res = await http.get<Comment>(`/issues/comments/${params.id}`)
-  return NextResponse.json(commentToNote(res.data))
+  return NextResponse.json({ data: commentToNote(res.data) })
 }
 
 // update note
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   const note = (await request.json()) as Note
   const res = await http.patch<Comment>(`/issues/comments/${params.id}`, { body: JSON.stringify(omit(['id'], note)) })
-  return NextResponse.json(res.data.id)
+  return NextResponse.json({ data: res.data.id })
 }
 
 // remote note by id
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   await http.delete(`/issues/comments/${params.id}`)
-  return NextResponse.json(null, { status: 204 })
+  return NextResponse.json({ msg: 'ok' })
 }
