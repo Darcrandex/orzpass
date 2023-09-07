@@ -8,8 +8,7 @@ import DownloadButton from '@/common/DownloadButton'
 import KeyModal from '@/common/KeyModal'
 import Logo from '@/components/Logo'
 import { useScrollBar } from '@/hooks/use-scrollbar'
-import { apiGetNotes, apiRemoveNote } from '@/services/note'
-import { useUserState } from '@/stores/user'
+import { apiNotes, apiRemoveNote } from '@/services/note'
 import { MAX_NOTE_COUNT } from '@/types/enum'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -20,15 +19,13 @@ import { useNavigate } from 'react-router-dom'
 
 export default function Notes() {
   const navigate = useNavigate()
-  const { user } = useUserState()
   const client = useQueryClient()
   const { modal } = App.useApp()
   const { elRef } = useScrollBar()
 
   const { data: list, isFetching } = useQuery({
-    queryKey: ['notes', user?.code],
-    queryFn: () => apiGetNotes(user?.code || ''),
-    enabled: Boolean(user?.code),
+    queryKey: ['notes'],
+    queryFn: () => apiNotes.list(),
   })
 
   const onRemove = useCallback(

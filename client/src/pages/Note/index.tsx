@@ -7,7 +7,7 @@
 import KeyModal from '@/common/KeyModal'
 import BackButton from '@/components/BackButton'
 import Logo from '@/components/Logo'
-import { apiGetNoteById, apiRemoveNote } from '@/services/note'
+import { apiNotes } from '@/services/note'
 import { useGlobalKey } from '@/stores/key'
 import { aes } from '@/utils/aes'
 import { CopyOutlined, DeleteOutlined, EditOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons'
@@ -26,7 +26,7 @@ export default function Note() {
 
   const { data, isFetching } = useQuery({
     queryKey: ['note', id],
-    queryFn: () => apiGetNoteById(id || ''),
+    queryFn: () => apiNotes.getById(id || ''),
     enabled: Boolean(id),
   })
 
@@ -61,7 +61,7 @@ export default function Note() {
 
   const onRemove = useCallback(
     async (id: string) => {
-      await apiRemoveNote(id)
+      await apiNotes.remove(id)
       client.invalidateQueries(['notes'])
       navigate('/note', { replace: true })
     },

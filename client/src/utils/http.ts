@@ -5,10 +5,6 @@ export const http = axios.create({
 })
 
 http.interceptors.request.use((config) => {
-  if (config.method?.toUpperCase() === 'GET') {
-    config.params = { ...config.params, t: Date.now() }
-  }
-
   config.headers.Authorization = window.localStorage.getItem('token')
 
   return config

@@ -70,9 +70,9 @@ export default function Home() {
 
               <div className='text-center text-white'>
                 <Avatar size={60} src={user.avatarUrl} className='shadow-md outline outline-white'>
-                  <span className='uppercase'>{user.name.slice(0, 1)}</span>
+                  <span className='uppercase'>{user.username.slice(0, 1)}</span>
                 </Avatar>
-                <p className='mx-4 mt-2 truncate'>{user.name}</p>
+                <p className='mx-4 mt-2 truncate'>{user.username}</p>
               </div>
               <NavItem icon={<LogoutOutlined />} title='Sign Out' className='mb-6' onClick={out} />
             </>
@@ -96,9 +96,9 @@ export default function Home() {
           <Drawer open={showMenu} destroyOnClose width={200} onClose={toggleMenu}>
             <div className='mb-6 text-center text-pink-500'>
               <Avatar size={60} src={user.avatarUrl} className='shadow-md outline outline-pink-500'>
-                <span className='uppercase'>{user.name.slice(0, 1)}</span>
+                <span className='uppercase'>{user.username.slice(0, 1)}</span>
               </Avatar>
-              <p className='mx-4 mt-2 truncate'>{user.name}</p>
+              <p className='mx-4 mt-2 truncate'>{user.username}</p>
             </div>
 
             <nav className='flex-1'>

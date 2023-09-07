@@ -5,10 +5,10 @@
  */
 
 import BackButton from '@/components/BackButton'
-import { apiUpdateUser } from '@/services/user'
+import { apiUser } from '@/services/user'
 import { useUserState } from '@/stores/user'
 import { useMutation } from '@tanstack/react-query'
-import { App, Button, Form, Input, Space } from 'antd'
+import { Button, Form, Input, Space } from 'antd'
 import { mergeLeft } from 'ramda'
 import { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -16,7 +16,6 @@ import { useWindowSize } from 'react-use'
 
 export default function Mine() {
   const navigate = useNavigate()
-  const { message } = App.useApp()
   const { user, onSignIn } = useUserState()
   const [form] = Form.useForm()
   useEffect(() => {
@@ -37,9 +36,9 @@ export default function Mine() {
     }
   }
 
-  const { mutateAsync } = useMutation(apiUpdateUser, {
+  const { mutateAsync } = useMutation({
+    mutationFn: apiUser.updateInfo,
     onSuccess(data) {
-      message.success('updated')
       onSignIn(data)
     },
   })
@@ -63,8 +62,12 @@ export default function Mine() {
         <section className='flex-1 overflow-x-hidden overflow-y-auto'>
           <div className='mx-4'>
             <Form form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 12 }} onFinish={onFinish}>
-              <Form.Item label='Name' name='name' rules={[{ required: true, message: 'Name is required' }]}>
+              <Form.Item label='Username' name='username' rules={[{ required: true, message: 'Username is required' }]}>
                 <Input maxLength={20} allowClear />
+              </Form.Item>
+
+              <Form.Item name='email' label='Email' rules={[{ type: 'email' }]}>
+                <Input maxLength={30} allowClear />
               </Form.Item>
 
               <Form.Item label='Avatar' name='avatarUrl' rules={[{ validator: avatarValidator }]}>

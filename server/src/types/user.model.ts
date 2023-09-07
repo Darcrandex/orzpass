@@ -10,6 +10,7 @@ export type User = {
   username: string
   password: string
   avatarUrl?: string
+  email?: string
 }
 
 export function issueToUser(issue: Issue): User {

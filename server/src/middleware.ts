@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
+import { TOKEN_KEY } from './enums'
 import { jwt } from './lib/auth'
 
 export const config = {
@@ -11,7 +12,7 @@ export const config = {
 
 export async function middleware(request: NextRequest) {
   // token 验证
-  const token = request.headers.get('Authorization')
+  const token = request.headers.get(TOKEN_KEY)
   if (!token || !jwt.verify(token)) {
     return new NextResponse(undefined, {
       status: 401,
@@ -23,7 +24,7 @@ export async function middleware(request: NextRequest) {
     // 跨域处理
     headers: {
       'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production' ? process.env.NEXT_APP_CLIENT_ORIGIN || '*' : '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, PATCH',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
   })

@@ -3,13 +3,13 @@ import { useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { useCallback } from 'react'
 
-const userAtom = atomWithStorage<User | undefined>('user', undefined)
+const userAtom = atomWithStorage<Omit<User, 'password'> | undefined>('user', undefined)
 
 export function useUserState() {
   const [user, setUser] = useAtom(userAtom)
 
   const onSignIn = useCallback(
-    (u: User) => {
+    (u: Omit<User, 'password'>) => {
       setUser(u)
     },
     [setUser]

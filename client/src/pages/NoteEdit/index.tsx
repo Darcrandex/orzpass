@@ -7,11 +7,11 @@
 import KeyModal from '@/common/KeyModal'
 import BackButton from '@/components/BackButton'
 import PasswordGeneratorPopover from '@/components/PasswordGeneratorPopover'
-import { apiAddNote, apiGetNoteById, apiUpdateNote } from '@/services/note'
+import { apiNotes } from '@/services/note'
 import { useGlobalKey } from '@/stores/key'
 import { useUserState } from '@/stores/user'
+import { Note } from '@/types/note'
 import { aes } from '@/utils/aes'
-import { getIconFromUrl } from '@/utils/get-icon'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Button, Form, Input, Space } from 'antd'
 import { useEffect, useMemo } from 'react'
@@ -28,7 +28,7 @@ export default function NoteEdit() {
 
   const { data } = useQuery({
     queryKey: ['note', id],
-    queryFn: () => apiGetNoteById(id || ''),
+    queryFn: () => apiNotes.getById(id || ''),
     enabled: Boolean(id),
   })
 
@@ -42,10 +42,10 @@ export default function NoteEdit() {
   }, [data?.password, key])
 
   useEffect(() => {
-    if (form && data && user?.code && key) {
+    if (form && data && key) {
       form.setFieldsValue({ ...data, password: data.password ? aes.decode(data.password, key) : '' })
     }
-  }, [data, form, key, user?.code])
+  }, [data, form, key])
 
   const websiteValidator = async (rule: any, value: string) => {
     if (!value || value.trim().length === 0) {
@@ -63,17 +63,16 @@ export default function NoteEdit() {
 
   const { mutateAsync, isLoading } = useMutation(
     async (values: any) => {
-      if (!user?.code || !key) return
+      if (!key) return
 
       try {
-        const iconUrl = await getIconFromUrl(values.website)
         const data = {
           ...values,
-          iconUrl,
+
           password: values.password?.trim() ? aes.encode(values.password || '', key) : undefined,
         }
 
-        id ? await apiUpdateNote(id, data) : await apiAddNote(user?.code, data)
+        id ? await apiNotes.update(data as Note) : await apiNotes.add(data as Omit<Note, 'id'>)
       } catch (error) {
         console.error(error)
       }
@@ -91,7 +90,7 @@ export default function NoteEdit() {
 
   // password generator
   const onGenerate = (pwd: string) => {
-    if (!user?.code || !key) return
+    if (!key) return
     form.setFieldsValue({ password: pwd })
   }
 

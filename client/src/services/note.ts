@@ -1,27 +1,24 @@
-import { Comment, commentToNote, Note } from '@/types/note'
-import { codeToNumber, User } from '@/types/user'
+import { Note } from '@/types/note'
 import { http } from '@/utils/http'
 
-export async function apiGetNotes(code: User['code']) {
-  const res = await http.get<Comment[]>(`/issues/${codeToNumber(code)}/comments`)
-  return res.data.map(commentToNote)
-}
+export const apiNotes = {
+  list(): Promise<Note[]> {
+    return http.get('/notes')
+  },
 
-export async function apiGetNoteById(id: Note['id']) {
-  const res = await http.get<Comment>(`/issues/comments/${id}`)
-  return commentToNote(res.data)
-}
+  add(data: Omit<Note, 'id'>) {
+    return http.post('/notes', data)
+  },
 
-export async function apiAddNote(code: User['code'], note: Omit<Note, 'id'>) {
-  const res = await http.post<Comment>(`/issues/${codeToNumber(code)}/comments`, { body: JSON.stringify(note) })
-  return commentToNote(res.data)
-}
+  getById(id: string): Promise<Note> {
+    return http.get(`/notes/${id}`)
+  },
 
-export async function apiUpdateNote(id: string, note: any) {
-  const res = await http.patch<Comment>(`/issues/comments/${id}`, { body: JSON.stringify(note) })
-  return commentToNote(res.data)
-}
+  update(data: Note) {
+    return http.patch(`/notes/${data.id}`, data)
+  },
 
-export async function apiRemoveNote(id: string) {
-  return await http.delete(`/issues/comments/${id}`)
+  remove(id: string) {
+    return http.delete(`/notes/${id}`)
+  },
 }

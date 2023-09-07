@@ -2,32 +2,27 @@ import { TOKEN_KEY } from '@/enums'
 import { jwt } from '@/lib/auth'
 import { Issue, User, issueToUser } from '@/types/user.model'
 import { http } from '@/utils/http'
+import * as bcrypt from 'bcrypt'
 import { NextResponse, type NextRequest } from 'next/server'
-import { omit } from 'ramda'
 
-// user info
-export async function GET(request: NextRequest) {
-  const token = request.headers.get(TOKEN_KEY) || ''
-  const payload = jwt.decode<Pick<User, 'id'>>(token)
-  const res = await http.get<Issue>(`/issues/${payload.id}`)
-  const user = issueToUser(res.data)
-
-  return NextResponse.json(omit(['password'], user))
-}
-
-// update user info
+// update user password only
 export async function PATCH(request: NextRequest) {
   const token = request.headers.get(TOKEN_KEY) || ''
   const payload = jwt.decode<Pick<User, 'id'>>(token)
-  const userInfo = omit(['password'], await request.json()) as Omit<User, 'password'>
+  const { password, newPassword } = await request.json()
 
   // origin user info with password
   const issueRes = await http.get<Issue>(`/issues/${payload.id}`)
   const originUser = issueToUser(issueRes.data)
 
+  if (!bcrypt.compareSync(password, originUser.password)) {
+    return NextResponse.json(undefined, { status: 400, statusText: 'invalid password' })
+  }
+
+  originUser.password = bcrypt.hashSync(newPassword, 10)
+
   await http.patch<Issue>(`/issues/${payload.id}`, {
-    title: userInfo.username,
-    body: JSON.stringify({ ...originUser, ...userInfo }),
+    body: JSON.stringify(originUser),
   })
-  return NextResponse.json(userInfo)
+  return NextResponse.json(undefined)
 }
