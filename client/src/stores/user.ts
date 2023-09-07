@@ -2,10 +2,12 @@ import { User } from '@/types/user'
 import { useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const userAtom = atomWithStorage<Omit<User, 'password'> | undefined>('user', undefined)
 
 export function useUserState() {
+  const navigate = useNavigate()
   const [user, setUser] = useAtom(userAtom)
 
   const onSignIn = useCallback(
@@ -17,7 +19,9 @@ export function useUserState() {
 
   const onSignOut = useCallback(() => {
     setUser(undefined)
-  }, [setUser])
+    localStorage.clear()
+    navigate('/sign/1')
+  }, [navigate, setUser])
 
   return { user, onSignIn, onSignOut }
 }

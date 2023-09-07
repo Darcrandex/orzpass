@@ -6,7 +6,6 @@
 
 import NavItem, { NavItemProps } from '@/components/NavItem'
 import NavMenuItem from '@/components/NavMenuItem'
-import { useGlobalKey } from '@/stores/key'
 import { useUserState } from '@/stores/user'
 import {
   GithubOutlined,
@@ -34,16 +33,14 @@ const navs: NavItemProps[] = [
 export default function Home() {
   const navigate = useNavigate()
   const { user, onSignOut } = useUserState()
-  const { setKey } = useGlobalKey()
   const client = useQueryClient()
   const isFetching = useIsFetching() > 0
   const isMutating = useIsMutating() > 0
 
   const out = useCallback(() => {
     onSignOut()
-    setKey(undefined)
     client.invalidateQueries([])
-  }, [client, onSignOut, setKey])
+  }, [client, onSignOut])
 
   const [showMenu, toggleMenu] = useToggle(false)
 

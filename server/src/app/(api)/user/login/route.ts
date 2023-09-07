@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
   const user = users.find((u) => u.username === username && bcrypt.compareSync(password, u.password))
 
   if (!user) {
-    return NextResponse.json(undefined, {
+    return NextResponse.json(null, {
       status: 401,
       statusText: 'invalid username or password',
     })

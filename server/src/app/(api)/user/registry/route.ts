@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
 
   const isExists = users.some((user) => user.username === username)
   if (isExists) {
-    return NextResponse.json(undefined, { status: 400, statusText: 'Already exists' })
+    return NextResponse.json(null, { status: 400, statusText: 'Already exists' })
   }
 
   await http.post('/issues', {
@@ -20,5 +20,5 @@ export async function POST(req: NextRequest) {
     labels: [DataLabels.User],
   })
 
-  return NextResponse.json(undefined, { statusText: 'ok' })
+  return NextResponse.json(null, { statusText: 'ok' })
 }

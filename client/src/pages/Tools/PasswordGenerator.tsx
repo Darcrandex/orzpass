@@ -4,10 +4,10 @@
  * @author darcrand
  */
 
+import { useCopy } from '@/hooks/useCopy'
 import { RandomStringOptions, randomString } from '@/utils/random-string'
-import { App, Button, Checkbox, Col, Form, InputNumber, Row, Space } from 'antd'
-import { useCallback, useState } from 'react'
-import { useCopyToClipboard } from 'react-use'
+import { Button, Checkbox, Col, Form, InputNumber, Row, Space } from 'antd'
+import { useState } from 'react'
 
 const initialValues = {
   length: 8,
@@ -28,17 +28,7 @@ export default function PasswordGenerator() {
     setPwd(randomString(values))
   }
 
-  const { message } = App.useApp()
-  const [, onCopy] = useCopyToClipboard()
-  const copy = useCallback(
-    (str?: string) => {
-      if (str) {
-        onCopy(str)
-        message.success('copy success')
-      }
-    },
-    [message, onCopy]
-  )
+  const [copy] = useCopy()
 
   return (
     <>

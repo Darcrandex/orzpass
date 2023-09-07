@@ -7,21 +7,20 @@
 import { apiUser } from '@/services/user'
 import { useMutation } from '@tanstack/react-query'
 import { App, Button, Form, Input } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 export default function SignUp() {
-  const { message } = App.useApp()
+  const navigate = useNavigate()
   const [form] = Form.useForm()
+  const { message } = App.useApp()
 
-  const { mutateAsync, isLoading } = useMutation(
-    async (values: any) => {
-      await apiUser.registry(values)
+  const { mutateAsync, isLoading } = useMutation({
+    mutationFn: apiUser.registry,
+    onSuccess() {
+      message.success('register success')
+      navigate('/sign/1', { replace: true })
     },
-    {
-      onError(error: Error) {
-        message.error(error.message || 'sign up fail')
-      },
-    }
-  )
+  })
 
   return (
     <>

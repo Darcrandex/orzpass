@@ -19,5 +19,5 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 // remote note by id
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   await http.delete(`/issues/comments/${params.id}`)
-  return NextResponse.json(undefined, { status: 204 })
+  return NextResponse.json(null, { status: 204 })
 }

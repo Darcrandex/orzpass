@@ -17,4 +17,8 @@ export const apiUser = {
   updateInfo(data: Omit<User, 'password'>): Promise<Omit<User, 'password'>> {
     return http.patch('/user/info', data)
   },
+
+  updatePassword(data: { password: string; oldPassword: string }) {
+    return http.patch('/user/pwd', data)
+  },
 }

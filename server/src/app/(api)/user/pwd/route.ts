@@ -9,20 +9,19 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function PATCH(request: NextRequest) {
   const token = request.headers.get(TOKEN_KEY) || ''
   const payload = jwt.decode<Pick<User, 'id'>>(token)
-  const { password, newPassword } = await request.json()
+
+  const { oldPassword, password } = await request.json()
 
   // origin user info with password
   const issueRes = await http.get<Issue>(`/issues/${payload.id}`)
   const originUser = issueToUser(issueRes.data)
 
-  if (!bcrypt.compareSync(password, originUser.password)) {
-    return NextResponse.json(undefined, { status: 400, statusText: 'invalid password' })
+  if (!bcrypt.compareSync(oldPassword, originUser.password) || !password) {
+    return NextResponse.json(null, { status: 400, statusText: 'invalid password' })
   }
 
-  originUser.password = bcrypt.hashSync(newPassword, 10)
-
   await http.patch<Issue>(`/issues/${payload.id}`, {
-    body: JSON.stringify(originUser),
+    body: JSON.stringify({ ...originUser, password: bcrypt.hashSync(password, 10) }),
   })
-  return NextResponse.json(undefined)
+  return NextResponse.json(null)
 }

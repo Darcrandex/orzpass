@@ -7,6 +7,7 @@
 import KeyModal from '@/common/KeyModal'
 import BackButton from '@/components/BackButton'
 import Logo from '@/components/Logo'
+import { useCopy } from '@/hooks/useCopy'
 import { apiNotes } from '@/services/note'
 import { useGlobalKey } from '@/stores/key'
 import { aes } from '@/utils/aes'
@@ -16,7 +17,7 @@ import { App, Button, Form, Space, Typography } from 'antd'
 import clsx from 'clsx'
 import { PropsWithChildren, useCallback, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useCopyToClipboard, useToggle } from 'react-use'
+import { useToggle } from 'react-use'
 
 export default function Note() {
   const navigate = useNavigate()
@@ -42,17 +43,8 @@ export default function Note() {
     return false
   }, [data?.password, key])
 
-  const { message, modal } = App.useApp()
-  const [, onCopy] = useCopyToClipboard()
-  const copy = useCallback(
-    (str?: string) => {
-      if (str) {
-        onCopy(str)
-        message.success('copy success')
-      }
-    },
-    [message, onCopy]
-  )
+  const { modal } = App.useApp()
+  const [copy] = useCopy()
 
   const websiteUrl = useMemo(() => {
     if (!data?.website) return

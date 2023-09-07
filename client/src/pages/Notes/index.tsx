@@ -7,8 +7,8 @@
 import DownloadButton from '@/common/DownloadButton'
 import KeyModal from '@/common/KeyModal'
 import Logo from '@/components/Logo'
-import { useScrollBar } from '@/hooks/use-scrollbar'
-import { apiNotes, apiRemoveNote } from '@/services/note'
+import { useScrollBar } from '@/hooks/useScrollBar'
+import { apiNotes } from '@/services/note'
 import { MAX_NOTE_COUNT } from '@/types/enum'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -30,7 +30,7 @@ export default function Notes() {
 
   const onRemove = useCallback(
     async (id: string) => {
-      await apiRemoveNote(id)
+      await apiNotes.remove(id)
       client.invalidateQueries(['notes'])
     },
     [client]

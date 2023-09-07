@@ -4,10 +4,10 @@
  * @author darcrand
  */
 
+import { useCopy } from '@/hooks/useCopy'
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons'
-import { App, Button, Input, Space } from 'antd'
+import { Button, Input, Space } from 'antd'
 import { useCallback, useState } from 'react'
-import { useCopyToClipboard } from 'react-use'
 
 export default function KeyGenerator() {
   const [source, setSource] = useState<string>()
@@ -21,17 +21,7 @@ export default function KeyGenerator() {
     if (encoded) setSource(fnDecode(encoded))
   }, [encoded])
 
-  const { message } = App.useApp()
-  const [, copy] = useCopyToClipboard()
-  const onCopy = useCallback(
-    (str?: string) => {
-      if (str?.trim()) {
-        copy(str)
-        message.success('copy success')
-      }
-    },
-    [copy, message]
-  )
+  const [copy] = useCopy()
 
   return (
     <>
@@ -54,8 +44,8 @@ export default function KeyGenerator() {
             Decode
           </Button>
 
-          <Button onClick={() => onCopy(source)}>copy source</Button>
-          <Button onClick={() => onCopy(encoded)}>copy encoded</Button>
+          <Button onClick={() => copy(source)}>copy source</Button>
+          <Button onClick={() => copy(encoded)}>copy encoded</Button>
         </Space>
       </div>
 

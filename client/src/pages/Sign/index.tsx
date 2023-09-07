@@ -6,15 +6,18 @@
 
 import BackButton from '@/components/BackButton'
 import { Tabs } from 'antd'
-import { PropsWithChildren, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { PropsWithChildren } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import SignIn from './SignIn'
 import SignUp from './SignUp'
 import './styles.less'
 
 export default function Sign() {
-  const { key } = useParams()
-  const [tabKey, setTabKey] = useState(key || '1')
+  const navigate = useNavigate()
+  const { key = '1' } = useParams()
+  const setTabKey = (key: string) => {
+    navigate(`/sign/${key}`, { replace: true })
+  }
 
   return (
     <>
@@ -22,7 +25,7 @@ export default function Sign() {
         <main className='relative z-10 flex items-center justify-center mx-4 h-[75vh]'>
           <article className='w-96 p-8 bg-white/20 rounded-lg shadow backdrop-blur'>
             <Tabs
-              activeKey={tabKey}
+              activeKey={key}
               onChange={setTabKey}
               size='large'
               animated
