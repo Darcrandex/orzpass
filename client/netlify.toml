@@ -1,0 +1,6 @@
+[[redirects]]
+  from = "/api"
+  to = "https://orzpass-api.netlify.app"
+  status = 200
+  force = true
+  headers = {X-From = "Netlify"}
