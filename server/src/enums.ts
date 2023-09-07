@@ -1,4 +1,5 @@
 // header Authorization key
+// 前端的 header 也需要使用这个 key
 export const TOKEN_KEY = 'Authorization'
 
 // 最大用户数

@@ -4,10 +4,7 @@ import { TOKEN_KEY } from './enums'
 import { jwt } from './lib/auth'
 
 export const config = {
-  matcher: [
-    // 排查以下路径
-    '/((?!user/login|user/registry|_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ['/((?!user/login|user/registry|_next/static|_next/image|favicon.ico).*)'],
 }
 
 export async function middleware(request: NextRequest) {
@@ -25,7 +22,7 @@ export async function middleware(request: NextRequest) {
     headers: {
       'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production' ? process.env.NEXT_APP_CLIENT_ORIGIN || '*' : '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, PATCH',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Headers': `Content-Type, ${TOKEN_KEY}`,
     },
   })
 }
