@@ -8,8 +8,14 @@ import './index.css'
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
-    onError(error) {
-      console.error('query error', error)
+    onError(error: any) {
+      if (error?.response?.status === 401) {
+        // 有问题先这样
+        message.error('Unauthorized')
+        window.location.href = '/#/sign/1'
+      } else {
+        message.error(error?.response?.data.msg || error?.response?.statusText || 'request error')
+      }
     },
   }),
 
