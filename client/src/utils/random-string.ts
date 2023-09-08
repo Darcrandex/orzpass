@@ -6,8 +6,8 @@ export type RandomStringOptions = {
   includeLower?: boolean // 包含小写字母
   includeUpper?: boolean // 包含大写字母
   includeSymbol?: boolean // 包含符号
-  noSimilar?: boolean // 去重相似以混淆的字符，1iIl0oO
-  startWithLetter?: boolean // 以字母开头
+  noSimilar?: boolean // 去掉容易混淆的字符，1iIl0oO
+  startWithLetter?: boolean // 必须以字母开头
   noDuplicate?: boolean // 字符不重复
   noSequential?: boolean // 字符不连续 123 abc
 }
@@ -23,18 +23,22 @@ export function randomString({
   noDuplicate = false,
   noSequential = false,
 }: RandomStringOptions = {}) {
-  const len = Math.min(50, Math.max(0, length))
-  const n = '0123456789'
+  const len = Math.min(100, Math.max(0, length))
+  const num = '0123456789'
   const low = 'abcdefghijklmnopqrstuvwxyz'
   const up = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   const sym = '~!@#$%^&*()_+{}:"<>?`-=[];\',./\\|'
 
   let charset = ''
-  if (includeNumber) charset += n
+  if (includeNumber) charset += num
   if (includeLower) charset += low
   if (includeUpper) charset += up
   if (includeSymbol) charset += sym
   if (noSimilar) charset = charset.replace(/[1iIlL0oO]/g, '')
+
+  if (noDuplicate && charset.length < len) {
+    throw new Error('No enough character sets selected.')
+  }
 
   let res = ''
 
