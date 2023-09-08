@@ -12,6 +12,7 @@ const queryClient = new QueryClient({
       if (error?.response?.status === 401) {
         // 有问题先这样
         message.error('Unauthorized')
+        window.localStorage.clear()
         window.location.href = '/#/sign/1'
       } else {
         message.error(error?.response?.data.msg || error?.response?.statusText || 'request error')

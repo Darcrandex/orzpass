@@ -10,7 +10,7 @@ import Logo from '@/components/Logo'
 import { useScrollBar } from '@/hooks/useScrollBar'
 import { apiNotes } from '@/services/note'
 import { MAX_NOTE_COUNT } from '@/types/enum'
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { App, Button, Empty, Input, Space } from 'antd'
 import clsx from 'clsx'
@@ -23,7 +23,11 @@ export default function Notes() {
   const { modal } = App.useApp()
   const { elRef } = useScrollBar()
 
-  const { data: list, isFetching } = useQuery({
+  const {
+    data: list,
+    isFetching,
+    refetch,
+  } = useQuery({
     queryKey: ['notes'],
     queryFn: () => apiNotes.list(),
   })
@@ -71,12 +75,14 @@ export default function Notes() {
         <header className='flex m-4 flex-wrap'>
           <Input.Search
             allowClear
-            className='sm:!w-72 w-full mr-auto'
+            className='sm:!w-72 w-full'
             placeholder='input title to search'
             enterButton
             maxLength={20}
             onSearch={setKeyword}
           />
+
+          <Button type='primary' icon={<ReloadOutlined />} className='ml-2 mr-auto' onClick={() => refetch()} />
 
           <Space className='mt-2 sm:mt-0'>
             <KeyModal />
