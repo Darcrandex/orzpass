@@ -9,20 +9,18 @@ import BackButton from '@/components/BackButton'
 import PasswordGeneratorPopover from '@/components/PasswordGeneratorPopover'
 import { apiNotes } from '@/services/note'
 import { useGlobalKey } from '@/stores/key'
-import { useUserState } from '@/stores/user'
 import { Note } from '@/types/note'
 import { aes } from '@/utils/aes'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useSize } from 'ahooks'
 import { Button, Form, Input, Space } from 'antd'
 import { useEffect, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useWindowSize } from 'react-use'
 
 export default function NoteEdit() {
   const navigate = useNavigate()
   const client = useQueryClient()
   const { id } = useParams()
-  const { user } = useUserState()
   const { key } = useGlobalKey()
   const [form] = Form.useForm()
 
@@ -86,7 +84,7 @@ export default function NoteEdit() {
     }
   )
 
-  const { width } = useWindowSize()
+  const { width = 1920 } = useSize(document.querySelector('body')) || {}
 
   // password generator
   const onGenerate = (pwd: string) => {

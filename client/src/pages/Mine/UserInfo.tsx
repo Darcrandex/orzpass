@@ -7,10 +7,10 @@
 import { apiUser } from '@/services/user'
 import { useUserState } from '@/stores/user'
 import { useMutation } from '@tanstack/react-query'
+import { useSize } from 'ahooks'
 import { Button, Form, Input, Space } from 'antd'
 import { mergeLeft } from 'ramda'
 import { useCallback, useEffect } from 'react'
-import { useWindowSize } from 'react-use'
 
 export default function UserInfo() {
   const { user, onSignIn } = useUserState()
@@ -47,7 +47,7 @@ export default function UserInfo() {
     [mutateAsync, user]
   )
 
-  const { width } = useWindowSize()
+  const { width = 1920 } = useSize(document.querySelector('body')) || {}
 
   return (
     <>

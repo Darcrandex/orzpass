@@ -12,6 +12,7 @@ import { apiNotes } from '@/services/note'
 import { MAX_NOTE_COUNT } from '@/types/enum'
 import { DeleteOutlined, EditOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useDebounce } from 'ahooks'
 import { App, Button, Empty, Input, Space } from 'antd'
 import clsx from 'clsx'
 import { useCallback, useState } from 'react'
@@ -48,9 +49,10 @@ export default function Notes() {
   )
 
   const [keyword, setKeyword] = useState<string>()
+  const debouncedKeyword = useDebounce(keyword, { wait: 500 })
   const filterList = Array.isArray(list)
     ? list
-        .filter((v) => !keyword || v.title.includes(keyword))
+        .filter((v) => !debouncedKeyword || v.title.includes(debouncedKeyword))
         .sort((a, b) => {
           if (a.updated_at && b.updated_at) {
             const d1 = new Date(a.updated_at)
@@ -79,7 +81,8 @@ export default function Notes() {
             placeholder='input title to search'
             enterButton
             maxLength={20}
-            onSearch={setKeyword}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
           />
 
           <Button
@@ -87,7 +90,7 @@ export default function Notes() {
             icon={<ReloadOutlined />}
             className='ml-2 mr-auto'
             onClick={() => {
-              setKeyword(undefined)
+              setKeyword('')
               refetch()
             }}
           />

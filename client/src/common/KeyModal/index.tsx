@@ -6,14 +6,14 @@
 
 import { useGlobalKey } from '@/stores/key'
 import { SettingOutlined } from '@ant-design/icons'
+import { useToggle } from 'ahooks'
 import { Button, Form, Input, Modal, Space } from 'antd'
 import { ReactNode, useEffect } from 'react'
-import { useToggle } from 'react-use'
 
 export type KeyModalProps = { renderTrigger?: (onOpen: () => void) => ReactNode }
 
 export default function KeyModal(props: KeyModalProps) {
-  const [open, toggle] = useToggle(false)
+  const [open, { toggle }] = useToggle(false)
 
   return (
     <>

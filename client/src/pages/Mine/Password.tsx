@@ -7,12 +7,12 @@
 import { apiUser } from '@/services/user'
 import { useUserState } from '@/stores/user'
 import { useMutation } from '@tanstack/react-query'
+import { useSize } from 'ahooks'
 import { Button, Form, Input, Space } from 'antd'
-import { useWindowSize } from 'react-use'
 
 export default function Password() {
   const { onSignOut } = useUserState()
-  const { width } = useWindowSize()
+  const { width = 1920 } = useSize(document.querySelector('body')) || {}
   const [form] = Form.useForm()
 
   const { mutateAsync, isLoading } = useMutation({

@@ -17,11 +17,11 @@ import {
   ToolOutlined,
 } from '@ant-design/icons'
 import { useIsFetching, useIsMutating, useQueryClient } from '@tanstack/react-query'
+import { useToggle } from 'ahooks'
 import { Avatar, Button, Drawer } from 'antd'
 import clsx from 'clsx'
 import { useCallback } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { useToggle } from 'react-use'
 
 const navs: NavItemProps[] = [
   { to: '/note', title: 'Notes', icon: <MonitorOutlined /> },
@@ -42,7 +42,7 @@ export default function Home() {
     client.invalidateQueries([])
   }, [client, onSignOut])
 
-  const [showMenu, toggleMenu] = useToggle(false)
+  const [showMenu, { toggle: toggleMenu }] = useToggle(false)
 
   return (
     <>

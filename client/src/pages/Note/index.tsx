@@ -13,11 +13,11 @@ import { useGlobalKey } from '@/stores/key'
 import { aes } from '@/utils/aes'
 import { CopyOutlined, DeleteOutlined, EditOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useToggle } from 'ahooks'
 import { App, Button, Form, Space, Typography } from 'antd'
 import clsx from 'clsx'
 import { PropsWithChildren, useCallback, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useToggle } from 'react-use'
 
 export default function Note() {
   const navigate = useNavigate()
@@ -31,7 +31,7 @@ export default function Note() {
     enabled: Boolean(id),
   })
 
-  const [showPassword, toggleShow] = useToggle(false)
+  const [showPassword, { toggle: toggleShow }] = useToggle(false)
   const decodedPassword = data?.password && key ? aes.decode(data?.password, key) : ''
 
   const isWrongKey = useMemo(() => {
