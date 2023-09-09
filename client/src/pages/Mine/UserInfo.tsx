@@ -53,7 +53,7 @@ export default function UserInfo() {
     <>
       <Form form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 12 }} onFinish={onFinish}>
         <Form.Item label='Username' name='username' rules={[{ required: true, message: 'Username is required' }]}>
-          <Input maxLength={20} allowClear />
+          <Input maxLength={20} allowClear disabled />
         </Form.Item>
 
         <Form.Item name='email' label='Email' rules={[{ type: 'email' }]}>

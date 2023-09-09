@@ -82,7 +82,15 @@ export default function Notes() {
             onSearch={setKeyword}
           />
 
-          <Button type='primary' icon={<ReloadOutlined />} className='ml-2 mr-auto' onClick={() => refetch()} />
+          <Button
+            type='primary'
+            icon={<ReloadOutlined />}
+            className='ml-2 mr-auto'
+            onClick={() => {
+              setKeyword(undefined)
+              refetch()
+            }}
+          />
 
           <Space className='mt-2 sm:mt-0'>
             <KeyModal />
