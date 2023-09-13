@@ -66,7 +66,8 @@ export default function NoteEdit() {
       try {
         const data = {
           ...values,
-
+          // 自动去掉协议
+          website: values.website ? String(values.website).replace(/http(s?):\/\//g, '') : undefined,
           password: values.password?.trim() ? aes.encode(values.password || '', key) : undefined,
         }
 

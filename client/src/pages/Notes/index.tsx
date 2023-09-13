@@ -75,25 +75,26 @@ export default function Notes() {
     <>
       <section className='flex flex-col h-full'>
         <header className='flex m-4 flex-wrap'>
-          <Input.Search
-            allowClear
-            className='sm:!w-72 w-full'
-            placeholder='input title to search'
-            enterButton
-            maxLength={20}
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-          />
+          <Space className='mr-auto'>
+            <Input.Search
+              allowClear
+              className='sm:!w-72 w-full'
+              placeholder='input title to search'
+              enterButton
+              maxLength={20}
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
 
-          <Button
-            type='primary'
-            icon={<ReloadOutlined />}
-            className='ml-2 mr-auto'
-            onClick={() => {
-              setKeyword('')
-              refetch()
-            }}
-          />
+            <Button
+              type='primary'
+              icon={<ReloadOutlined />}
+              onClick={() => {
+                setKeyword('')
+                refetch()
+              }}
+            />
+          </Space>
 
           <Space className='mt-2 sm:mt-0'>
             <KeyModal />
