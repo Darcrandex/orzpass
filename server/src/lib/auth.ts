@@ -5,7 +5,7 @@
 
 import CryptoJS from 'crypto-js'
 
-const DEFAULT_EXP = 60 * 1000
+const DEFAULT_EXP = 60 * 60 * 1000
 const secret = process.env.NEXT_APP_JWT_SECRET || 'secret'
 
 function sign(payload: any, exp = DEFAULT_EXP) {
@@ -29,10 +29,6 @@ function verify(jwt: string) {
 }
 
 function decode<T = any>(jwt: string) {
-  if (!verify(jwt)) {
-    throw new Error('invalid token')
-  }
-
   const content = CryptoJS.AES.decrypt(jwt, secret).toString(CryptoJS.enc.Utf8)
   const { payload } = JSON.parse(content)
   return payload as T
