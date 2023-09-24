@@ -106,44 +106,42 @@ export default function Notes() {
         </header>
 
         <section ref={elRef} className='relative flex-1 overflow-auto'>
-          <ul>
+          <ul className='flex flex-wrap px-2'>
             {filterList.map((v) => (
-              <li
-                key={v.id}
-                className='group/item flex items-center m-4 p-4 bg-gray-50 rounded-lg cursor-pointer transition-all hover:bg-pink-50'
-                onClick={() => navigate(`/note/${v.id}`)}
-              >
-                <Logo title={v.title} iconUrl={v.iconUrl} className='shrink-0' />
+              <li key={v.id} className={clsx('w-full lg:w-1/2 xl:w-1/3')} onClick={() => navigate(`/note/${v.id}`)}>
+                <div className='group/item flex items-center m-2 p-4 bg-gray-50 rounded-lg cursor-pointer transition-all hover:bg-pink-50'>
+                  <Logo title={v.title} iconUrl={v.iconUrl} className='shrink-0' />
 
-                <div className='ml-4 mr-auto truncate'>
-                  <span className='text-gray-700 font-bold text-lg truncate'>{v.title}</span>
-                  <p className='flex items-center text-gray-500 truncate'>
-                    <span>{v.website || 'website'}</span>
+                  <div className='ml-4 mr-auto truncate'>
+                    <span className='text-gray-700 font-bold text-lg truncate'>{v.title}</span>
+                    <p className='flex items-center text-gray-500 truncate'>
+                      <span>{v.website || 'website'}</span>
 
-                    <i className='inline-block w-1 h-1 mx-2 rounded-full bg-gray-300 max-sm:hidden'></i>
-                    <span className='max-sm:hidden'>{v.username || 'username'}</span>
-                  </p>
-                </div>
+                      <i className='inline-block w-1 h-1 mx-2 rounded-full bg-gray-300 max-sm:hidden'></i>
+                      <span className='max-sm:hidden'>{v.username || 'username'}</span>
+                    </p>
+                  </div>
 
-                <div className='space-x-4 transition-all opacity-0 group-hover/item:opacity-90 max-sm:hidden'>
-                  <Button
-                    type='text'
-                    shape='circle'
-                    icon={<EditOutlined className='text-gray-500' />}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      navigate(`/note/${v.id}/edit`)
-                    }}
-                  />
-                  <Button
-                    type='text'
-                    shape='circle'
-                    icon={<DeleteOutlined className='text-gray-500' />}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      beforeRemove(v.id)
-                    }}
-                  />
+                  <div className='space-x-4 transition-all opacity-0 group-hover/item:opacity-90 max-sm:hidden'>
+                    <Button
+                      type='text'
+                      shape='circle'
+                      icon={<EditOutlined className='text-gray-500' />}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        navigate(`/note/${v.id}/edit`)
+                      }}
+                    />
+                    <Button
+                      type='text'
+                      shape='circle'
+                      icon={<DeleteOutlined className='text-gray-500' />}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        beforeRemove(v.id)
+                      }}
+                    />
+                  </div>
                 </div>
               </li>
             ))}
