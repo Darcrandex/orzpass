@@ -35,7 +35,7 @@ export default function Logo(props: LogoProps) {
     <>
       <span
         className={clsx(
-          'flex items-center justify-center rounded-lg text-lg text-white uppercase bg-contain bg-no-repeat',
+          'flex items-center justify-center rounded-lg text-xl font-bold text-white uppercase bg-contain bg-no-repeat',
           props.size === 'large' ? 'w-16 h-16' : props.size === 'small' ? 'w-10 h-10' : 'w-12 h-12',
           props.className
         )}
