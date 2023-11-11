@@ -1,5 +1,5 @@
 import { TOKEN_KEY } from '@/enums'
-import { checkAuth, jwt } from '@/lib/auth'
+import { jwt } from '@/lib/auth'
 import { Issue, User, issueToUser } from '@/types/user.model'
 import { http } from '@/utils/http'
 import * as bcrypt from 'bcrypt'
@@ -7,8 +7,6 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 // update user password only
 export async function PATCH(request: NextRequest) {
-  checkAuth(request)
-
   const token = request.headers.get(TOKEN_KEY) || ''
   const payload = jwt.decode<Pick<User, 'id'>>(token)
 

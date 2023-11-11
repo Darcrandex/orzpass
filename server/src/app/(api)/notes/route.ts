@@ -1,5 +1,5 @@
 import { MAX_NOTE_COUNT, TOKEN_KEY } from '@/enums'
-import { checkAuth, jwt } from '@/lib/auth'
+import { jwt } from '@/lib/auth'
 import { Comment, Note, commentToNote } from '@/types/note.model'
 import { User } from '@/types/user.model'
 import { getIconFromUrl } from '@/utils/getIconFromUrl'
@@ -8,8 +8,6 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 // get notes list
 export async function GET(request: NextRequest) {
-  checkAuth(request)
-
   const token = request.headers.get(TOKEN_KEY) || ''
   const payload = jwt.decode<Pick<User, 'id'>>(token)
 
@@ -21,8 +19,6 @@ export async function GET(request: NextRequest) {
 
 // add new note
 export async function POST(request: NextRequest) {
-  checkAuth(request)
-
   const token = request.headers.get(TOKEN_KEY) || ''
   const payload = jwt.decode<Pick<User, 'id'>>(token)
 
