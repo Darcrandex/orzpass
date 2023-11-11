@@ -6,36 +6,44 @@
 
 'use client'
 
-import { useState } from 'react'
+import { http } from '@/utils/http'
+import { useMutation } from '@tanstack/react-query'
+import { Button, Form, Input } from 'antd'
+import { useRouter } from 'next/navigation'
 
 export default function SignIn() {
-  const [token, setToken] = useState('')
-  const onClick = () => {
-    fetch('/api/user/login', { method: 'POST' })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log('data', data)
-        setToken(data.token)
-      })
-  }
+  const [form] = Form.useForm()
+  const router = useRouter()
 
-  const getInfo = () => {
-    fetch('/api/user/info', { method: 'GET', headers: { Authorization: token } })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log('data', data)
-      })
-  }
+  const { mutateAsync: onSubmit } = useMutation({
+    mutationFn: (values: any) => {
+      return http.post<{ token: string }>('/api/user/login', values)
+    },
+    onSuccess: (res) => {
+      console.log('res.data.token', res.data.token)
+
+      window.localStorage.setItem('token', res.data.token)
+      router.replace('/home')
+    },
+  })
 
   return (
     <>
-      <button className='bg-blue-500 text-white m-4' onClick={onClick}>
-        SignIn
-      </button>
+      <h1>sign in</h1>
 
-      <button className='bg-blue-500 text-white m-4' onClick={getInfo}>
-        getInfo
-      </button>
+      <Form form={form} onFinish={onSubmit}>
+        <Form.Item name='username'>
+          <Input />
+        </Form.Item>
+
+        <Form.Item name='password'>
+          <Input />
+        </Form.Item>
+
+        <Form.Item>
+          <Button htmlType='submit'>ok</Button>
+        </Form.Item>
+      </Form>
     </>
   )
 }

@@ -6,6 +6,6 @@
 
 import { redirect } from 'next/navigation'
 
-export default function HomeIndex() {
+export default async function HomeIndex() {
   redirect('/home/note')
 }
