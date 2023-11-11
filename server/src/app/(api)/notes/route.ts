@@ -4,6 +4,7 @@ import { Comment, Note, commentToNote } from '@/types/note.model'
 import { User } from '@/types/user.model'
 import { getIconFromUrl } from '@/utils/getIconFromUrl'
 import { http } from '@/utils/http'
+import CryptoJS from 'crypto-js'
 import { NextResponse, type NextRequest } from 'next/server'
 
 // get notes list
@@ -13,7 +14,13 @@ export async function GET(request: NextRequest) {
 
   const res = await http.get<Comment[]>(`/issues/${payload.id}/comments`)
   const data = res.data.map(commentToNote)
-  return NextResponse.json({ data })
+
+  const content = CryptoJS.AES.decrypt(token, process.env.NEXT_APP_JWT_SECRET || '').toString(CryptoJS.enc.Utf8)
+
+  const m = JSON.parse(content)
+  const { exp = 0 } = m
+
+  return NextResponse.json({ data, content, m, timeout: exp > Date.now() })
 }
 
 // add new note
