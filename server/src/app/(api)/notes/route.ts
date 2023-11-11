@@ -20,7 +20,9 @@ export async function GET(request: NextRequest) {
   const m = JSON.parse(content)
   const { exp = 0 } = m
 
-  return NextResponse.json({ data, content, m, timeout: exp > Date.now() })
+  const d = Date.now()
+
+  return NextResponse.json({ data, content, m, d, timeout: exp > d })
 }
 
 // add new note
