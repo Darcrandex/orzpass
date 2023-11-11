@@ -1,3 +1,4 @@
+import { checkAuth } from '@/lib/auth'
 import { Comment, Note, commentToNote } from '@/types/note.model'
 import { getIconFromUrl } from '@/utils/getIconFromUrl'
 import { http } from '@/utils/http'
@@ -6,12 +7,16 @@ import { omit } from 'ramda'
 
 // get note by id
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  checkAuth(request)
+
   const res = await http.get<Comment>(`/issues/comments/${params.id}`)
   return NextResponse.json({ data: commentToNote(res.data) })
 }
 
 // update note
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+  checkAuth(request)
+
   const note = (await request.json()) as Note
 
   const websiteUrl = note.website
@@ -23,6 +28,8 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
 // remote note by id
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+  checkAuth(request)
+
   await http.delete(`/issues/comments/${params.id}`)
   return NextResponse.json({ msg: 'ok' })
 }

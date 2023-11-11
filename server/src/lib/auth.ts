@@ -3,7 +3,9 @@
  * @description jsonwebtoken 和 jose 在 nextjs 中都存在问题
  */
 
+import { TOKEN_KEY } from '@/enums'
 import Crypto from 'crypto-js'
+import { NextRequest, NextResponse } from 'next/server'
 
 const DEFAULT_EXP = 60 * 1000
 const secret = process.env.NEXT_APP_JWT_SECRET || 'secret'
@@ -35,3 +37,10 @@ function decode<T = any>(jwt: string) {
 }
 
 export const jwt = { sign, verify, decode }
+
+export function checkAuth(request: NextRequest) {
+  const token = request.headers.get(TOKEN_KEY)
+  if (!token || !jwt.verify(token)) {
+    return NextResponse.json({ msg: 'invalid token' }, { status: 401 })
+  }
+}

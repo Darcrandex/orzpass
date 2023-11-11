@@ -1,5 +1,5 @@
 import { TOKEN_KEY } from '@/enums'
-import { jwt } from '@/lib/auth'
+import { checkAuth, jwt } from '@/lib/auth'
 import { Issue, User, issueToUser } from '@/types/user.model'
 import { http } from '@/utils/http'
 import { NextResponse, type NextRequest } from 'next/server'
@@ -7,6 +7,7 @@ import { omit } from 'ramda'
 
 // user info
 export async function GET(request: NextRequest) {
+  checkAuth(request)
   const token = request.headers.get(TOKEN_KEY) || ''
   const payload = jwt.decode<Pick<User, 'id'>>(token)
   const res = await http.get<Issue>(`/issues/${payload.id}`)
@@ -17,6 +18,8 @@ export async function GET(request: NextRequest) {
 
 // update user info
 export async function PATCH(request: NextRequest) {
+  checkAuth(request)
+
   const token = request.headers.get(TOKEN_KEY) || ''
   const payload = jwt.decode<Pick<User, 'id'>>(token)
   const userInfo = omit(['password'], await request.json()) as Omit<User, 'password'>
