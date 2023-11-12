@@ -1,5 +1,5 @@
 import { MAX_NOTE_COUNT, TOKEN_KEY } from '@/enums'
-import { jwt } from '@/lib/auth'
+import { checkAuth, jwt } from '@/lib/auth'
 import { Comment, Note, commentToNote } from '@/types/note.model'
 import { User } from '@/types/user.model'
 import { getIconFromUrl } from '@/utils/getIconFromUrl'
@@ -8,9 +8,9 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 // get notes list
 export async function GET(request: NextRequest) {
+  checkAuth()
   const token = request.headers.get(TOKEN_KEY) || ''
   const payload = jwt.decode<Pick<User, 'id'>>(token)
-
   const res = await http.get<Comment[]>(`/issues/${payload.id}/comments`)
   const data = res.data.map(commentToNote)
 
