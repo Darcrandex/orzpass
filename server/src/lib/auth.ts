@@ -8,7 +8,7 @@ import Crypto from 'crypto-js'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
-const DEFAULT_EXP = 60 * 1000
+const DEFAULT_EXP = 60 * 60 * 1000
 const secret = process.env.NEXT_APP_JWT_SECRET || 'secret'
 
 function sign(payload: any, exp = DEFAULT_EXP) {
