@@ -3,28 +3,28 @@
  * @description jsonwebtoken 和 jose 在 nextjs 中都存在问题
  */
 
-import jsonwebtoken from 'jsonwebtoken'
+import { TOKEN_KEY } from '@/enums'
+import Crypto from 'crypto-js'
+import { headers } from 'next/headers'
+import { NextResponse } from 'next/server'
 
 const DEFAULT_EXP = 60 * 60 * 1000
 const secret = process.env.NEXT_APP_JWT_SECRET || 'secret'
 
 function sign(payload: any, exp = DEFAULT_EXP) {
-  // const content = JSON.stringify({
-  //   payload,
-  //   exp: Date.now() + Math.max(exp, 0),
-  // })
+  const content = JSON.stringify({
+    payload,
+    exp: Date.now() + Math.max(exp, 0),
+  })
 
-  // return CryptoJS.AES.encrypt(content, secret).toString()
-  return jsonwebtoken.sign(payload, secret)
+  return Crypto.AES.encrypt(content, secret).toString()
 }
 
 function verify(jwt: string) {
   try {
-    // const content = CryptoJS.AES.decrypt(jwt, secret).toString(CryptoJS.enc.Utf8)
-    // const { exp } = JSON.parse(content)
-    // return exp > Date.now()
-    jsonwebtoken.verify(jwt, secret)
-    return true
+    const content = Crypto.AES.decrypt(jwt, secret).toString(Crypto.enc.Utf8)
+    const { exp } = JSON.parse(content)
+    return exp > Date.now()
   } catch (error) {
     console.error('jwt verify error', error)
     return false
@@ -32,13 +32,17 @@ function verify(jwt: string) {
 }
 
 function decode<T = any>(jwt: string) {
-  // const content = CryptoJS.AES.decrypt(jwt, secret).toString(CryptoJS.enc.Utf8)
-  // const { payload } = JSON.parse(content)
-  // return payload as T
-
-  const content = jsonwebtoken.decode(jwt)
-
-  return content as T
+  const content = Crypto.AES.decrypt(jwt, secret).toString(Crypto.enc.Utf8)
+  const { payload } = JSON.parse(content)
+  return payload as T
 }
 
 export const jwt = { sign, verify, decode }
+
+export function checkAuth() {
+  const token = headers().get(TOKEN_KEY) || ''
+
+  if (!token || !jwt.verify(token)) {
+    return NextResponse.json({ msg: 'invalid token' }, { status: 401 })
+  }
+}

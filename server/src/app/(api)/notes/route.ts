@@ -9,10 +9,19 @@ import { NextResponse, type NextRequest } from 'next/server'
 // get notes list
 export async function GET(request: NextRequest) {
   const token = request.headers.get(TOKEN_KEY) || ''
-  const payload = jwt.decode<Pick<User, 'id'>>(token)
 
+  // fucking middleware cache
+  // 缓存一直无法清除
+  // 业务上这个接口是最基本的功能
+  // 因此只需要验证这个接口即可
+  if (!token || !jwt.verify(token)) {
+    return NextResponse.json({ msg: 'invalid token' }, { status: 401 })
+  }
+
+  const payload = jwt.decode<Pick<User, 'id'>>(token)
   const res = await http.get<Comment[]>(`/issues/${payload.id}/comments`)
   const data = res.data.map(commentToNote)
+
   return NextResponse.json({ data })
 }
 
