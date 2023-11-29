@@ -7,7 +7,6 @@
 import DownloadButton from '@/common/DownloadButton'
 import KeyModal from '@/common/KeyModal'
 import Logo from '@/components/Logo'
-import { useScrollBar } from '@/hooks/useScrollBar'
 import { apiNotes } from '@/services/note'
 import { MAX_NOTE_COUNT } from '@/types/enum'
 import { DeleteOutlined, EditOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons'
@@ -22,7 +21,6 @@ export default function Notes() {
   const navigate = useNavigate()
   const client = useQueryClient()
   const { modal } = App.useApp()
-  const { elRef } = useScrollBar()
 
   const {
     data: list,
@@ -73,87 +71,83 @@ export default function Notes() {
 
   return (
     <>
-      <section className='flex flex-col h-full'>
-        <header className='flex m-4 flex-wrap'>
-          <Space className='mr-auto'>
-            <Input.Search
-              allowClear
-              className='sm:!w-72 w-full'
-              placeholder='input title to search'
-              enterButton
-              maxLength={20}
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-            />
-
-            <Button
-              type='primary'
-              icon={<ReloadOutlined />}
-              onClick={() => {
-                setKeyword('')
-                refetch()
-              }}
-            />
-          </Space>
-
-          <Space className='mt-2 sm:mt-0'>
-            <KeyModal />
-            <Button type='primary' icon={<PlusOutlined />} onClick={beforeCreate}>
-              Create
-            </Button>
-            <DownloadButton list={list} />
-          </Space>
-        </header>
-
-        <section ref={elRef} className='relative flex-1 overflow-auto'>
-          <ul className='flex flex-wrap px-2'>
-            {filterList.map((v) => (
-              <li key={v.id} className={clsx('w-full lg:w-1/2 xl:w-1/3')} onClick={() => navigate(`/note/${v.id}`)}>
-                <div className='group/item flex items-center m-2 p-4 bg-gray-50 rounded-lg cursor-pointer transition-all hover:bg-pink-50'>
-                  <Logo title={v.title} iconUrl={v.iconUrl} className='shrink-0' />
-
-                  <div className='ml-4 mr-auto truncate'>
-                    <span className='text-gray-700 font-bold text-lg truncate'>{v.title}</span>
-                    <p className='flex items-center text-gray-500 truncate'>
-                      <span>{v.website || 'website'}</span>
-
-                      <i className='inline-block w-1 h-1 mx-2 rounded-full bg-gray-300 max-sm:hidden'></i>
-                      <span className='max-sm:hidden'>{v.username || 'username'}</span>
-                    </p>
-                  </div>
-
-                  <div className='space-x-4 transition-all opacity-0 group-hover/item:opacity-90 max-sm:hidden'>
-                    <Button
-                      type='text'
-                      shape='circle'
-                      icon={<EditOutlined className='text-gray-500' />}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        navigate(`/note/${v.id}/edit`)
-                      }}
-                    />
-                    <Button
-                      type='text'
-                      shape='circle'
-                      icon={<DeleteOutlined className='text-gray-500' />}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        beforeRemove(v.id)
-                      }}
-                    />
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-
-          <Empty
-            className={clsx('py-10', (isFetching || filterList.length > 0) && 'hidden')}
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description='Empty Here'
+      <header className='flex m-4 flex-wrap'>
+        <Space className='mr-auto'>
+          <Input.Search
+            allowClear
+            className='sm:!w-72 w-full'
+            placeholder='input title to search'
+            enterButton
+            maxLength={20}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
           />
-        </section>
-      </section>
+
+          <Button
+            type='primary'
+            icon={<ReloadOutlined />}
+            onClick={() => {
+              setKeyword('')
+              refetch()
+            }}
+          />
+        </Space>
+
+        <Space className='mt-2 sm:mt-0'>
+          <KeyModal />
+          <Button type='primary' icon={<PlusOutlined />} onClick={beforeCreate}>
+            Create
+          </Button>
+          <DownloadButton list={list} />
+        </Space>
+      </header>
+
+      <ul className='flex flex-wrap px-2'>
+        {filterList.map((v) => (
+          <li key={v.id} className={clsx('w-full lg:w-1/2 xl:w-1/3')} onClick={() => navigate(`/note/${v.id}`)}>
+            <div className='group/item flex items-center m-2 p-4 bg-gray-50 rounded-lg cursor-pointer transition-all hover:bg-pink-50'>
+              <Logo title={v.title} iconUrl={v.iconUrl} className='shrink-0' />
+
+              <div className='ml-4 mr-auto truncate'>
+                <span className='text-gray-700 font-bold text-lg truncate'>{v.title}</span>
+                <p className='flex items-center text-gray-500 truncate'>
+                  <span>{v.website || 'website'}</span>
+
+                  <i className='inline-block w-1 h-1 mx-2 rounded-full bg-gray-300 max-sm:hidden'></i>
+                  <span className='max-sm:hidden'>{v.username || 'username'}</span>
+                </p>
+              </div>
+
+              <div className='space-x-4 transition-all opacity-0 group-hover/item:opacity-90 max-sm:hidden'>
+                <Button
+                  type='text'
+                  shape='circle'
+                  icon={<EditOutlined className='text-gray-500' />}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigate(`/note/${v.id}/edit`)
+                  }}
+                />
+                <Button
+                  type='text'
+                  shape='circle'
+                  icon={<DeleteOutlined className='text-gray-500' />}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    beforeRemove(v.id)
+                  }}
+                />
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <Empty
+        className={clsx('py-10', (isFetching || filterList.length > 0) && 'hidden')}
+        image={Empty.PRESENTED_IMAGE_SIMPLE}
+        description='Empty Here'
+      />
     </>
   )
 }
