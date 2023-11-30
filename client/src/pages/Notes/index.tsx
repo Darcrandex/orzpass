@@ -14,6 +14,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useDebounce } from 'ahooks'
 import { App, Button, Empty, Input, Space } from 'antd'
 import clsx from 'clsx'
+import { isNil } from 'ramda'
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -50,7 +51,15 @@ export default function Notes() {
   const debouncedKeyword = useDebounce(keyword, { wait: 500 })
   const filterList = Array.isArray(list)
     ? list
-        .filter((v) => !debouncedKeyword || v.title.includes(debouncedKeyword))
+        .filter((v) => {
+          if (isNil(debouncedKeyword)) return true
+
+          return (
+            v.title.includes(debouncedKeyword) ||
+            v.website?.includes(debouncedKeyword) ||
+            v.remark?.includes(debouncedKeyword)
+          )
+        })
         .sort((a, b) => {
           if (a.updated_at && b.updated_at) {
             const d1 = new Date(a.updated_at)
@@ -110,15 +119,12 @@ export default function Notes() {
 
               <div className='ml-4 mr-auto truncate'>
                 <span className='text-gray-700 font-bold text-lg truncate'>{v.title}</span>
-                <p className='flex items-center text-gray-500 truncate'>
-                  <span>{v.website || 'website'}</span>
-
-                  <i className='inline-block w-1 h-1 mx-2 rounded-full bg-gray-300 max-sm:hidden'></i>
-                  <span className='max-sm:hidden'>{v.username || 'username'}</span>
+                <p className='items-center max-w-full text-gray-500 truncate'>
+                  <span>{v.website || v.username || 'no message'}</span>
                 </p>
               </div>
 
-              <div className='space-x-4 transition-all opacity-0 group-hover/item:opacity-90 max-sm:hidden'>
+              <div className='flex space-x-4 transition-all opacity-0 group-hover/item:opacity-90 max-sm:hidden'>
                 <Button
                   type='text'
                   shape='circle'

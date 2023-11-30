@@ -12,7 +12,7 @@ export default function NoteMain() {
   const { key } = useGlobalKey()
 
   return !key ? (
-    <section className='flex items-center justify-center space-x-4 h-1/2'>
+    <section className='flex items-center justify-center space-x-4 mt-[20vh]'>
       <p className='text-lg text-gray-700'>Set Your Key First</p>
       <KeyModal />
     </section>

@@ -5,7 +5,7 @@
  */
 
 import { useUserState } from '@/stores/user'
-import { Button } from 'antd'
+import { Button, FloatButton } from 'antd'
 import { Outlet, useNavigate } from 'react-router-dom'
 import AsideMenus from './AsideMenus'
 import TopHeader from './TopHeader'
@@ -35,6 +35,10 @@ export default function Home() {
           </section>
         )}
       </main>
+
+      <div data-name='safe-area' className='h-12'></div>
+
+      <FloatButton.BackTop />
     </>
   )
 }

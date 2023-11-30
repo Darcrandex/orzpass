@@ -36,7 +36,7 @@ export default function TopHeader() {
     <>
       <header
         ref={elRef}
-        className='sm:hidden fixed top-0 left-0 right-0 flex items-center justify-between px-2 bg-pink-500'
+        className='sm:hidden fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-2 bg-pink-500'
       >
         <Button type='text' icon={<MenuOutlined className='text-white' />} onClick={toggleMenu} />
 
@@ -60,7 +60,7 @@ export default function TopHeader() {
         onClose={toggleMenu}
         title={
           <div className='flex items-center text-center text-pink-500 space-x-2'>
-            <Avatar size='small' src={user?.avatarUrl} className='shadow-md outline outline-pink-500'>
+            <Avatar src={user?.avatarUrl} className='shadow-md'>
               <span className='uppercase'>{user?.username.slice(0, 1)}</span>
             </Avatar>
             <span className='truncate font-normal'>{user?.username || 'not log in'}</span>

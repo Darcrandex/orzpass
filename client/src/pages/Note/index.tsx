@@ -66,99 +66,95 @@ export default function Note() {
   }, [id, modal, onRemove])
   return (
     <>
-      <section className='flex flex-col h-full'>
-        <header className='flex justify-between p-4'>
-          <BackButton />
+      <header className='flex justify-between p-4'>
+        <BackButton />
 
-          <Space>
-            <Button icon={<EditOutlined />} type='link' onClick={() => navigate(`/note/${id}/edit`)}>
-              Edit
-            </Button>
-            <Button icon={<DeleteOutlined />} type='link' onClick={beforeRemove}>
-              Delete
-            </Button>
-          </Space>
-        </header>
+        <Space>
+          <Button icon={<EditOutlined />} type='link' onClick={() => navigate(`/note/${id}/edit`)}>
+            Edit
+          </Button>
+          <Button icon={<DeleteOutlined />} type='link' onClick={beforeRemove}>
+            Delete
+          </Button>
+        </Space>
+      </header>
 
-        <section>
-          <div className='flex flex-col items-center justify-center mb-6'>
-            <Logo title={data?.title || 'a'} iconUrl={data?.iconUrl} size='large' />
-            <h2 className='text-lg mt-4 text-gray-700 font-extrabold'>{data?.title || 'Title'}</h2>
-          </div>
+      <div className='flex flex-col items-center justify-center mb-6'>
+        <Logo title={data?.title || 'a'} iconUrl={data?.iconUrl} size='large' />
+        <h2 className='text-lg mt-4 text-gray-700 font-extrabold'>{data?.title || 'Title'}</h2>
+      </div>
 
-          <div className='mx-4'>
-            <Form labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
-              <Form.Item label='Username'>
-                <ValueWrapper>
-                  <div className='flex justify-between'>
-                    <span>{data?.username}</span>
-                    {Boolean(data?.username) && (
-                      <Button
-                        type='text'
-                        className='ml-4'
-                        icon={<CopyOutlined className='text-gray-500' />}
-                        onClick={() => copy(data?.username)}
-                      />
-                    )}
-                  </div>
-                </ValueWrapper>
-              </Form.Item>
+      <div className='mx-4'>
+        <Form labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
+          <Form.Item label='Username'>
+            <ValueWrapper>
+              <div className='flex justify-between'>
+                <span>{data?.username}</span>
+                {Boolean(data?.username) && (
+                  <Button
+                    type='text'
+                    className='ml-4'
+                    icon={<CopyOutlined className='text-gray-500' />}
+                    onClick={() => copy(data?.username)}
+                  />
+                )}
+              </div>
+            </ValueWrapper>
+          </Form.Item>
 
-              <Form.Item label='Password'>
-                <ValueWrapper>
-                  {decodedPassword ? (
-                    <div className='flex justify-between'>
-                      <span>{showPassword ? decodedPassword : '******'}</span>
-                      <Space>
-                        <Button
-                          type='text'
-                          icon={
-                            showPassword ? (
-                              <EyeOutlined className='text-gray-500' />
-                            ) : (
-                              <EyeInvisibleOutlined className='text-gray-500' />
-                            )
-                          }
-                          onClick={toggleShow}
-                        />
+          <Form.Item label='Password'>
+            <ValueWrapper>
+              {decodedPassword ? (
+                <div className='flex justify-between'>
+                  <span>{showPassword ? decodedPassword : '******'}</span>
+                  <Space>
+                    <Button
+                      type='text'
+                      icon={
+                        showPassword ? (
+                          <EyeOutlined className='text-gray-500' />
+                        ) : (
+                          <EyeInvisibleOutlined className='text-gray-500' />
+                        )
+                      }
+                      onClick={toggleShow}
+                    />
 
-                        <Button
-                          type='text'
-                          icon={<CopyOutlined className='text-gray-500' />}
-                          onClick={() => copy(decodedPassword)}
-                        />
-                      </Space>
-                    </div>
-                  ) : null}
+                    <Button
+                      type='text'
+                      icon={<CopyOutlined className='text-gray-500' />}
+                      onClick={() => copy(decodedPassword)}
+                    />
+                  </Space>
+                </div>
+              ) : null}
 
-                  <div className={clsx((!isWrongKey || isFetching) && 'hidden')}>
-                    <p className='mb-2 text-red-400'>
-                      Your data parsing failed, it seems that the KEY you configured is wrong.
-                    </p>
-                    <KeyModal />
-                  </div>
-                </ValueWrapper>
-              </Form.Item>
+              <div className={clsx((!isWrongKey || isFetching) && 'hidden')}>
+                <p className='mb-2 text-red-400'>
+                  Your data parsing failed, it seems that the KEY you configured is wrong.
+                </p>
+                <KeyModal />
+              </div>
+            </ValueWrapper>
+          </Form.Item>
 
-              <Form.Item label='Website'>
-                <ValueWrapper>
-                  <Typography.Link href={websiteUrl} target='_blank'>
-                    {data?.website}
-                  </Typography.Link>
-                </ValueWrapper>
-              </Form.Item>
+          <Form.Item label='Website'>
+            <ValueWrapper>
+              <Typography.Link href={websiteUrl} target='_blank'>
+                {data?.website}
+              </Typography.Link>
+            </ValueWrapper>
+          </Form.Item>
 
-              <Form.Item label='Remark'>
-                <ValueWrapper>
-                  {data?.remark?.split('\n').map((str, i) => (
-                    <p key={`${str}_${i}`}>{str}</p>
-                  ))}
-                </ValueWrapper>
-              </Form.Item>
-            </Form>
-          </div>
-        </section>
-      </section>
+          <Form.Item label='Remark'>
+            <ValueWrapper>
+              {data?.remark?.split('\n').map((str, i) => (
+                <p key={`${str}_${i}`}>{str}</p>
+              ))}
+            </ValueWrapper>
+          </Form.Item>
+        </Form>
+      </div>
     </>
   )
 }

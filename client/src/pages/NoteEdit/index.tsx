@@ -95,64 +95,62 @@ export default function NoteEdit() {
 
   return (
     <>
-      <section className='flex flex-col h-full'>
-        <header className='p-4'>
-          <BackButton />
-        </header>
+      <header className='p-4'>
+        <BackButton />
+      </header>
 
-        <section className='flex-1 mx-4 overflow-x-hidden overflow-y-auto'>
-          <Form form={form} onFinish={mutateAsync} autoComplete='off' labelCol={{ span: 4 }} wrapperCol={{ span: 14 }}>
-            <Form.Item name='id' hidden>
-              <Input maxLength={20} />
-            </Form.Item>
+      <section className='mx-4'>
+        <Form form={form} onFinish={mutateAsync} autoComplete='off' labelCol={{ span: 4 }} wrapperCol={{ span: 14 }}>
+          <Form.Item name='id' hidden>
+            <Input maxLength={20} />
+          </Form.Item>
 
-            <Form.Item label='Title' name='title' rules={[{ required: true, message: 'Title is required' }]}>
-              <Input maxLength={20} allowClear />
-            </Form.Item>
+          <Form.Item label='Title' name='title' rules={[{ required: true, message: 'Title is required' }]}>
+            <Input maxLength={20} allowClear />
+          </Form.Item>
 
-            <Form.Item label='Username' name='username'>
-              <Input maxLength={20} allowClear />
-            </Form.Item>
+          <Form.Item label='Username' name='username'>
+            <Input maxLength={20} allowClear />
+          </Form.Item>
 
-            <Form.Item
-              label='Password'
-              name='password'
-              extra={
-                isWrongKey && (
-                  <>
-                    <p className='mb-2 text-red-400'>
-                      Your data parsing failed, it seems that the KEY you configured is wrong.
-                    </p>
-                    <KeyModal />
-                  </>
-                )
-              }
-            >
-              <Input.Password maxLength={20} allowClear className='flex-1' />
-            </Form.Item>
+          <Form.Item
+            label='Password'
+            name='password'
+            extra={
+              isWrongKey && (
+                <>
+                  <p className='mb-2 text-red-400'>
+                    Your data parsing failed, it seems that the KEY you configured is wrong.
+                  </p>
+                  <KeyModal />
+                </>
+              )
+            }
+          >
+            <Input.Password maxLength={20} allowClear className='flex-1' />
+          </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: width >= 640 ? 4 : 0 }}>
-              <PasswordGeneratorPopover onGenerate={onGenerate} />
-            </Form.Item>
+          <Form.Item wrapperCol={{ offset: width >= 640 ? 4 : 0 }}>
+            <PasswordGeneratorPopover onGenerate={onGenerate} />
+          </Form.Item>
 
-            <Form.Item label='Website' name='website' rules={[{ validator: websiteValidator }]}>
-              <Input maxLength={50} allowClear placeholder='e.g., www.google.com' />
-            </Form.Item>
+          <Form.Item label='Website' name='website' rules={[{ validator: websiteValidator }]}>
+            <Input maxLength={50} allowClear placeholder='e.g., www.google.com' />
+          </Form.Item>
 
-            <Form.Item label='Remark' name='remark'>
-              <Input.TextArea maxLength={100} showCount allowClear />
-            </Form.Item>
+          <Form.Item label='Remark' name='remark'>
+            <Input.TextArea maxLength={100} showCount allowClear />
+          </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: width >= 640 ? 4 : 0 }}>
-              <Space>
-                <Button onClick={() => navigate(-1)}>Cancel</Button>
-                <Button htmlType='submit' type='primary' loading={isLoading}>
-                  Submit
-                </Button>
-              </Space>
-            </Form.Item>
-          </Form>
-        </section>
+          <Form.Item wrapperCol={{ offset: width >= 640 ? 4 : 0 }}>
+            <Space>
+              <Button onClick={() => navigate(-1)}>Cancel</Button>
+              <Button htmlType='submit' type='primary' loading={isLoading}>
+                Submit
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
       </section>
     </>
   )
