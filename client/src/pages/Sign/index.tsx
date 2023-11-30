@@ -21,39 +21,40 @@ export default function Sign() {
 
   return (
     <>
-      <section className='sign-wrapper'>
-        <main className='relative z-10 flex items-center justify-center mx-4 h-[75vh]'>
-          <article className='w-96 p-8 bg-white/20 rounded-lg shadow backdrop-blur'>
-            <Tabs
-              activeKey={key}
-              onChange={setTabKey}
-              size='large'
-              animated
-              destroyInactiveTabPane
-              items={[
-                {
-                  key: '1',
-                  label: 'Sign In',
-                  children: (
-                    <TabContentWrapper>
-                      <SignIn />
-                    </TabContentWrapper>
-                  ),
-                },
-                {
-                  key: '2',
-                  label: 'Sign Up',
-                  children: (
-                    <TabContentWrapper>
-                      <SignUp />
-                    </TabContentWrapper>
-                  ),
-                },
-              ]}
-            />
-          </article>
-        </main>
-      </section>
+      <article className='fixed top-1/2 left-1/2 z-20 w-96 max-w-full p-4 -translate-x-1/2 -translate-y-1/2'>
+        <div className='p-4 bg-white/20 rounded-lg shadow backdrop-blur -translate-y-8'>
+          <Tabs
+            activeKey={key}
+            onChange={setTabKey}
+            size='large'
+            animated
+            destroyInactiveTabPane
+            items={[
+              {
+                key: '1',
+                label: 'Sign In',
+                children: (
+                  <TabContentWrapper>
+                    <SignIn />
+                  </TabContentWrapper>
+                ),
+              },
+              {
+                key: '2',
+                label: 'Sign Up',
+                children: (
+                  <TabContentWrapper>
+                    <SignUp />
+                  </TabContentWrapper>
+                ),
+              },
+            ]}
+          />
+        </div>
+      </article>
+
+      <div className='circle-1'></div>
+      <div className='circle-2'></div>
     </>
   )
 }
@@ -61,7 +62,7 @@ export default function Sign() {
 function TabContentWrapper(props: PropsWithChildren) {
   return (
     <div>
-      <article className='h-72'>{props.children}</article>
+      <article className='h-80'>{props.children}</article>
 
       <footer className='text-center'>
         <BackButton />
