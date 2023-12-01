@@ -7,7 +7,10 @@ export const TOKEN_KEY = 'Authorization'
 export const MAX_USER_COUNT = 100
 
 // 每个用户允许的数据最大保存数量
-export const MAX_NOTE_COUNT = 1000
+export const MAX_NOTE_COUNT = 500
+
+// issue 最大查询数量
+export const MAX_PAGE_SIZE = 100
 
 // 数据存储
 // 本地使用数据类型与 issue 对应的类型

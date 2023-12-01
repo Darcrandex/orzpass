@@ -1,4 +1,4 @@
-import { MAX_NOTE_COUNT, TOKEN_KEY } from '@/enums'
+import { MAX_NOTE_COUNT, MAX_PAGE_SIZE, TOKEN_KEY } from '@/enums'
 import { jwt } from '@/lib/auth'
 import { Comment, Note, commentToNote } from '@/types/note.model'
 import { User } from '@/types/user.model'
@@ -19,8 +19,15 @@ export async function GET(request: NextRequest) {
   }
 
   const payload = jwt.decode<Pick<User, 'id'>>(token)
-  const res = await http.get<Comment[]>(`/issues/${payload.id}/comments`)
-  const data = res.data.map(commentToNote)
+
+  // 由于目前不打算做分页查询
+  // 直接拿所有的数据
+  const maxPage = Math.ceil(MAX_NOTE_COUNT / MAX_PAGE_SIZE)
+  const tasks = Array.from({ length: maxPage }).map((_, i) =>
+    http.get<Comment[]>(`/issues/${payload.id}/comments?per_page=${MAX_PAGE_SIZE}&page=${i + 1}`)
+  )
+  const pagesRes = await Promise.all(tasks)
+  const data = pagesRes.reduce<Note[]>((acc, cur) => acc.concat(cur.data.map(commentToNote)), [])
 
   return NextResponse.json({ data })
 }
