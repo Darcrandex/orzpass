@@ -2,7 +2,7 @@ import { TOKEN_KEY } from '@/enums'
 import { jwt } from '@/lib/auth'
 import { Issue, User, issueToUser } from '@/types/user.model'
 import { http } from '@/utils/http'
-import * as bcrypt from 'bcrypt'
+import { compareSync, hashSync } from 'bcryptjs'
 import { NextResponse, type NextRequest } from 'next/server'
 
 // update user password only
@@ -16,12 +16,12 @@ export async function PATCH(request: NextRequest) {
   const issueRes = await http.get<Issue>(`/issues/${payload.id}`)
   const originUser = issueToUser(issueRes.data)
 
-  if (!bcrypt.compareSync(oldPassword, originUser.password) || !password) {
+  if (!compareSync(oldPassword, originUser.password) || !password) {
     return NextResponse.json({ msg: 'invalid password' }, { status: 400 })
   }
 
   await http.patch<Issue>(`/issues/${payload.id}`, {
-    body: JSON.stringify({ ...originUser, password: bcrypt.hashSync(password, 10) }),
+    body: JSON.stringify({ ...originUser, password: hashSync(password, 10) }),
   })
   return NextResponse.json({ msg: 'ok' })
 }

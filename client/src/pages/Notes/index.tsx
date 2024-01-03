@@ -12,7 +12,7 @@ import { MAX_NOTE_COUNT } from '@/types/enum'
 import { DeleteOutlined, EditOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useDebounce } from 'ahooks'
-import { App, Button, Empty, Input, Space } from 'antd'
+import { App, Button, Empty, Input, Space, Spin } from 'antd'
 import clsx from 'clsx'
 import { isNil } from 'ramda'
 import { useCallback, useState } from 'react'
@@ -111,49 +111,50 @@ export default function Notes() {
         </Space>
       </header>
 
-      <ul className='flex flex-wrap px-2'>
-        {filterList.map((v) => (
-          <li key={v.id} className={clsx('w-full lg:w-1/2 xl:w-1/3')} onClick={() => navigate(`/note/${v.id}`)}>
-            <div className='group/item flex items-center m-2 p-4 bg-gray-50 rounded-lg cursor-pointer transition-all hover:bg-pink-50'>
-              <Logo title={v.title} iconUrl={v.iconUrl} className='shrink-0' />
+      <Spin spinning={isFetching}>
+        <ul className='flex flex-wrap px-2'>
+          {filterList.map((v) => (
+            <li key={v.id} className={clsx('w-full lg:w-1/2 xl:w-1/3')} onClick={() => navigate(`/note/${v.id}`)}>
+              <div className='group/item flex items-center m-2 p-4 bg-gray-50 rounded-lg cursor-pointer transition-all hover:bg-pink-50'>
+                <Logo title={v.title} iconUrl={v.iconUrl} className='shrink-0' />
 
-              <div className='ml-4 mr-auto truncate'>
-                <span className='text-gray-700 font-bold text-lg truncate'>{v.title}</span>
-                <p className='items-center max-w-full text-gray-500 truncate'>
-                  <span>{v.website || v.username || 'no message'}</span>
-                </p>
+                <div className='ml-4 mr-auto truncate'>
+                  <span className='text-gray-700 font-bold text-lg truncate'>{v.title}</span>
+                  <p className='items-center max-w-full text-gray-500 truncate'>
+                    <span>{v.website || v.username || 'no message'}</span>
+                  </p>
+                </div>
+
+                <div className='flex space-x-4 transition-all opacity-0 group-hover/item:opacity-90 max-sm:hidden'>
+                  <Button
+                    type='text'
+                    shape='circle'
+                    icon={<EditOutlined className='text-gray-500' />}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      navigate(`/note/${v.id}/edit`)
+                    }}
+                  />
+                  <Button
+                    type='text'
+                    shape='circle'
+                    icon={<DeleteOutlined className='text-gray-500' />}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      beforeRemove(v.id)
+                    }}
+                  />
+                </div>
               </div>
-
-              <div className='flex space-x-4 transition-all opacity-0 group-hover/item:opacity-90 max-sm:hidden'>
-                <Button
-                  type='text'
-                  shape='circle'
-                  icon={<EditOutlined className='text-gray-500' />}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    navigate(`/note/${v.id}/edit`)
-                  }}
-                />
-                <Button
-                  type='text'
-                  shape='circle'
-                  icon={<DeleteOutlined className='text-gray-500' />}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    beforeRemove(v.id)
-                  }}
-                />
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
-
-      <Empty
-        className={clsx('py-10', (isFetching || filterList.length > 0) && 'hidden')}
-        image={Empty.PRESENTED_IMAGE_SIMPLE}
-        description='Empty Here'
-      />
+            </li>
+          ))}
+        </ul>
+        <Empty
+          className={clsx('py-10', (isFetching || filterList.length > 0) && 'hidden')}
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description='Empty Here'
+        />
+      </Spin>
     </>
   )
 }

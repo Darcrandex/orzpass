@@ -4,6 +4,7 @@
  * @author darcrand
  */
 
+import { Spin } from 'antd'
 import { Suspense, lazy } from 'react'
 import { Navigate, RouterProvider, createHashRouter } from 'react-router-dom'
 
@@ -16,7 +17,13 @@ import NoteMain from './pages/NoteMain'
  */
 function withSuspense(Component: React.LazyExoticComponent<React.FunctionComponent>) {
   const LazyComponent = () => (
-    <Suspense fallback={null}>
+    <Suspense
+      fallback={
+        <Spin spinning className='w-full'>
+          <div className='h-96'></div>
+        </Spin>
+      }
+    >
       <Component />
     </Suspense>
   )

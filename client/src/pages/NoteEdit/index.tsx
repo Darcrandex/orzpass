@@ -13,7 +13,7 @@ import { Note } from '@/types/note'
 import { aes } from '@/utils/aes'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSize } from 'ahooks'
-import { Button, Form, Input, Space } from 'antd'
+import { Button, Form, Input, Space, Spin } from 'antd'
 import { useEffect, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -24,7 +24,7 @@ export default function NoteEdit() {
   const { key } = useGlobalKey()
   const [form] = Form.useForm()
 
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['note', id],
     queryFn: () => apiNotes.getById(id || ''),
     enabled: Boolean(id),
@@ -99,8 +99,8 @@ export default function NoteEdit() {
         <BackButton />
       </header>
 
-      <section className='mx-4'>
-        <Form form={form} onFinish={mutateAsync} autoComplete='off' labelCol={{ span: 4 }} wrapperCol={{ span: 14 }}>
+      <Spin className='mx-4' spinning={isFetching}>
+        <Form form={form} onFinish={mutateAsync} autoComplete='off' labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
           <Form.Item name='id' hidden>
             <Input maxLength={20} />
           </Form.Item>
@@ -130,7 +130,7 @@ export default function NoteEdit() {
             <Input.Password maxLength={20} allowClear className='flex-1' />
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: width >= 640 ? 4 : 0 }}>
+          <Form.Item wrapperCol={{ offset: width >= 640 ? 6 : 0 }}>
             <PasswordGeneratorPopover onGenerate={onGenerate} />
           </Form.Item>
 
@@ -142,7 +142,7 @@ export default function NoteEdit() {
             <Input.TextArea maxLength={100} showCount allowClear />
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: width >= 640 ? 4 : 0 }}>
+          <Form.Item wrapperCol={{ offset: width >= 640 ? 6 : 0 }}>
             <Space>
               <Button onClick={() => navigate(-1)}>Cancel</Button>
               <Button htmlType='submit' type='primary' loading={isLoading}>
@@ -151,7 +151,7 @@ export default function NoteEdit() {
             </Space>
           </Form.Item>
         </Form>
-      </section>
+      </Spin>
     </>
   )
 }

@@ -1,7 +1,7 @@
 import { jwt } from '@/lib/auth'
 import { Issue, issueToUser } from '@/types/user.model'
 import { http } from '@/utils/http'
-import * as bcrypt from 'bcrypt'
+import { compareSync } from 'bcryptjs'
 import { NextResponse, type NextRequest } from 'next/server'
 import { pick } from 'ramda'
 
@@ -11,7 +11,8 @@ export async function POST(request: NextRequest) {
   const { data } = await http.get<Issue[]>('/issues')
   const users = data.map((issue) => issueToUser(issue))
 
-  const user = users.find((u) => u.username === username && bcrypt.compareSync(password, u.password))
+  // const user = users.find((u) => u.username === username && bcrypt.compareSync(password, u.password))
+  const user = users.find((u) => u.username === username && compareSync(password, u.password))
 
   if (!user) {
     return NextResponse.json({ msg: 'invalid username or password' }, { status: 401 })

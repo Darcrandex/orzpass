@@ -14,7 +14,7 @@ import { aes } from '@/utils/aes'
 import { CopyOutlined, DeleteOutlined, EditOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useToggle } from 'ahooks'
-import { App, Button, Form, Space, Typography } from 'antd'
+import { App, Button, Form, Space, Spin, Typography } from 'antd'
 import clsx from 'clsx'
 import { PropsWithChildren, useCallback, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -84,7 +84,7 @@ export default function Note() {
         <h2 className='text-lg mt-4 text-gray-700 font-extrabold'>{data?.title || 'Title'}</h2>
       </div>
 
-      <div className='mx-4'>
+      <Spin className='mx-4' spinning={isFetching}>
         <Form labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
           <Form.Item label='Username'>
             <ValueWrapper>
@@ -154,7 +154,7 @@ export default function Note() {
             </ValueWrapper>
           </Form.Item>
         </Form>
-      </div>
+      </Spin>
     </>
   )
 }
