@@ -4,22 +4,15 @@
  * @author darcrand
  */
 
-import Link from 'next/link'
+import PostList from '@/components/PostList'
+import { postService } from '@/services/post'
 
-export default function HomePage() {
-  const posts = [{ id: '1', title: 'aaa' }]
+export default async function HomePage() {
+  const res = await postService.all()
 
   return (
     <>
-      <h1>HomePage</h1>
-
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id}>
-            <Link href={`/home/post/${post.id}`}>{post.title}</Link>
-          </li>
-        ))}
-      </ul>
+      <PostList data={res.data} />
     </>
   )
 }
