@@ -16,6 +16,8 @@ export type Post = {
   updated_at?: Date
 }
 
+export type UpdatePostDto = Omit<Post, 'updated_at'>
+
 export function commentToPost(comment: IssueComment): Post {
   return {
     ...JSON.parse(comment.body || '{}'),

@@ -16,9 +16,13 @@ export default function PostList(props: PostListProps) {
 
   return (
     <>
-      <header className='m-4'>
+      <header className='m-4 space-x-4'>
         <button type='button' onClick={() => router.refresh()}>
           refresh
+        </button>
+
+        <button type='button' onClick={() => router.push('/home/post/add')}>
+          add
         </button>
       </header>
 
