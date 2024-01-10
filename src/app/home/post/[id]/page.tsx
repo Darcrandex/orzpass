@@ -4,13 +4,14 @@
  * @author darcrand
  */
 
+import PostRemoveButton from '@/components/PostRemoveButton'
 import { postService } from '@/services/post'
 import Link from 'next/link'
 
 type PostPageProps = { params: { id: string }; searchParams: Record<string, string> }
 
 export default async function PostPage(props: PostPageProps) {
-  const res = await postService.byId(props.params.id)
+  const res = await postService.one(props.params.id)
 
   return (
     <>
@@ -22,6 +23,10 @@ export default async function PostPage(props: PostPageProps) {
 
       <p>
         <Link href={`/home/post/${props.params.id}/edit`}>goto edit</Link>
+      </p>
+
+      <p>
+        <PostRemoveButton />
       </p>
     </>
   )

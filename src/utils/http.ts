@@ -1,10 +1,12 @@
+// 客户端使用的 axios 工具函数
+
 import axios from 'axios'
 
 export const http = axios.create({
-  baseURL: process.env.NEXT_APP_BASE_API_URL,
   timeout: 10000,
-  headers: {
-    Accept: 'application/vnd.github+json',
-    Authorization: `Bearer ${process.env.NEXT_APP_GITHUB_TOKEN}`,
-  },
+  baseURL: 'http://localhost:3000',
+})
+
+http.interceptors.request.use((config) => {
+  return config
 })

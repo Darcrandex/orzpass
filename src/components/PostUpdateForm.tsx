@@ -1,5 +1,5 @@
 /**
- * @name PostAdd
+ * @name PostForm
  * @description
  * @author darcrand
  */
@@ -11,17 +11,14 @@ import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 
-export default function PostAdd() {
+type PostFormProps = { data?: Post }
+
+export default function PostForm(props: PostFormProps) {
   const router = useRouter()
-  const { control, handleSubmit } = useForm<Post>({
-    defaultValues: {
-      title: '',
-      remark: '',
-    },
-  })
+  const { control, handleSubmit } = useForm<Post>({ defaultValues: props.data })
 
   const { mutate } = useMutation({
-    mutationFn: (values: any) => postService.create(values),
+    mutationFn: (values: any) => postService.update(values),
     onSuccess: () => {
       router.back()
       router.refresh()
@@ -30,12 +27,12 @@ export default function PostAdd() {
 
   return (
     <>
-      <h1>PostAdd</h1>
+      <h1>PostForm</h1>
 
       <Controller
         control={control}
         name='title'
-        render={({ field }) => <input type='text' className='border' {...field} />}
+        render={({ field }) => <input type='text' {...field} className='border' />}
       />
 
       <Controller control={control} name='remark' render={({ field }) => <textarea {...field} className='border' />} />

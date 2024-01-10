@@ -4,14 +4,14 @@
  * @author darcrand
  */
 
-import PostForm from '@/components/PostForm'
+import PostUpdateForm from '@/components/PostUpdateForm'
 import { postService } from '@/services/post'
 import Link from 'next/link'
 
 export type PostEditProps = { params: { id: string } }
 
 export default async function PostEdit(props: PostEditProps) {
-  const res = await postService.byId(props.params.id)
+  const res = await postService.one(props.params.id)
 
   return (
     <>
@@ -21,7 +21,7 @@ export default async function PostEdit(props: PostEditProps) {
 
       <p>post id is {props.params.id}</p>
 
-      {!!res.data && <PostForm data={res.data} />}
+      {!!res.data && <PostUpdateForm data={res.data} />}
     </>
   )
 }

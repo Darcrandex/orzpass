@@ -1,9 +1,3 @@
-export type IssueComment = {
-  id: string
-  updated_at: Date
-  body?: string
-}
-
 export type Post = {
   id: string
   title: string
@@ -18,7 +12,7 @@ export type Post = {
 
 export type UpdatePostDto = Omit<Post, 'updated_at'>
 
-export function commentToPost(comment: IssueComment): Post {
+export function commentToPost(comment: any): Post {
   return {
     ...JSON.parse(comment.body || '{}'),
     id: comment.id,
