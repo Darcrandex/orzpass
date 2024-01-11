@@ -13,7 +13,7 @@ export type User = {
   email?: string
 }
 
-export function issueToUser(issue: Issue): User {
+export function issueToUser(issue: any): User {
   return {
     // 目前 api 无法通过 issue id 来获取 issue
     id: issue.number.toString(),

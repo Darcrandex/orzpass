@@ -3,3 +3,7 @@ export type TResponse<T = any> = {
   msg?: string
   error?: string
 }
+
+export type AxiosErrorResponse = {
+  message?: string
+}
