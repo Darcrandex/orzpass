@@ -4,7 +4,6 @@
  * @author darcrand
  */
 
-import { cls } from '@/utils/cls'
 import Link from 'next/link'
 import { PropsWithChildren } from 'react'
 
@@ -12,7 +11,7 @@ export default function HomeLayout(props: PropsWithChildren) {
   return (
     <>
       <section>
-        <aside className={cls('fixed top-0 left-0 bottom-0 w-64 border-r bg-rose-300')}>
+        <aside className='fixed top-0 left-0 bottom-0 w-64 border-r bg-green-300'>
           <h1>Menu</h1>
 
           <nav className='space-y-2 my-4'>
@@ -22,6 +21,10 @@ export default function HomeLayout(props: PropsWithChildren) {
 
             <Link href='/home/about' className='block cursor-pointer hover:underline'>
               About
+            </Link>
+
+            <Link href='/home/profile' className='block cursor-pointer hover:underline'>
+              Profile
             </Link>
 
             <hr className='my-4' />
