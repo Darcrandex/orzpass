@@ -10,6 +10,7 @@ import { Post } from '@/types/post'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
+import { isNotNil } from 'ramda'
 import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
@@ -17,7 +18,12 @@ export default function PostEdit() {
   const id = useParams().id as string
   const queryClient = useQueryClient()
   const router = useRouter()
-  const { control, handleSubmit, reset } = useForm<Post>()
+  const { control, handleSubmit, reset } = useForm<Post>({
+    defaultValues: {
+      title: '',
+      remark: '',
+    },
+  })
 
   const { data } = useQuery({
     enabled: !!id,
@@ -26,7 +32,7 @@ export default function PostEdit() {
   })
 
   useEffect(() => {
-    reset(data?.data)
+    isNotNil(data?.data) && reset(data?.data)
   }, [data, reset])
 
   const { mutate } = useMutation({
@@ -45,7 +51,7 @@ export default function PostEdit() {
       <Controller
         control={control}
         name='title'
-        render={({ field }) => <input type='text' {...field} className='border' />}
+        render={({ field }) => <input type='text' className='border' {...field} />}
       />
 
       <Controller control={control} name='remark' render={({ field }) => <textarea {...field} className='border' />} />

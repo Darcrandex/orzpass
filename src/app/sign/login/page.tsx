@@ -8,7 +8,6 @@
 import { userService } from '@/services/user'
 import { AxiosErrorResponse } from '@/types/global'
 import { User } from '@/types/user'
-import { useToast } from '@/ui/Toast'
 import { useMutation } from '@tanstack/react-query'
 import type { AxiosError } from 'axios'
 import Link from 'next/link'
@@ -17,7 +16,7 @@ import { Controller, useForm } from 'react-hook-form'
 
 export default function LoginPage() {
   const router = useRouter()
-  const { showToast } = useToast()
+
   const { control, handleSubmit } = useForm<User>({ defaultValues: { username: '', password: '' } })
 
   const { mutate } = useMutation({
@@ -29,7 +28,6 @@ export default function LoginPage() {
     },
     onError(error: AxiosError<AxiosErrorResponse>) {
       console.log(error.response)
-      showToast({ title: '登录失败', message: error.response?.data?.message || '登录失败' })
     },
   })
 
