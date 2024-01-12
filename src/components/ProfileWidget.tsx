@@ -4,13 +4,19 @@
  * @author darcrand
  */
 
+'use client'
 import { userService } from '@/services/user'
+import { useQuery } from '@tanstack/react-query'
 
-export default async function ProfileWidget() {
-  const res = await userService.profile()
+export default function ProfileWidget() {
+  const { data } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => userService.profile(),
+  })
+
   return (
     <>
-      <div></div>
+      <div>{data?.data?.username}</div>
     </>
   )
 }

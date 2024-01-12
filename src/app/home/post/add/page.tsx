@@ -7,7 +7,7 @@
 'use client'
 import { postService } from '@/services/post'
 import { Post } from '@/types/post'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 
@@ -20,11 +20,12 @@ export default function PostAdd() {
     },
   })
 
+  const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: (values: any) => postService.create(values),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
       router.back()
-      router.refresh()
     },
   })
 

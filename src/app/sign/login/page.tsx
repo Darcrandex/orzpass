@@ -18,12 +18,12 @@ import { Controller, useForm } from 'react-hook-form'
 export default function LoginPage() {
   const router = useRouter()
   const { showToast } = useToast()
-
   const { control, handleSubmit } = useForm<User>({ defaultValues: { username: '', password: '' } })
 
   const { mutate } = useMutation({
     mutationFn: (values: any) => userService.login(values),
-    onSuccess: () => {
+    onSuccess: (res) => {
+      localStorage.setItem('token', res.data)
       router.replace('/home')
       router.refresh()
     },

@@ -1,5 +1,11 @@
 # orzpass v2
 
-> 完全使用 NextJS 实现
+1. 前后端合并
+2. UI 替换
 
-> 所有带表单的组件都是 客户端组件
+## 数据请求方案
+
+- 首先真正的数据请求使用[route handler](https://nextjs.org/docs/app/api-reference/file-conventions/route) 触发；前端只负责准备参数；这样做是为了保密 `github-token`
+
+- 页面渲染，由于页面的内容比较简单，所有的路由页面全部使用前端渲染；`app-router`也就只负责路由层的管理
+- git-api 使用 [octokit](https://www.npmjs.com/package/octokit)

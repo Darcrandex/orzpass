@@ -4,6 +4,7 @@
  * @author darcrand
  */
 
+import ProfileWidget from '@/components/ProfileWidget'
 import Link from 'next/link'
 import { PropsWithChildren } from 'react'
 
@@ -23,15 +24,13 @@ export default function HomeLayout(props: PropsWithChildren) {
               About
             </Link>
 
-            <Link href='/home/profile' className='block cursor-pointer hover:underline'>
-              Profile
-            </Link>
-
             <hr className='my-4' />
 
             <Link href='/sign/login' className='block cursor-pointer hover:underline'>
               Login
             </Link>
+
+            <ProfileWidget />
           </nav>
         </aside>
 

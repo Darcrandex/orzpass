@@ -4,29 +4,42 @@
  * @author darcrand
  */
 
-import PostRemoveButton from '@/components/PostRemoveButton'
+'use client'
 import { postService } from '@/services/post'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
+import { useParams, useRouter } from 'next/navigation'
 
-type PostPageProps = { params: { id: string }; searchParams: Record<string, string> }
+export default function PostPage() {
+  const id = useParams().id as string
+  const { data } = useQuery({
+    enabled: !!id,
+    queryKey: ['post', id],
+    queryFn: () => postService.one(id),
+  })
 
-export default async function PostPage(props: PostPageProps) {
-  const res = await postService.one(props.params.id)
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({
+    mutationFn: () => postService.remove(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
+      router.back()
+    },
+  })
 
   return (
     <>
       <h1>PostPage</h1>
 
-      <p>post id is {props.params.id}</p>
-
-      <p>{res.data?.title}</p>
+      <p>{data?.data?.title}</p>
 
       <p>
-        <Link href={`/home/post/${props.params.id}/edit`}>goto edit</Link>
+        <Link href={`/home/post/${id}/edit`}>goto edit</Link>
       </p>
 
       <p>
-        <PostRemoveButton />
+        <button onClick={() => mutate()}>删除</button>
       </p>
     </>
   )

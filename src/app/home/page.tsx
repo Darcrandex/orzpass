@@ -1,18 +1,43 @@
 /**
- * @name HomePage
- * @description 首页（同时也是文章列表页面）
+ * @name PostList
+ * @description
  * @author darcrand
  */
 
-import PostList from '@/components/PostList'
+'use client'
 import { postService } from '@/services/post'
+import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
-export default async function HomePage() {
-  const res = await postService.all()
+export default function PostList() {
+  const router = useRouter()
+  const { data } = useQuery({
+    queryKey: ['posts'],
+    queryFn: () => postService.all(),
+  })
 
   return (
     <>
-      <PostList data={res.data} />
+      <header className='m-4 space-x-4'>
+        <button type='button' onClick={() => router.refresh()}>
+          refresh
+        </button>
+
+        <button type='button' onClick={() => router.push('/home/post/add')}>
+          add
+        </button>
+      </header>
+
+      <ul className='flex flex-wrap m-2'>
+        {data?.data?.map((post) => (
+          <li key={post.id} className='sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4'>
+            <Link href={`/home/post/${post.id}`} className='block m-2 p-4 rounded-md bg-gray-50'>
+              <div>{post.title}</div>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </>
   )
 }

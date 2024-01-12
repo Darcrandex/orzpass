@@ -4,24 +4,55 @@
  * @author darcrand
  */
 
-import PostUpdateForm from '@/components/PostUpdateForm'
+'use client'
 import { postService } from '@/services/post'
+import { Post } from '@/types/post'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
+import { useParams, useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 
-export type PostEditProps = { params: { id: string } }
+export default function PostEdit() {
+  const id = useParams().id as string
+  const queryClient = useQueryClient()
+  const router = useRouter()
+  const { control, handleSubmit, reset } = useForm<Post>()
 
-export default async function PostEdit(props: PostEditProps) {
-  const res = await postService.one(props.params.id)
+  const { data } = useQuery({
+    enabled: !!id,
+    queryKey: ['post', id],
+    queryFn: () => postService.one(id),
+  })
+
+  useEffect(() => {
+    reset(data?.data)
+  }, [data, reset])
+
+  const { mutate } = useMutation({
+    mutationFn: (values: any) => postService.update(values),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['post', id] })
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
+      router.back()
+    },
+  })
 
   return (
     <>
-      <Link href={`/home/post/${props.params.id}`}>back</Link>
+      <Link href={`/home/post/${id}`}>back</Link>
 
-      <h1>PostEdit</h1>
+      <Controller
+        control={control}
+        name='title'
+        render={({ field }) => <input type='text' {...field} className='border' />}
+      />
 
-      <p>post id is {props.params.id}</p>
+      <Controller control={control} name='remark' render={({ field }) => <textarea {...field} className='border' />} />
 
-      {!!res.data && <PostUpdateForm data={res.data} />}
+      <button type='button' onClick={handleSubmit((values) => mutate(values))}>
+        Submit
+      </button>
     </>
   )
 }

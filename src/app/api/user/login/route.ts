@@ -1,13 +1,12 @@
-import { NEXT_APP_JWT_SECRET, OWNER, REPO, SESSION_KEY } from '@/const/common'
+import { NEXT_APP_JWT_SECRET, OWNER, REPO } from '@/const/common'
 import { db } from '@/lib/db'
 import { issueToUser } from '@/types/user'
 import { compareSync } from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { cookies } from 'next/headers'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { omit } from 'ramda'
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const body = await request.json()
 
   const res = await db.rest.issues.listForRepo({
@@ -22,12 +21,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: '用户名或密码错误' }, { status: 401 })
   }
 
-  cookies().set(
-    SESSION_KEY,
-    jwt.sign(omit(['password'], user), NEXT_APP_JWT_SECRET, {
-      expiresIn: '7d',
-    })
-  )
+  const token = jwt.sign(omit(['password'], user), NEXT_APP_JWT_SECRET, {
+    expiresIn: '7d',
+  })
 
-  return NextResponse.json({ message: 'ok' })
+  return NextResponse.json(token)
 }
