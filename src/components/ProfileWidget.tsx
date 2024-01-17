@@ -5,18 +5,23 @@
  */
 
 'use client'
-import { userService } from '@/services/user'
-import { useQuery } from '@tanstack/react-query'
+import { User } from '@/types/user'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
-export default function ProfileWidget() {
-  const { data } = useQuery({
-    queryKey: ['profile'],
-    queryFn: () => userService.profile(),
-  })
+export type ProfileWidgetProps = { user?: Omit<User, 'password'> }
+
+export default function ProfileWidget(props: ProfileWidgetProps) {
+  const router = useRouter()
+  const onLogout = () => {
+    localStorage.removeItem('token')
+    router.push('/sign/login')
+  }
 
   return (
     <>
-      <div>{data?.data?.username}</div>
+      <div>{props.user?.username || 'Unknown'}</div>
+      <div>{props.user ? <button onClick={onLogout}>Logout</button> : <Link href='/sign/login'>Login</Link>}</div>
     </>
   )
 }

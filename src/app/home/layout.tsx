@@ -4,11 +4,21 @@
  * @author darcrand
  */
 
+'use client'
 import ProfileWidget from '@/components/ProfileWidget'
+import { userService } from '@/services/user'
+import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { PropsWithChildren } from 'react'
 
 export default function HomeLayout(props: PropsWithChildren) {
+  const { data } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => userService.profile(),
+    throwOnError: false,
+    retry: false,
+  })
+
   return (
     <>
       <section>
@@ -26,15 +36,22 @@ export default function HomeLayout(props: PropsWithChildren) {
 
             <hr className='my-4' />
 
-            <Link href='/sign/login' className='block cursor-pointer hover:underline'>
-              Login
-            </Link>
-
-            <ProfileWidget />
+            <ProfileWidget user={data?.data} />
           </nav>
         </aside>
 
-        <main className='ml-64'>{props.children}</main>
+        <main className='ml-64'>
+          {!!data ? (
+            props.children
+          ) : (
+            <div className='mt-[20vh] text-center'>
+              <p>you need to login first</p>
+              <p>
+                <Link href='/sign/login'>Login</Link>
+              </p>
+            </div>
+          )}
+        </main>
       </section>
     </>
   )
