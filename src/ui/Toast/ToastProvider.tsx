@@ -6,18 +6,19 @@
 
 'use client'
 import { AnimatePresence, motion } from 'framer-motion'
-import { PropsWithChildren, useState } from 'react'
+import { PropsWithChildren, useMemo, useState } from 'react'
 import ToastItem from './ToastItem'
 import { ToastContext } from './context'
 import { ToastItemProps } from './types'
 
 export default function ToastProvider(props: PropsWithChildren) {
   const [items, setItems] = useState<ToastItemProps[]>([])
+  const contextValue = useMemo(() => ({ items, setItems }), [items, setItems])
 
   if (typeof window === 'undefined') return null
 
   return (
-    <ToastContext.Provider value={{ items, setItems }}>
+    <ToastContext.Provider value={contextValue}>
       {props.children}
 
       <ul className='fixed bottom-0 right-0 z-10 space-y-2'>
