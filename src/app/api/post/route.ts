@@ -1,10 +1,13 @@
 import { MAX_PAGE_SIZE, OWNER, REPO } from '@/const/common'
 import { db } from '@/lib/db'
 import { Post, commentToPost } from '@/types/post'
+import { getUserFormToken } from '@/utils/getUserFromToken'
 import { NextResponse, type NextRequest } from 'next/server'
 
 // 帖子列表
 export async function GET(request: NextRequest) {
+  const { id: userId } = await getUserFormToken(request)
+
   const response: any = await db.graphql(
     `
       query($owner: String!, $repo: String!, $issueNumber: Int!) {
@@ -20,7 +23,7 @@ export async function GET(request: NextRequest) {
     {
       owner: OWNER,
       repo: REPO,
-      issueNumber: 1,
+      issueNumber: Number.parseInt(userId),
     }
   )
 
@@ -34,7 +37,7 @@ export async function GET(request: NextRequest) {
     db.rest.issues.listComments({
       owner: OWNER,
       repo: REPO,
-      issue_number: 1,
+      issue_number: Number.parseInt(userId),
       per_page: MAX_PAGE_SIZE,
       page: i + 1,
     })
@@ -47,13 +50,14 @@ export async function GET(request: NextRequest) {
 
 // 创建帖子
 export async function POST(request: NextRequest) {
+  const { id: userId } = await getUserFormToken(request)
   const body = await request.json()
 
   const response = await db.rest.issues.createComment({
     owner: OWNER,
     repo: REPO,
-    issue_number: 1,
-    body: JSON.stringify(body),
+    issue_number: Number.parseInt(userId),
+    body: JSON.stringify({ ...body, userId }),
   })
 
   return NextResponse.json({ id: response.data.id })

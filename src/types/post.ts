@@ -1,4 +1,5 @@
 export type Post = {
+  userId: string
   id: string
   title: string
   username?: string

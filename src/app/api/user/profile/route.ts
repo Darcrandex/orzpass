@@ -17,3 +17,19 @@ export async function GET(request: NextRequest) {
   const user = issueToUser(res.data)
   return NextResponse.json(omit(['password'], user))
 }
+
+export async function PATCH(request: NextRequest) {
+  const { id: userId } = await getUserFormToken(request)
+  const body = await request.json()
+
+  const response = await db.rest.issues.update({
+    owner: OWNER,
+    repo: REPO,
+    issue_number: Number.parseInt(userId),
+    body: JSON.stringify(omit(['password'], body)),
+  })
+
+  const updatedUser = issueToUser(response.data)
+
+  return NextResponse.json(omit(['password'], updatedUser))
+}

@@ -1,5 +1,6 @@
 // 客户端使用的 axios 工具函数
 
+import { TOKEN_KEY } from '@/const/common'
 import axios from 'axios'
 
 export const http = axios.create({
@@ -13,7 +14,7 @@ http.interceptors.request.use((config) => {
 
   const token = localStorage.getItem('token')
   if (token) {
-    config.headers.Authorization = token
+    config.headers[TOKEN_KEY] = token
   }
 
   return config

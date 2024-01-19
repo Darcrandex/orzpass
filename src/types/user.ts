@@ -13,6 +13,11 @@ export type User = {
   email?: string
 }
 
+export type UpdatePasswordDto = {
+  oldPassword: string
+  newPassword: string
+}
+
 export function issueToUser(issue: any): User {
   return {
     // 目前 api 无法通过 issue id 来获取 issue
