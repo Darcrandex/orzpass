@@ -3,11 +3,11 @@ import { omit } from 'ramda'
 
 export const jwt = {
   /**
-   * @param {any} payload - The payload to be signed.
-   * @param {string} secret - The secret key used for signing.
-   * @param {Object} [options] - Optional parameters for signing.
-   * @param {string} [options.expiresIn] - The expiration time of the token. eg: '1h'
-   * @return {Promise<string>} - The signed JWT.
+   * @param {any} payload - 需要签名的数据
+   * @param {string} secret - 签名的秘钥
+   * @param {Object} [options] - 配置项
+   * @param {string|number} [options.expiresIn] - 过期时间；如果是数字，则单位为秒
+   * @return {Promise<string>} - 签名
    */
   async sign(payload: any, secret: string, options?: { expiresIn?: string }): Promise<string> {
     const iat = Math.floor(Date.now() / 1000)

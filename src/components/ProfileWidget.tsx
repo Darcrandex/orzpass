@@ -18,10 +18,19 @@ export default function ProfileWidget(props: ProfileWidgetProps) {
     router.push('/sign/login')
   }
 
+  if (!props.user) {
+    return <Link href='/sign/login'>Login</Link>
+  }
+
   return (
     <>
-      <div>{props.user?.username || 'Unknown'}</div>
-      <div>{props.user ? <button onClick={onLogout}>Logout</button> : <Link href='/sign/login'>Login</Link>}</div>
+      <div>
+        <Link href='/home/profile'>{props.user?.username}</Link>
+      </div>
+
+      <div>
+        <button onClick={onLogout}>Logout</button>
+      </div>
     </>
   )
 }

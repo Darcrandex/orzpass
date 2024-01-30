@@ -11,6 +11,8 @@ export type Post = {
   updated_at?: Date
 }
 
+export type CreatePostDto = Omit<Post, 'id' | 'updated_at'>
+
 export type UpdatePostDto = Omit<Post, 'updated_at'>
 
 export function commentToPost(comment: any): Post {

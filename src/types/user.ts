@@ -1,14 +1,19 @@
-export type Issue = {
-  id: number
-  number: number
-  title: string
-  body: string
-}
-
 export type User = {
   id: string
   username: string
   password: string
+  avatarUrl?: string
+  email?: string
+}
+
+export type CreateUserDto = {
+  username: string
+  password: string
+  email?: string
+}
+
+export type UpdateUserDto = {
+  username?: string
   avatarUrl?: string
   email?: string
 }

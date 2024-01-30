@@ -10,11 +10,11 @@ export const http = axios.create({
 http.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
     config.baseURL = window.location.origin
-  }
 
-  const token = localStorage.getItem('token')
-  if (token) {
-    config.headers[TOKEN_KEY] = token
+    const token = window.localStorage.getItem('token')
+    if (token) {
+      config.headers[TOKEN_KEY] = token
+    }
   }
 
   return config

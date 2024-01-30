@@ -17,7 +17,7 @@ export default function ProfilePage() {
   return (
     <>
       <h1>ProfilePage</h1>
-      <p>{JSON.stringify(data, null, 2)}</p>
+      <p>{JSON.stringify(data?.data, null, 2)}</p>
     </>
   )
 }

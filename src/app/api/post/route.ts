@@ -8,6 +8,8 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function GET(request: NextRequest) {
   const { id: userId } = await getUserFormToken(request)
 
+  // 获取帖子总数
+  // rest api 没有这个接口
   const response: any = await db.graphql(
     `
       query($owner: String!, $repo: String!, $issueNumber: Int!) {
