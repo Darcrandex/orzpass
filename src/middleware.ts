@@ -5,7 +5,7 @@ import { jwt } from './utils/jwt'
 
 export async function middleware(request: NextRequest) {
   // 校验 token
-  if (/^\/api(?!\/user\/login)/.test(request.nextUrl.pathname)) {
+  if (/^\/api(?!\/user\/(login|registry))/.test(request.nextUrl.pathname)) {
     const token = request.headers.get(TOKEN_KEY) || ''
     const isValid = await jwt.verify(token, NEXT_APP_JWT_SECRET)
     if (!isValid) {

@@ -1,6 +1,7 @@
 export const MAX_NOTE_COUNT = 1000
 export const MAX_PAGE_SIZE = 100
 export const TOKEN_KEY = 'Authorization'
+export const TOKEN_STORAGE_KEY = 'orz-pwd-token'
 
 // 注意
 // env 中的变量默认情况下无法在客户端环境获取

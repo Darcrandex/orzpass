@@ -5,6 +5,7 @@
  */
 
 'use client'
+import { TOKEN_STORAGE_KEY } from '@/const/common'
 import { userService } from '@/services/user'
 import { AxiosErrorResponse } from '@/types/global'
 import { User } from '@/types/user'
@@ -22,7 +23,7 @@ export default function LoginPage() {
   const { mutate } = useMutation({
     mutationFn: (values: any) => userService.login(values),
     onSuccess: (res) => {
-      localStorage.setItem('token', res.data)
+      localStorage.setItem(TOKEN_STORAGE_KEY, res.data)
       router.replace('/home')
       router.refresh()
     },

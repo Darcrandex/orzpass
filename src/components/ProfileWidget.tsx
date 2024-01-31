@@ -5,6 +5,7 @@
  */
 
 'use client'
+import { TOKEN_STORAGE_KEY } from '@/const/common'
 import { User } from '@/types/user'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -14,7 +15,7 @@ export type ProfileWidgetProps = { user?: Omit<User, 'password'> }
 export default function ProfileWidget(props: ProfileWidgetProps) {
   const router = useRouter()
   const onLogout = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem(TOKEN_STORAGE_KEY)
     router.push('/sign/login')
   }
 

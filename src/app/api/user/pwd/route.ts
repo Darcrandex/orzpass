@@ -18,7 +18,9 @@ export async function PATCH(request: NextRequest) {
 
   const user = issueToUser(res.data)
 
-  if (compareSync(body.oldPassword, user.password)) {
+  console.log('body', body, user)
+
+  if (!compareSync(body.oldPassword, user.password)) {
     return NextResponse.json({ message: 'Forbidden' }, { status: 403 })
   }
 
@@ -29,5 +31,5 @@ export async function PATCH(request: NextRequest) {
     body: JSON.stringify({ ...user, password: hashSync(body.newPassword) }),
   })
 
-  return NextResponse.json({})
+  return NextResponse.json({ id: String(updated.data.number) })
 }

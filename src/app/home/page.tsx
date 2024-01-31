@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation'
 
 export default function PostList() {
   const router = useRouter()
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['posts'],
     queryFn: () => postService.all(),
   })
@@ -20,7 +20,7 @@ export default function PostList() {
   return (
     <>
       <header className='m-4 space-x-4'>
-        <button type='button' onClick={() => router.refresh()}>
+        <button type='button' onClick={() => refetch()}>
           refresh
         </button>
 
