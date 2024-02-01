@@ -8,15 +8,14 @@ export const metadata: Metadata = {
   description: 'A simple password manager',
 }
 
-const ToastProvider = dynamic(() => import('@/ui/Toast/ToastProvider'), { ssr: false })
+const Toast = dynamic(() => import('@/ui/Toast'), { ssr: false })
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en'>
       <body>
-        <QueryProvider>
-          <ToastProvider>{children}</ToastProvider>
-        </QueryProvider>
+        <QueryProvider>{children}</QueryProvider>
+        <Toast />
       </body>
     </html>
   )

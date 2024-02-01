@@ -5,19 +5,16 @@
  */
 
 'use client'
+import { toast } from '@/ui/Toast'
 import { useEffect } from 'react'
 import { DEFAULT_DURATION } from './const'
-import { useToast } from './context'
 import { ToastItemProps } from './types'
 
 export default function ToastItem(props: ToastItemProps) {
-  const { closeToast } = useToast()
-
   useEffect(() => {
-    setTimeout(() => {
-      closeToast(props.id)
-    }, Math.max(0, props.duration || DEFAULT_DURATION))
-  }, [closeToast, props.duration, props.id])
+    const t = setTimeout(() => toast.close(props.id), Math.max(0, props.duration || DEFAULT_DURATION))
+    return () => clearTimeout(t)
+  }, [props.duration, props.id])
 
   return (
     <article className='w-48 p-4 rounded-md shadow-md bg-white'>
