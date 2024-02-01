@@ -36,16 +36,17 @@ export default function Toast(props: ToastProps) {
 
   return createPortal(
     <>
-      <ul data-name='toast-wrapper' className='fixed top-0 left-0 right-0 z-10 space-y-2 pointer-events-none'>
+      <ul data-name='toast-wrapper' className='fixed top-2 left-0 right-0 z-10 space-y-2 pointer-events-none'>
         <AnimatePresence>
           {list.map((v) => (
             <motion.li
               key={v.id}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
               transition={{ duration: 0.25 }}
               layout
+              className='text-center'
             >
               <ToastItem {...v} />
             </motion.li>
@@ -61,14 +62,12 @@ export default function Toast(props: ToastProps) {
 export const toast = {
   show(options: Omit<ToastItemProps, 'id'>) {
     const channel = new BroadcastChannel<ChannelPayload>(TOAST_EVENT)
-    console.log('channel show', channel)
     channel.postMessage({ type: 'show', options })
     channel.close()
   },
 
   close(id: string) {
-    const channel = new BroadcastChannel(TOAST_EVENT)
-    console.log('channel close', channel)
+    const channel = new BroadcastChannel<ChannelPayload>(TOAST_EVENT)
     channel.postMessage({ type: 'close', id })
     channel.close()
   },

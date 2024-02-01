@@ -3,7 +3,7 @@ export type InputProps = {
   onChange?: (value: string) => void
   defaultValue?: string
 
-  type?: 'text' | 'number' | 'password'
+  type?: 'text' | 'password'
   block?: boolean
   className?: string
   placeholder?: string

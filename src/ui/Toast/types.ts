@@ -6,8 +6,9 @@ export type ToastProps = {
 
 export type ToastItemProps = {
   id: string
-  title?: ReactNode
-  message?: ReactNode
+  message: ReactNode
+  type?: 'success' | 'error' | 'info'
+  showIcon?: boolean
   duration?: number
   onClose?: () => void
 }

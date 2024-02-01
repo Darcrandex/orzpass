@@ -20,6 +20,7 @@ export default function Button(props: ButtonProps) {
           variant === 'primary' && 'bg-primary text-white border border-primary hover:bg-primary/75',
           variant === 'link' && 'bg-transparent text-primary hover:text-primary/75',
 
+          props.loading && 'pointer-events-none opacity-50',
           props.block ? 'flex w-full' : 'inline-flex',
           props.className
         )}
