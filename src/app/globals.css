@@ -6,3 +6,11 @@ html,
 body {
   @apply text-gray-800;
 }
+
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Tangerine-Bold.ttf');
+}

@@ -12,7 +12,7 @@ import { User } from '@/types/user'
 import Button from '@/ui/Button'
 import Input from '@/ui/Input'
 import { toast } from '@/ui/Toast'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { AxiosError } from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -21,6 +21,7 @@ import { Controller, useForm } from 'react-hook-form'
 export default function LoginPage() {
   const router = useRouter()
   const { control, handleSubmit } = useForm<User>({ defaultValues: { username: '', password: '' } })
+  const queryClient = useQueryClient()
 
   const { mutate, isPending } = useMutation({
     mutationFn: (values: any) => {
@@ -38,40 +39,53 @@ export default function LoginPage() {
     onSuccess: (res) => {
       toast.show({ type: 'success', message: 'login success' })
       localStorage.setItem(TOKEN_STORAGE_KEY, res.data)
+      queryClient.invalidateQueries({ queryKey: [] })
       router.replace('/home')
-      router.refresh()
     },
     onError(error: AxiosError<AxiosErrorResponse>) {
       toast.show({ type: 'error', message: error.response?.data.message })
     },
   })
 
+  const onSubmit = handleSubmit((values) => mutate(values))
+
   return (
     <>
       <section className='space-y-4'>
-        <h1 className='text-3xl text-center font-extrabold text-primary'>orz pass</h1>
+        <h1 className='text-5xl text-center font-extrabold text-primary' style={{ fontFamily: 'Noto Sans' }}>
+          orzpass
+        </h1>
 
         <Controller
           control={control}
           name='username'
-          render={({ field }) => <Input block placeholder='username' value={field.value} onChange={field.onChange} />}
+          render={({ field }) => (
+            <Input
+              block
+              placeholder='username'
+              value={field.value}
+              onChange={field.onChange}
+              onEnter={() => onSubmit()}
+            />
+          )}
         />
 
         <Controller
           control={control}
           name='password'
           render={({ field }) => (
-            <Input block placeholder='password' type='password' value={field.value} onChange={field.onChange} />
+            <Input
+              block
+              placeholder='password'
+              type='password'
+              value={field.value}
+              onChange={field.onChange}
+              onEnter={() => onSubmit()}
+            />
           )}
         />
 
-        <Button
-          variant='primary'
-          className='uppercase'
-          block
-          loading={isPending}
-          onClick={handleSubmit((values) => mutate(values))}
-        >
+        <Button variant='primary' className='uppercase' block loading={isPending} onClick={onSubmit}>
           login now
         </Button>
 

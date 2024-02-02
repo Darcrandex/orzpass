@@ -5,6 +5,8 @@
  */
 
 import { cls } from '@/utils/cls'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ButtonProps } from './types'
 
 export default function Button(props: ButtonProps) {
@@ -26,7 +28,8 @@ export default function Button(props: ButtonProps) {
         )}
         onClick={props.onClick}
       >
-        {props.children}
+        {props.loading && <FontAwesomeIcon icon={faSpinner} className='animate-spin mr-2' />}
+        <span>{props.children}</span>
       </button>
     </>
   )

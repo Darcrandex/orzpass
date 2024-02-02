@@ -36,24 +36,28 @@ export default function RegistryPage() {
   return (
     <>
       <section className='space-y-4'>
-        <h1 className='text-3xl text-center font-extrabold text-primary'>Registry</h1>
+        <h1 className='text-5xl text-center font-extrabold text-primary' style={{ fontFamily: 'Noto Sans' }}>
+          rigistry
+        </h1>
 
         <Controller
           control={control}
           name='username'
-          render={({ field }) => <Input block value={field.value} onChange={field.onChange} />}
-        />
-
-        <Controller
-          control={control}
-          name='email'
-          render={({ field }) => <Input block value={field.value} onChange={field.onChange} />}
+          render={({ field }) => <Input block placeholder='username' value={field.value} onChange={field.onChange} />}
         />
 
         <Controller
           control={control}
           name='password'
-          render={({ field }) => <Input type='password' block value={field.value} onChange={field.onChange} />}
+          render={({ field }) => (
+            <Input type='password' placeholder='password' block value={field.value} onChange={field.onChange} />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name='email'
+          render={({ field }) => <Input block placeholder='email' value={field.value} onChange={field.onChange} />}
         />
 
         <Button

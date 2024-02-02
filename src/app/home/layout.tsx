@@ -6,6 +6,7 @@
 
 'use client'
 import ProfileWidget from '@/components/ProfileWidget'
+import SideMenus from '@/components/SideMenus'
 import { userService } from '@/services/user'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
@@ -22,22 +23,13 @@ export default function HomeLayout(props: PropsWithChildren) {
   return (
     <>
       <section>
-        <aside className='fixed top-0 left-0 bottom-0 w-64 border-r bg-green-300'>
-          <h1>Menu</h1>
+        <aside className='fixed top-0 left-0 bottom-0 flex flex-col w-52 bg-primary'>
+          <h1 className='text-5xl font-bold text-white text-center' style={{ fontFamily: 'Noto Sans' }}>
+            orzpass
+          </h1>
 
-          <nav className='space-y-2 my-4'>
-            <Link href='/home' className='block cursor-pointer hover:underline'>
-              Home
-            </Link>
-
-            <Link href='/home/about' className='block cursor-pointer hover:underline'>
-              About
-            </Link>
-
-            <hr className='my-4' />
-
-            <ProfileWidget user={data?.data} />
-          </nav>
+          <SideMenus />
+          <ProfileWidget user={data?.data} />
         </aside>
 
         <main className='ml-64'>

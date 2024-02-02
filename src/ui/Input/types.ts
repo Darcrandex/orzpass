@@ -8,4 +8,6 @@ export type InputProps = {
   className?: string
   placeholder?: string
   maxLength?: number
+
+  onEnter?: () => void
 }

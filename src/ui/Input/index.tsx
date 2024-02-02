@@ -22,6 +22,11 @@ export default function Input(props: InputProps) {
         defaultValue={props.defaultValue}
         value={props.value}
         onChange={(e) => props.onChange?.(e.target.value)}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter') {
+            props.onEnter?.()
+          }
+        }}
       />
     </label>
   )
