@@ -8,11 +8,14 @@
 import ProfileWidget from '@/components/ProfileWidget'
 import SideMenus from '@/components/SideMenus'
 import { userService } from '@/services/user'
+import Button from '@/ui/Button'
 import { useQuery } from '@tanstack/react-query'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { PropsWithChildren } from 'react'
 
 export default function HomeLayout(props: PropsWithChildren) {
+  const router = useRouter()
+
   const { data } = useQuery({
     queryKey: ['profile'],
     queryFn: () => userService.profile(),
@@ -32,14 +35,16 @@ export default function HomeLayout(props: PropsWithChildren) {
           <ProfileWidget user={data?.data} />
         </aside>
 
-        <main className='ml-64'>
+        <main className='ml-52'>
           {!!data ? (
             props.children
           ) : (
             <div className='mt-[20vh] text-center'>
               <p>you need to login first</p>
-              <p>
-                <Link href='/sign/login'>Login</Link>
+              <p className='space-x-4 mt-4'>
+                <Button variant='primary' onClick={() => router.push('/sign/login')}>
+                  Login
+                </Button>
               </p>
             </div>
           )}

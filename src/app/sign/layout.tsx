@@ -5,10 +5,18 @@
  */
 
 'use client'
-import { PropsWithChildren } from 'react'
+import { TOKEN_STORAGE_KEY } from '@/const/common'
+import { useMasterKey } from '@/stores/master-key'
+import { PropsWithChildren, useEffect } from 'react'
 import './styles.css'
 
 export default function SignLayout(props: PropsWithChildren) {
+  const { setKey } = useMasterKey()
+  useEffect(() => {
+    localStorage.removeItem(TOKEN_STORAGE_KEY)
+    setKey(undefined)
+  }, [setKey])
+
   return (
     <>
       <article className='fixed top-1/2 left-1/2 z-20 w-96 max-w-full p-4 -translate-x-1/2 -translate-y-1/2'>
