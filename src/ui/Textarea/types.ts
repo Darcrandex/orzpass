@@ -7,4 +7,6 @@ export type TextareaProps = {
   placeholder?: string
   maxLength?: number
   rows?: number
+
+  hideBorder?: boolean
 }

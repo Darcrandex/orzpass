@@ -5,19 +5,19 @@
  */
 
 'use client'
+import CardItem from '@/components/CardItem'
 import KeySetter from '@/components/KeySetter'
 import { postService } from '@/services/post'
 import Button from '@/ui/Button'
 import Input from '@/ui/Input'
 import { useQuery } from '@tanstack/react-query'
 import { useDebounce } from 'ahooks'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export default function PostList() {
   const router = useRouter()
-  const { data, refetch } = useQuery({
+  const { data, refetch, isFetching } = useQuery({
     queryKey: ['posts'],
     queryFn: () => postService.all(),
   })
@@ -31,7 +31,9 @@ export default function PostList() {
     <>
       <header className='m-4 space-x-4'>
         <Input className='w-48' placeholder='search' maxLength={20} value={keyword} onChange={setKeyword} />
-        <Button onClick={() => refetch()}>refresh</Button>
+        <Button loading={isFetching} onClick={() => refetch()}>
+          refresh
+        </Button>
         <Button onClick={() => router.push('/home/post/add')}>add</Button>
 
         <KeySetter />
@@ -40,9 +42,7 @@ export default function PostList() {
       <ul className='flex flex-wrap m-2'>
         {filtered.map((post) => (
           <li key={post.id} className='sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4'>
-            <Link href={`/home/post/${post.id}`} className='block m-2 p-4 rounded-md bg-gray-50'>
-              <div>{post.title}</div>
-            </Link>
+            <CardItem data={post} />
           </li>
         ))}
       </ul>

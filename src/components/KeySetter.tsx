@@ -9,9 +9,9 @@ import { useMasterKey } from '@/stores/master-key'
 import Button from '@/ui/Button'
 import Modal from '@/ui/Modal'
 import Textarea from '@/ui/Textarea'
-import { useEffect, useState } from 'react'
+import { PropsWithChildren, useEffect, useState } from 'react'
 
-export default function KeySetter() {
+export default function KeySetter(props: PropsWithChildren<{ className?: string }>) {
   const [open, setOpen] = useState(false)
   const { key, setKey } = useMasterKey()
   const [value, onChange] = useState('')
@@ -24,7 +24,9 @@ export default function KeySetter() {
 
   return (
     <>
-      <Button onClick={() => setOpen(true)}>key</Button>
+      <Button className={props.className} onClick={() => setOpen(true)}>
+        {props.children || 'Key'}
+      </Button>
 
       <Modal
         title='Master Key'

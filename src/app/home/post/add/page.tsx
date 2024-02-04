@@ -5,8 +5,14 @@
  */
 
 'use client'
+import NavBack from '@/components/NavBack'
+import PasswordEdit from '@/components/PasswordEdit'
 import { postService } from '@/services/post'
 import { Post } from '@/types/post'
+import Button from '@/ui/Button'
+import FormItem from '@/ui/FormItem'
+import Input from '@/ui/Input'
+import Textarea from '@/ui/Textarea'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
@@ -16,12 +22,15 @@ export default function PostAdd() {
   const { control, handleSubmit } = useForm<Post>({
     defaultValues: {
       title: '',
+      username: '',
+      password: '',
+      website: '',
       remark: '',
     },
   })
 
   const queryClient = useQueryClient()
-  const { mutate } = useMutation({
+  const { mutate: createPost, isPending } = useMutation({
     mutationFn: (values: any) => postService.create(values),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] })
@@ -31,19 +40,57 @@ export default function PostAdd() {
 
   return (
     <>
-      <h1>PostAdd</h1>
+      <header className='m-4'>
+        <NavBack />
+      </header>
 
-      <Controller
-        control={control}
-        name='title'
-        render={({ field }) => <input type='text' className='border' {...field} />}
-      />
+      <section className='w-[768px] max-w-full px-4 mx-auto'>
+        <FormItem label='Title'>
+          <Controller
+            control={control}
+            name='title'
+            render={({ field }) => <Input block maxLength={20} value={field.value} onChange={field.onChange} />}
+          />
+        </FormItem>
 
-      <Controller control={control} name='remark' render={({ field }) => <textarea {...field} className='border' />} />
+        <FormItem label='Username'>
+          <Controller
+            control={control}
+            name='username'
+            render={({ field }) => <Input block maxLength={50} value={field.value} onChange={field.onChange} />}
+          />
+        </FormItem>
 
-      <button type='button' onClick={handleSubmit((values) => mutate(values))}>
-        Submit
-      </button>
+        <FormItem label='Password'>
+          <Controller
+            control={control}
+            name='password'
+            render={({ field }) => <PasswordEdit value={field.value} onChange={field.onChange} />}
+          />
+        </FormItem>
+
+        <FormItem label='Website'>
+          <Controller
+            control={control}
+            name='website'
+            render={({ field }) => <Input block maxLength={20} value={field.value} onChange={field.onChange} />}
+          />
+        </FormItem>
+
+        <FormItem label='Remark'>
+          <Controller
+            control={control}
+            name='remark'
+            render={({ field }) => <Textarea maxLength={500} rows={5} value={field.value} onChange={field.onChange} />}
+          />
+        </FormItem>
+
+        <footer className='mt-4 space-x-2'>
+          <Button loading={isPending} onClick={handleSubmit((values) => createPost(values))}>
+            Update
+          </Button>
+        </footer>
+      </section>
     </>
   )
 }

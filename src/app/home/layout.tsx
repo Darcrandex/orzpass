@@ -16,7 +16,7 @@ import { PropsWithChildren } from 'react'
 export default function HomeLayout(props: PropsWithChildren) {
   const router = useRouter()
 
-  const { data } = useQuery({
+  const { data, isFetching, isLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: () => userService.profile(),
     throwOnError: false,
@@ -38,6 +38,8 @@ export default function HomeLayout(props: PropsWithChildren) {
         <main className='ml-52'>
           {!!data ? (
             props.children
+          ) : isFetching || isLoading ? (
+            <p className='mt-[20vh] text-center text-gray-400'>Loading...</p>
           ) : (
             <div className='mt-[20vh] text-center'>
               <p>you need to login first</p>

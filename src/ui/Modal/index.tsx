@@ -48,7 +48,7 @@ export default function Modal(props: ModalProps) {
 
             <main>{props.open && props.children}</main>
 
-            <footer className='flex justify-end space-x-2 mt-2'>{props.footer}</footer>
+            <footer className='flex justify-end space-x-2 mt-4'>{props.footer}</footer>
           </motion.section>
         )}
       </AnimatePresence>

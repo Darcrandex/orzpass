@@ -7,15 +7,20 @@
 'use client'
 import { TOKEN_STORAGE_KEY } from '@/const/common'
 import { useMasterKey } from '@/stores/master-key'
+import { useQueryClient } from '@tanstack/react-query'
 import { PropsWithChildren, useEffect } from 'react'
 import './styles.css'
 
 export default function SignLayout(props: PropsWithChildren) {
   const { setKey } = useMasterKey()
+  const queryClient = useQueryClient()
+
+  // 重置所有数据
   useEffect(() => {
     localStorage.removeItem(TOKEN_STORAGE_KEY)
     setKey(undefined)
-  }, [setKey])
+    queryClient.invalidateQueries({ queryKey: [] })
+  }, [queryClient, setKey])
 
   return (
     <>

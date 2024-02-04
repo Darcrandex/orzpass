@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, ReactNode } from 'react'
 
 export type ButtonProps = PropsWithChildren<{
   variant?: 'default' | 'primary' | 'secondary' | 'link'
@@ -10,4 +10,6 @@ export type ButtonProps = PropsWithChildren<{
   // 是否独占一行
   block?: boolean
   loading?: boolean
+
+  icon?: ReactNode
 }>
