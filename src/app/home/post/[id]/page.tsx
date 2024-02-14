@@ -135,7 +135,7 @@ export default function PostPage() {
           </Button>
         }
       >
-        <p>Are you sure to remove this post?</p>
+        <p>Are you sure to remove this note?</p>
       </Modal>
     </>
   )

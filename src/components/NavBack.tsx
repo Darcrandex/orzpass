@@ -13,7 +13,13 @@ export default function NavBack() {
   const router = useRouter()
   return (
     <>
-      <Button variant='link' onClick={() => router.back()}>
+      <Button
+        variant='link'
+        onClick={() => {
+          router.back()
+          router.refresh()
+        }}
+      >
         <FontAwesomeIcon icon={faArrowLeft} />
         <span className='ml-2'>Back</span>
       </Button>

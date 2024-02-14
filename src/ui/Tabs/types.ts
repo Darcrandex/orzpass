@@ -16,3 +16,8 @@ export type TabsListProps = PropsWithChildren<{
 }>
 
 export type TabsTriggerProps = PropsWithChildren<{ value: string }>
+
+export type TabsPanelProps = PropsWithChildren<{
+  value: string
+  className?: string
+}>

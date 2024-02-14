@@ -5,21 +5,25 @@
  */
 
 'use client'
+import NavBack from '@/components/NavBack'
+import Tabs from '@/ui/Tabs'
 
-import Link from 'next/link'
-import { PropsWithChildren } from 'react'
-
-export default function ProfileLayout(props: PropsWithChildren) {
+export default function ProfileLayout(props: { base: any; pwd: any }) {
   return (
     <>
-      <h1>ProfileLayout</h1>
+      <header className='m-4'>
+        <NavBack />
+      </header>
 
-      <nav className='m-4 space-x-4'>
-        <Link href='/home/profile'>user profile</Link>
-        <Link href='/home/profile/pwd'>update password</Link>
-      </nav>
+      <Tabs defaultValue='user'>
+        <Tabs.List className='mx-4'>
+          <Tabs.Trigger value='user'>User</Tabs.Trigger>
+          <Tabs.Trigger value='password'>Password</Tabs.Trigger>
+        </Tabs.List>
 
-      {props.children}
+        <Tabs.Panel value='user'>{props.base}</Tabs.Panel>
+        <Tabs.Panel value='password'>{props.pwd}</Tabs.Panel>
+      </Tabs>
     </>
   )
 }

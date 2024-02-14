@@ -7,7 +7,7 @@
 import { cls } from '@/utils/cls'
 import { useControllableValue } from 'ahooks'
 import { TabsContext, useTabs } from './context'
-import { TabsListProps, TabsProps, TabsTriggerProps } from './types'
+import { TabsListProps, TabsPanelProps, TabsProps, TabsTriggerProps } from './types'
 
 export default function Tabs(props: TabsProps) {
   const [value, onChange] = useControllableValue<string>(props)
@@ -25,7 +25,10 @@ function TabsTrigger(props: TabsTriggerProps) {
   return (
     <>
       <label
-        className={cls('p-2 cursor-pointer select-none transition-all', value === props.value && 'text-pink-500')}
+        className={cls(
+          'p-2 cursor-pointer border-b-2 select-none transition-all',
+          value === props.value ? 'text-primary border-primary' : 'border-transparent hover:text-primary'
+        )}
         onClick={() => onChange(props.value)}
       >
         {props.children}
@@ -34,5 +37,16 @@ function TabsTrigger(props: TabsTriggerProps) {
   )
 }
 
+function TabsPanel(props: TabsPanelProps) {
+  const { value } = useTabs()
+
+  if (value !== props.value) {
+    return null
+  }
+
+  return <div className='p-4'>{props.children}</div>
+}
+
 Tabs.List = TabsList
 Tabs.Trigger = TabsTrigger
+Tabs.Panel = TabsPanel
