@@ -8,13 +8,14 @@
 
 import { cls } from '@/utils/cls'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
-import { faArrowRightFromBracket, faFaceSmileWink, faPaperclip } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightFromBracket, faFaceSmileWink, faPaperclip, faTools } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const menus = [
   { href: '/home', title: 'Home', icon: <FontAwesomeIcon icon={faPaperclip} /> },
+  { href: '/home/tools', title: 'Tools', icon: <FontAwesomeIcon icon={faTools} /> },
   { href: '/home/about', title: 'About', icon: <FontAwesomeIcon icon={faGithub} /> },
   { href: '/home/profile', title: 'Profile', icon: <FontAwesomeIcon icon={faFaceSmileWink} /> },
   { href: '/sign/login', title: 'Out', icon: <FontAwesomeIcon icon={faArrowRightFromBracket} /> },
@@ -22,7 +23,13 @@ const menus = [
 
 export default function SideMenus() {
   const pathname = usePathname()
-  const isActive = (href: string) => pathname === href
+  const isActive = (href: string) => {
+    if (pathname.includes('post')) {
+      return href === '/home'
+    }
+
+    return pathname === href
+  }
 
   return (
     <>

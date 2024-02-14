@@ -4,6 +4,7 @@
  * @author darcrand
  */
 
+'use client'
 import { cls } from '@/utils/cls'
 import { TextareaProps } from './types'
 

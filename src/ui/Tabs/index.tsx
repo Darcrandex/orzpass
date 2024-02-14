@@ -4,22 +4,23 @@
  * @author darcrand
  */
 
+'use client'
 import { cls } from '@/utils/cls'
 import { useControllableValue } from 'ahooks'
 import { TabsContext, useTabs } from './context'
 import { TabsListProps, TabsPanelProps, TabsProps, TabsTriggerProps } from './types'
 
-export default function Tabs(props: TabsProps) {
+export function Tabs(props: TabsProps) {
   const [value, onChange] = useControllableValue<string>(props)
 
   return <TabsContext.Provider value={{ value, onChange }}>{props.children}</TabsContext.Provider>
 }
 
-function TabsList(props: TabsListProps) {
+export function TabsList(props: TabsListProps) {
   return <nav className={cls('flex space-x-4', props.className)}>{props.children}</nav>
 }
 
-function TabsTrigger(props: TabsTriggerProps) {
+export function TabsTrigger(props: TabsTriggerProps) {
   const { value, onChange } = useTabs()
 
   return (
@@ -37,7 +38,7 @@ function TabsTrigger(props: TabsTriggerProps) {
   )
 }
 
-function TabsPanel(props: TabsPanelProps) {
+export function TabsPanel(props: TabsPanelProps) {
   const { value } = useTabs()
 
   if (value !== props.value) {
@@ -46,7 +47,3 @@ function TabsPanel(props: TabsPanelProps) {
 
   return <div className='p-4'>{props.children}</div>
 }
-
-Tabs.List = TabsList
-Tabs.Trigger = TabsTrigger
-Tabs.Panel = TabsPanel
