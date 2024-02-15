@@ -18,6 +18,7 @@ export default function Button(props: ButtonProps) {
     <>
       <button
         type={props.type || 'button'}
+        disabled={props.disabled}
         className={cls(
           'items-center justify-center px-2 py-1 rounded-md select-none transition-all',
           variant === 'default' && 'bg-white border hover:border-primary hover:text-primary',
@@ -27,6 +28,14 @@ export default function Button(props: ButtonProps) {
 
           props.loading && 'pointer-events-none opacity-50',
           props.block ? 'flex w-full' : 'inline-flex',
+
+          props.disabled && 'cursor-not-allowed',
+          props.disabled &&
+            (variant === 'link'
+              ? 'text-gray-200 hover:text-gray-300'
+              : variant === 'primary'
+              ? 'bg-gray-200 border-gray-200 text-gray-500 hover:text-gray-500 hover:border-gray-200 hover:bg-gray-200'
+              : 'bg-gray-200 border-gray-200 hover:text-gray-300 hover:border-gray-300'),
           props.className
         )}
         onClick={props.onClick}

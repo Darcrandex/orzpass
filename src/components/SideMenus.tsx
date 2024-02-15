@@ -18,7 +18,7 @@ const menus = [
   { href: '/home/tools', title: 'Tools', icon: <FontAwesomeIcon icon={faTools} /> },
   { href: '/home/about', title: 'About', icon: <FontAwesomeIcon icon={faGithub} /> },
   { href: '/home/profile', title: 'Profile', icon: <FontAwesomeIcon icon={faFaceSmileWink} /> },
-  { href: '/sign/login', title: 'Out', icon: <FontAwesomeIcon icon={faArrowRightFromBracket} /> },
+  { href: '/sign/login', title: 'Logout', icon: <FontAwesomeIcon icon={faArrowRightFromBracket} /> },
 ]
 
 export default function SideMenus() {

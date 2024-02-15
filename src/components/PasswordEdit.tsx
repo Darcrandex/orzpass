@@ -6,7 +6,7 @@
 
 'use client'
 import KeySetter from '@/components/KeySetter'
-import { useCopy } from '@/hoosk/useCopy'
+import { useCopy } from '@/hooks/useCopy'
 import { useMasterKey } from '@/stores/master-key'
 import Button from '@/ui/Button'
 import Input from '@/ui/Input'

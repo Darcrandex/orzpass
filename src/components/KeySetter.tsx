@@ -49,7 +49,7 @@ export default function KeySetter(props: PropsWithChildren<{ className?: string 
           <p className='text-sm text-gray-500 my-2'>
             The master key is used to decrypt your password and must be kept by the user
           </p>
-          <Textarea placeholder='input your master key' value={value} onChange={onChange} />
+          <Textarea rows={5} placeholder='input your master key' value={value} onChange={onChange} />
         </section>
       </Modal>
     </>

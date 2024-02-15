@@ -10,6 +10,7 @@ export type ButtonProps = PropsWithChildren<{
   // 是否独占一行
   block?: boolean
   loading?: boolean
+  disabled?: boolean
 
   icon?: ReactNode
 }>
