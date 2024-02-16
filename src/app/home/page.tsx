@@ -12,7 +12,7 @@ import Button from '@/ui/Button'
 import Input from '@/ui/Input'
 import { useQuery } from '@tanstack/react-query'
 import { useDebounce } from 'ahooks'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next-nprogress-bar'
 import { useState } from 'react'
 
 export default function PostList() {

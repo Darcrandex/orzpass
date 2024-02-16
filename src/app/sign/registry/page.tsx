@@ -13,8 +13,8 @@ import Input from '@/ui/Input'
 import { toast } from '@/ui/Toast'
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
+import { useRouter } from 'next-nprogress-bar'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 
 export default function RegistryPage() {

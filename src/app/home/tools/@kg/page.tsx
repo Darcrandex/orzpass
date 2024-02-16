@@ -29,14 +29,12 @@ export default function KeyGenerate() {
       <section className='space-y-4'>
         <Textarea rows={5} maxLength={200} placeholder='source' value={source} onChange={setSource} />
 
-        <Button variant='primary' onClick={btoa}>
-          Encode
-        </Button>
+        <Button onClick={btoa}>encode</Button>
 
         <Textarea rows={5} placeholder='output' value={encoded} onChange={setEncode} />
 
-        <Button variant='primary' disabled={!encoded} onClick={() => copy(encoded)}>
-          Copy Encoded
+        <Button disabled={!encoded} onClick={() => copy(encoded)}>
+          copy encoded
         </Button>
       </section>
     </>

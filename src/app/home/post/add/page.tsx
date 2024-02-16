@@ -14,7 +14,7 @@ import FormItem from '@/ui/FormItem'
 import Input from '@/ui/Input'
 import Textarea from '@/ui/Textarea'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next-nprogress-bar'
 import { Controller, useForm } from 'react-hook-form'
 
 export default function PostAdd() {
@@ -87,7 +87,7 @@ export default function PostAdd() {
 
         <footer className='mt-4 space-x-2'>
           <Button loading={isPending} onClick={handleSubmit((values) => createPost(values))}>
-            Update
+            create
           </Button>
         </footer>
       </section>

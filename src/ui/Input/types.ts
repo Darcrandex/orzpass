@@ -10,6 +10,4 @@ export type InputProps = {
   maxLength?: number
 
   onEnter?: () => void
-
-  hideBorder?: boolean
 }

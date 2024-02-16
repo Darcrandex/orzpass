@@ -7,7 +7,7 @@
 import Button from '@/ui/Button'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next-nprogress-bar'
 
 export default function NavBack() {
   const router = useRouter()

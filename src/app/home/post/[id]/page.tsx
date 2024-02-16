@@ -16,7 +16,8 @@ import Modal from '@/ui/Modal'
 import Textarea from '@/ui/Textarea'
 import { toast } from '@/ui/Toast'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next-nprogress-bar'
+import { useParams } from 'next/navigation'
 import { isNotNil } from 'ramda'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -109,12 +110,12 @@ export default function PostPage() {
 
         <footer className='mt-4 space-x-2'>
           <Button loading={isUpdating} onClick={handleSubmit((values) => updatePost(values))}>
-            Update
+            update
           </Button>
           <Button loading={isRemoving} onClick={() => reset(data?.data)}>
-            Reset
+            reset
           </Button>
-          <Button onClick={() => setShowRemoveConfirm(true)}>Remove</Button>
+          <Button onClick={() => setShowRemoveConfirm(true)}>remove</Button>
         </footer>
       </section>
 

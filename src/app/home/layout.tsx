@@ -10,7 +10,7 @@ import SideMenus from '@/components/SideMenus'
 import { userService } from '@/services/user'
 import Button from '@/ui/Button'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next-nprogress-bar'
 import { PropsWithChildren } from 'react'
 
 export default function HomeLayout(props: PropsWithChildren) {

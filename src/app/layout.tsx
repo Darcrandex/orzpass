@@ -9,11 +9,13 @@ export const metadata: Metadata = {
 }
 
 const Toast = dynamic(() => import('@/ui/Toast'), { ssr: false })
+const NextProgressBar = dynamic(() => import('@/lib/NextProgressBar'), { ssr: false })
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en'>
       <body>
+        <NextProgressBar />
         <QueryProvider>{children}</QueryProvider>
         <Toast />
       </body>

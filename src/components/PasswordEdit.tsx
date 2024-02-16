@@ -72,10 +72,10 @@ export default function PasswordEdit(props: PasswordEditProps) {
 
       <p className='space-x-2'>
         <Button className='mt-2' onClick={() => onChange(randomStr({ length: 12 }))}>
-          Generate Password
+          generate password
         </Button>
 
-        <Button onClick={() => copy(value)}>Copy Password</Button>
+        <Button onClick={() => copy(value)}>copy password</Button>
       </p>
     </>
   )
