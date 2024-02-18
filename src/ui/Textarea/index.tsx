@@ -15,8 +15,6 @@ export default function Textarea(props: TextareaProps) {
         className={cls(
           'block w-full border rounded px-2 py-1 outline-none focus:border-pink-500 placeholder:text-gray-300 resize-y',
           ' transition-colors',
-          props.hideBorder && 'border-transparent',
-
           props.className
         )}
         rows={props.rows || 3}

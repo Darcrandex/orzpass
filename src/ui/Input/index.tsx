@@ -28,7 +28,6 @@ export default function Input(props: InputProps) {
         className={cls(
           'border rounded pl-2 py-1 outline-none focus:border-pink-500 transition-all',
           'placeholder:text-gray-300',
-          props.hideBorder && 'border-transparent',
           props.type === 'password' ? 'pr-10' : 'pr-2',
           props.block && 'w-full'
         )}
