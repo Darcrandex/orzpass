@@ -54,7 +54,7 @@ export default function BasePage() {
 
   return (
     <>
-      <section className='w-[768px] max-w-full px-4 mx-auto'>
+      <section className='w-md max-w-full px-4 mx-auto'>
         <FormItem label='Username'>
           <Controller
             control={control}

@@ -44,7 +44,7 @@ export default function PostAdd() {
         <NavBack />
       </header>
 
-      <section className='w-[768px] max-w-full px-4 mx-auto'>
+      <section className='w-md max-w-full px-4 mx-auto'>
         <FormItem label='Title'>
           <Controller
             control={control}

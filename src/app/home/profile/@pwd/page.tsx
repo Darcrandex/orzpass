@@ -57,7 +57,7 @@ export default function PasswordPage() {
 
   return (
     <>
-      <section className='w-[768px] max-w-full px-4 mx-auto'>
+      <section className='w-md max-w-full px-4 mx-auto'>
         <FormItem label='OldPassword'>
           <Controller
             control={control}
