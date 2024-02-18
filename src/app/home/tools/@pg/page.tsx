@@ -43,14 +43,17 @@ export default function PasswordGenerate() {
           control={control}
           name='length'
           render={({ field }) => (
-            <InputNumber
-              min={1}
-              max={50}
-              placeholder='password length'
-              className='w-48'
-              value={field.value}
-              onChange={field.onChange}
-            />
+            <>
+              <span>length</span>
+              <InputNumber
+                min={1}
+                max={50}
+                placeholder='password length'
+                className='w-32'
+                value={field.value}
+                onChange={field.onChange}
+              />
+            </>
           )}
         />
 

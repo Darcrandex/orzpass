@@ -13,6 +13,7 @@ import Button from '@/ui/Button'
 import FormItem from '@/ui/FormItem'
 import Input from '@/ui/Input'
 import Modal from '@/ui/Modal'
+import Spin from '@/ui/Spin'
 import Textarea from '@/ui/Textarea'
 import { toast } from '@/ui/Toast'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -24,7 +25,7 @@ import { Controller, useForm } from 'react-hook-form'
 
 export default function PostPage() {
   const id = useParams().id as string
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     enabled: !!id,
     queryKey: ['post', id],
     queryFn: () => postService.one(id),
@@ -65,59 +66,61 @@ export default function PostPage() {
         <NavBack />
       </header>
 
-      <section className='w-md max-w-full px-4 mx-auto'>
-        <FormItem label='Title'>
-          <Controller
-            control={control}
-            name='title'
-            render={({ field }) => <Input block maxLength={20} value={field.value || ''} onChange={field.onChange} />}
-          />
-        </FormItem>
+      <Spin spinning={isPending}>
+        <section className='w-md max-w-full px-4 mx-auto'>
+          <FormItem label='Title'>
+            <Controller
+              control={control}
+              name='title'
+              render={({ field }) => <Input block maxLength={20} value={field.value || ''} onChange={field.onChange} />}
+            />
+          </FormItem>
 
-        <FormItem label='Username'>
-          <Controller
-            control={control}
-            name='username'
-            render={({ field }) => <Input block maxLength={50} value={field.value || ''} onChange={field.onChange} />}
-          />
-        </FormItem>
+          <FormItem label='Username'>
+            <Controller
+              control={control}
+              name='username'
+              render={({ field }) => <Input block maxLength={50} value={field.value || ''} onChange={field.onChange} />}
+            />
+          </FormItem>
 
-        <FormItem label='Password'>
-          <Controller
-            control={control}
-            name='password'
-            render={({ field }) => <PasswordEdit value={field.value || ''} onChange={field.onChange} />}
-          />
-        </FormItem>
+          <FormItem label='Password'>
+            <Controller
+              control={control}
+              name='password'
+              render={({ field }) => <PasswordEdit value={field.value || ''} onChange={field.onChange} />}
+            />
+          </FormItem>
 
-        <FormItem label='Website'>
-          <Controller
-            control={control}
-            name='website'
-            render={({ field }) => <Input block maxLength={20} value={field.value || ''} onChange={field.onChange} />}
-          />
-        </FormItem>
+          <FormItem label='Website'>
+            <Controller
+              control={control}
+              name='website'
+              render={({ field }) => <Input block maxLength={20} value={field.value || ''} onChange={field.onChange} />}
+            />
+          </FormItem>
 
-        <FormItem label='Remark'>
-          <Controller
-            control={control}
-            name='remark'
-            render={({ field }) => (
-              <Textarea maxLength={500} rows={5} value={field.value || ''} onChange={field.onChange} />
-            )}
-          />
-        </FormItem>
+          <FormItem label='Remark'>
+            <Controller
+              control={control}
+              name='remark'
+              render={({ field }) => (
+                <Textarea maxLength={500} rows={5} value={field.value || ''} onChange={field.onChange} />
+              )}
+            />
+          </FormItem>
 
-        <footer className='mt-4 space-x-2'>
-          <Button loading={isUpdating} onClick={handleSubmit((values) => updatePost(values))}>
-            update
-          </Button>
-          <Button loading={isRemoving} onClick={() => reset(data?.data)}>
-            reset
-          </Button>
-          <Button onClick={() => setShowRemoveConfirm(true)}>remove</Button>
-        </footer>
-      </section>
+          <footer className='mt-4 space-x-2'>
+            <Button loading={isUpdating} onClick={handleSubmit((values) => updatePost(values))}>
+              update
+            </Button>
+            <Button loading={isRemoving} onClick={() => reset(data?.data)}>
+              reset
+            </Button>
+            <Button onClick={() => setShowRemoveConfirm(true)}>remove</Button>
+          </footer>
+        </section>
+      </Spin>
 
       <Modal
         title='Remove'
