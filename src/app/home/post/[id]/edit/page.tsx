@@ -1,32 +1,30 @@
 /**
- * @name PostPage
+ * @name PostEditPage
  * @description
  * @author darcrand
  */
 
 'use client'
 import NavBack from '@/components/NavBack'
-import PasswordView from '@/components/PasswordView'
-import { useCopy } from '@/hooks/useCopy'
+import PasswordEdit from '@/components/PasswordEdit'
 import { postService } from '@/services/post'
 import { Post } from '@/types/post'
 import Button from '@/ui/Button'
 import FormItem from '@/ui/FormItem'
+import Input from '@/ui/Input'
 import Modal from '@/ui/Modal'
 import Spin from '@/ui/Spin'
-import TextView from '@/ui/TextView'
+import Textarea from '@/ui/Textarea'
 import { toast } from '@/ui/Toast'
-import { faCopy } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { getDomain } from '@/utils/getDomain'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next-nprogress-bar'
-import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { isNotNil } from 'ramda'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-export default function PostPage() {
+export default function PostEditPage() {
   const id = useParams().id as string
   const { data, isPending } = useQuery({
     enabled: !!id,
@@ -48,13 +46,21 @@ export default function PostPage() {
     },
   })
 
-  const { control, reset } = useForm<Post>()
+  const { mutate: updatePost, isPending: isUpdating } = useMutation({
+    mutationFn: (values: any) => postService.update({ ...values, website: getDomain(values.website) }),
+    onSuccess() {
+      toast.show({ type: 'success', message: 'Post updated' })
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
+      queryClient.invalidateQueries({ queryKey: ['post', id] })
+      router.back()
+    },
+  })
+
+  const { control, reset, handleSubmit } = useForm<Post>()
 
   useEffect(() => {
     isNotNil(data?.data) && reset(data?.data)
   }, [data, reset])
-
-  const [copy] = useCopy()
 
   return (
     <>
@@ -65,23 +71,18 @@ export default function PostPage() {
       <Spin spinning={isPending}>
         <section className='w-md max-w-full px-4 mx-auto'>
           <FormItem label='Title'>
-            <Controller control={control} name='title' render={({ field }) => <TextView>{field.value}</TextView>} />
+            <Controller
+              control={control}
+              name='title'
+              render={({ field }) => <Input block maxLength={20} value={field.value || ''} onChange={field.onChange} />}
+            />
           </FormItem>
 
           <FormItem label='Username'>
             <Controller
               control={control}
               name='username'
-              render={({ field }) => (
-                <div className='flex space-x-2'>
-                  <TextView className='flex-1'>{field.value}</TextView>
-                  <Button onClick={() => copy(field.value)}>
-                    <span className='w-[1em]'>
-                      <FontAwesomeIcon className='text-sm' icon={faCopy} />
-                    </span>
-                  </Button>
-                </div>
-              )}
+              render={({ field }) => <Input block maxLength={50} value={field.value || ''} onChange={field.onChange} />}
             />
           </FormItem>
 
@@ -89,7 +90,7 @@ export default function PostPage() {
             <Controller
               control={control}
               name='password'
-              render={({ field }) => <PasswordView value={field.value} />}
+              render={({ field }) => <PasswordEdit value={field.value || ''} onChange={field.onChange} />}
             />
           </FormItem>
 
@@ -97,15 +98,7 @@ export default function PostPage() {
             <Controller
               control={control}
               name='website'
-              render={({ field }) => (
-                <TextView>
-                  {field.value ? (
-                    <Link href={`http://${field.value}`} target='_blank' className='underline text-primary'>
-                      {field.value}
-                    </Link>
-                  ) : null}
-                </TextView>
-              )}
+              render={({ field }) => <Input block maxLength={20} value={field.value || ''} onChange={field.onChange} />}
             />
           </FormItem>
 
@@ -113,12 +106,19 @@ export default function PostPage() {
             <Controller
               control={control}
               name='remark'
-              render={({ field }) => <TextView className='min-h-24'>{field.value}</TextView>}
+              render={({ field }) => (
+                <Textarea maxLength={500} rows={5} value={field.value || ''} onChange={field.onChange} />
+              )}
             />
           </FormItem>
 
           <footer className='mt-4 space-x-2'>
-            <Button onClick={() => router.push(`/home/post/${id}/edit`)}>edit</Button>
+            <Button loading={isUpdating} onClick={handleSubmit((values) => updatePost(values))}>
+              update
+            </Button>
+            <Button loading={isRemoving} onClick={() => reset(data?.data)}>
+              reset
+            </Button>
             <Button onClick={() => setShowRemoveConfirm(true)}>remove</Button>
           </footer>
         </section>

@@ -26,7 +26,15 @@ export default function SignLayout(props: PropsWithChildren) {
     <>
       <article className='fixed top-1/2 left-1/2 z-20 w-96 max-w-full p-4 -translate-x-1/2 -translate-y-1/2'>
         <div className='p-4 bg-white/20 rounded-lg shadow backdrop-blur -translate-y-8'>
-          <div className='min-h-[300px]'>{props.children}</div>
+          <div className='min-h-[300px]'>
+            <h1
+              className='mb-8 text-3xl italic text-center font-extrabold text-primary'
+              style={{ fontFamily: 'Pacifico' }}
+            >
+              orzpass
+            </h1>
+            {props.children}
+          </div>
         </div>
       </article>
 

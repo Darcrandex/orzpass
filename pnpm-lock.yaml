@@ -109,6 +109,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18.2.18
     version: 18.2.18
+  address:
+    specifier: ^2.0.1
+    version: 2.0.1
   autoprefixer:
     specifier: ^10.4.17
     version: 10.4.17(postcss@8.4.33)
@@ -848,6 +851,11 @@ packages:
     resolution: {integrity: sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+    dev: true
+
+  /address@2.0.1:
+    resolution: {integrity: sha512-Fd3nPUe+kPZ0P70sGkV8dAUchT3pQCyTPQO5xW9580oqVBPJe2PtWtK7KGnQBvgTrloWAOvOoX8DksyuIWssvQ==}
+    engines: {node: '>= 16.0.0'}
     dev: true
 
   /aggregate-error@3.1.0:

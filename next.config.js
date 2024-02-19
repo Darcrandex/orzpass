@@ -9,4 +9,19 @@ const nextConfig = {
   },
 }
 
+if (process.env.NODE_ENV === 'development') {
+  const t = setTimeout(() => {
+    const address = require('address')
+    const port = process.env.PORT || 3000
+    const ip = address.ip()
+
+    console.clear()
+    console.log('Next.js development server:\n')
+    console.log('- Local:\t', `http://localhost:${port}`)
+    console.log('- Network:\t', `http://${ip}:${port}`)
+
+    clearTimeout(t)
+  }, 2000)
+}
+
 module.exports = nextConfig

@@ -4,13 +4,15 @@
 
 html,
 body {
-  @apply text-gray-800;
+  @apply text-gray-700;
 }
 
 @font-face {
-  font-family: 'Noto Sans';
+  font-family: 'Pacifico';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/Tangerine-Bold.ttf');
+
+  /* 压缩后的字体 */
+  src: url('/fonts/Pacifico-Regular.woff2');
 }

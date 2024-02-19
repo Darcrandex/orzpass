@@ -52,10 +52,6 @@ export default function LoginPage() {
   return (
     <>
       <section className='space-y-4'>
-        <h1 className='text-5xl text-center font-extrabold text-primary' style={{ fontFamily: 'Noto Sans' }}>
-          orzpass
-        </h1>
-
         <Controller
           control={control}
           name='username'

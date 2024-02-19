@@ -13,6 +13,7 @@ import Button from '@/ui/Button'
 import FormItem from '@/ui/FormItem'
 import Input from '@/ui/Input'
 import Textarea from '@/ui/Textarea'
+import { getDomain } from '@/utils/getDomain'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next-nprogress-bar'
 import { Controller, useForm } from 'react-hook-form'
@@ -31,7 +32,7 @@ export default function PostAdd() {
 
   const queryClient = useQueryClient()
   const { mutate: createPost, isPending } = useMutation({
-    mutationFn: (values: any) => postService.create(values),
+    mutationFn: (values: any) => postService.create({ ...values, website: getDomain(values.website) }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] })
       router.back()
