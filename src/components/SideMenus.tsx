@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-const menus = [
+export const menus = [
   { href: '/home', title: 'Home', icon: <FontAwesomeIcon icon={faPaperclip} /> },
   { href: '/home/tools', title: 'Tools', icon: <FontAwesomeIcon icon={faTools} /> },
   { href: '/home/about', title: 'About', icon: <FontAwesomeIcon icon={faGithub} /> },

@@ -29,8 +29,8 @@ export default function PostList() {
 
   return (
     <>
-      <header className='m-4 space-x-4'>
-        <Input className='w-48' placeholder='search' maxLength={20} value={keyword} onChange={setKeyword} />
+      <header className='my-4 space-x-4 space-y-4'>
+        <Input className='w-48 ml-4' placeholder='search' maxLength={20} value={keyword} onChange={setKeyword} />
         <Button loading={isFetching} onClick={() => refetch()}>
           refresh
         </Button>
@@ -41,7 +41,7 @@ export default function PostList() {
 
       <ul className='flex flex-wrap m-2'>
         {filtered.map((post) => (
-          <li key={post.id} className='sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4'>
+          <li key={post.id} className='w-full sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4'>
             <CardItem data={post} />
           </li>
         ))}

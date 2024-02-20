@@ -7,7 +7,7 @@
 export default function AboutPage() {
   return (
     <>
-      <article className='prose prose-stone w-md max-w-full mx-auto my-4'>
+      <article className='prose prose-stone w-md max-w-full mx-auto my-4 px-4'>
         <h1>orzpass</h1>
 
         <blockquote>a simple password manager</blockquote>

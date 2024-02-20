@@ -9,10 +9,19 @@ import { cls } from '@/utils/cls'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { ModalProps } from './types'
 
 export default function Modal(props: ModalProps) {
+  useEffect(() => {
+    document.body.style.overflow = props.open ? 'hidden' : ''
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [props.open])
+
   return createPortal(
     <>
       <AnimatePresence>
@@ -21,7 +30,7 @@ export default function Modal(props: ModalProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className='fixed top-0 right-0 bottom-0 left-0 bg-black/25'
+            className='fixed z-20 top-0 right-0 bottom-0 left-0 bg-black/25'
             onClick={props.onClose}
           ></motion.div>
         )}
@@ -33,7 +42,7 @@ export default function Modal(props: ModalProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className={cls('fixed top-12 left-1/2 -translate-x-1/2 p-4 rounded-md bg-white', props.bodyClassName)}
+            className={cls('fixed z-20 top-12 left-1/2 -translate-x-1/2 p-4 rounded-md bg-white', props.bodyClassName)}
           >
             <header className='flex items-center justify-between font-bold'>
               <span>{props.title}</span>
