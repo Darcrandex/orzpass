@@ -6,12 +6,11 @@
 
 'use client'
 import { cls } from '@/utils/cls'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AnimatePresence, motion } from 'framer-motion'
-import { createPortal } from 'react-dom'
-
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { DrawerProps } from './types'
 
 export default function Drawer(props: DrawerProps) {
@@ -22,6 +21,8 @@ export default function Drawer(props: DrawerProps) {
       document.body.style.overflow = ''
     }
   }, [props.open])
+
+  if (typeof window === 'undefined') return null
 
   return createPortal(
     <>

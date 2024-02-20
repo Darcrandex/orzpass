@@ -22,6 +22,8 @@ export default function Modal(props: ModalProps) {
     }
   }, [props.open])
 
+  if (typeof window === 'undefined') return null
+
   return createPortal(
     <>
       <AnimatePresence>
