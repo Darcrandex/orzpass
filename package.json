@@ -21,6 +21,7 @@
     "color": "^4.2.3",
     "copy-to-clipboard": "^3.3.3",
     "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.10",
     "framer-motion": "^11.0.3",
     "jose": "^5.2.0",
     "jotai": "^2.6.4",

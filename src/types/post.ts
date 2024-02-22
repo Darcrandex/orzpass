@@ -8,7 +8,7 @@ export type Post = {
   iconUrl?: string
   remark?: string
 
-  updated_at?: Date
+  updated_at?: string
 }
 
 export type CreatePostDto = Omit<Post, 'id' | 'updated_at'>

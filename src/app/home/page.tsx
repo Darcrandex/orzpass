@@ -12,6 +12,7 @@ import Button from '@/ui/Button'
 import Input from '@/ui/Input'
 import { useQuery } from '@tanstack/react-query'
 import { useDebounce } from 'ahooks'
+import dayjs from 'dayjs'
 import { useRouter } from 'next-nprogress-bar'
 import { useState } from 'react'
 
@@ -20,12 +21,12 @@ export default function PostList() {
   const { data, refetch, isFetching } = useQuery({
     queryKey: ['posts'],
     queryFn: () => postService.all(),
+    select: (res) => res.data?.slice().sort((a, b) => dayjs(b.updated_at).unix() - dayjs(a.updated_at).unix()),
   })
 
   const [keyword, setKeyword] = useState('')
   const value = useDebounce(keyword, { wait: 500 })
-  const filtered =
-    data?.data?.filter((post) => !value || post.title.includes(value) || post.website?.includes(value)) || []
+  const filtered = data?.filter((post) => !value || post.title.includes(value) || post.website?.includes(value)) || []
 
   return (
     <>
