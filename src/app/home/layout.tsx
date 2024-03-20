@@ -9,18 +9,13 @@ import ProfileWidget from '@/components/ProfileWidget'
 import SideMenus from '@/components/SideMenus'
 import TopMenus from '@/components/TopMenus'
 import { userService } from '@/services/user'
-// import Button from '@/ui/Button'
+import Button from '@/ui/Button'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next-nprogress-bar'
-import Link from 'next/link'
-import { PropsWithChildren, useEffect } from 'react'
+import { PropsWithChildren } from 'react'
 
 export default function HomeLayout(props: PropsWithChildren) {
   const router = useRouter()
-
-  useEffect(() => {
-    console.log('mounted', Date.now())
-  }, [])
 
   const { data, isFetching, isLoading } = useQuery({
     queryKey: ['profile'],
@@ -39,8 +34,6 @@ export default function HomeLayout(props: PropsWithChildren) {
 
           <SideMenus />
           <ProfileWidget user={data?.data} />
-
-          <Link href='/home/about'>about</Link>
         </aside>
 
         <TopMenus>
@@ -48,7 +41,7 @@ export default function HomeLayout(props: PropsWithChildren) {
           <ProfileWidget user={data?.data} />
         </TopMenus>
 
-        {/* <main className='sm:ml-52'>
+        <main className='sm:ml-52'>
           {!!data ? (
             props.children
           ) : isFetching || isLoading ? (
@@ -63,7 +56,7 @@ export default function HomeLayout(props: PropsWithChildren) {
               </p>
             </div>
           )}
-        </main> */}
+        </main>
       </section>
     </>
   )
