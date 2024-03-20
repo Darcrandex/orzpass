@@ -12,10 +12,14 @@ import { userService } from '@/services/user'
 import Button from '@/ui/Button'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next-nprogress-bar'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useEffect } from 'react'
 
 export default function HomeLayout(props: PropsWithChildren) {
   const router = useRouter()
+
+  useEffect(() => {
+    console.log('mounted', Date.now())
+  }, [])
 
   const { data, isFetching, isLoading } = useQuery({
     queryKey: ['profile'],
