@@ -12,6 +12,7 @@ import { userService } from '@/services/user'
 // import Button from '@/ui/Button'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next-nprogress-bar'
+import Link from 'next/link'
 import { PropsWithChildren, useEffect } from 'react'
 
 export default function HomeLayout(props: PropsWithChildren) {
@@ -38,6 +39,8 @@ export default function HomeLayout(props: PropsWithChildren) {
 
           <SideMenus />
           <ProfileWidget user={data?.data} />
+
+          <Link href='/home/about'>about</Link>
         </aside>
 
         <TopMenus>
