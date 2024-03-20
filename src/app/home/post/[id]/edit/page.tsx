@@ -74,9 +74,7 @@ export default function PostEditPage() {
             <Controller
               control={control}
               name='title'
-              render={({ field }) => (
-                <Input block maxLength={100} value={field.value || ''} onChange={field.onChange} />
-              )}
+              render={({ field }) => <Input block maxLength={20} value={field.value || ''} onChange={field.onChange} />}
             />
           </FormItem>
 
@@ -84,9 +82,7 @@ export default function PostEditPage() {
             <Controller
               control={control}
               name='username'
-              render={({ field }) => (
-                <Input block maxLength={100} value={field.value || ''} onChange={field.onChange} />
-              )}
+              render={({ field }) => <Input block maxLength={50} value={field.value || ''} onChange={field.onChange} />}
             />
           </FormItem>
 
@@ -102,9 +98,7 @@ export default function PostEditPage() {
             <Controller
               control={control}
               name='website'
-              render={({ field }) => (
-                <Input block maxLength={100} value={field.value || ''} onChange={field.onChange} />
-              )}
+              render={({ field }) => <Input block maxLength={20} value={field.value || ''} onChange={field.onChange} />}
             />
           </FormItem>
 

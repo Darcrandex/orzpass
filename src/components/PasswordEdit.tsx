@@ -17,7 +17,6 @@ import { useCallback, useMemo } from 'react'
 export type PasswordEditProps = {
   value?: string
   onChange?: (value: string) => void
-  maxLength?: number
 }
 
 export default function PasswordEdit(props: PasswordEditProps) {
@@ -25,17 +24,13 @@ export default function PasswordEdit(props: PasswordEditProps) {
 
   // 加密秘钥是否有错误
   const isInvalidKey = useMemo(() => {
-    // 没有 key，直接错误
-    if (!key || key?.trim().length === 0) return true
-
-    // 值为空，则表示没有加密过，是没有错误的
-    if (typeof props.value === 'undefined') return false
-
-    try {
-      // 尝试解密，如果解密成功，则表示没有错误
-      aes.decode(props.value, key)
-      return false
-    } catch (error) {
+    if (key?.trim()) {
+      if (props.value?.trim()) {
+        return aes.decode(props.value, key).length === 0
+      } else {
+        return false
+      }
+    } else {
       return true
     }
   }, [key, props.value])
@@ -73,7 +68,7 @@ export default function PasswordEdit(props: PasswordEditProps) {
 
   return (
     <>
-      <Input block value={value} maxLength={props.maxLength} onChange={onChange} />
+      <Input block value={value} onChange={onChange} />
 
       <p className='space-x-2'>
         <Button className='mt-2' onClick={() => onChange(randomStr({ length: 12 }))}>

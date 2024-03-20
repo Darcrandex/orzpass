@@ -26,7 +26,6 @@ export default function KeySetter(props: PropsWithChildren<{ className?: string 
     <>
       <Button className={props.className} onClick={() => setOpen(true)}>
         {props.children || 'Key'}
-        {!key ? ' (Empty)' : ''}
       </Button>
 
       <Modal
