@@ -40,6 +40,8 @@ export default function SideMenus() {
 
   // 多个云平台的链接切换
   const platformLink = useMemo(() => {
+    if (typeof window === 'undefined') return null
+
     const cloudPlatforms = ['netlify', 'vercel']
     const currIndex = cloudPlatforms.findIndex((platform) => window.location.hostname.includes(platform))
     if (currIndex !== -1) {
