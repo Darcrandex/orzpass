@@ -43,7 +43,7 @@ export default function LoginPage() {
       router.replace('/home')
     },
     onError(error: AxiosError<AxiosErrorResponse>) {
-      toast.show({ type: 'error', message: error.response?.data.message })
+      toast.show({ type: 'error', message: error.response?.data.message || 'server error' })
     },
   })
 
