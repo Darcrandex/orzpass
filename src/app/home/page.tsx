@@ -31,7 +31,14 @@ export default function PostList() {
   return (
     <>
       <header className='my-4 space-x-4 space-y-4'>
-        <Input className='w-48 ml-4' placeholder='search' maxLength={20} value={keyword} onChange={setKeyword} />
+        <Input
+          className='ml-4'
+          inputClassName='w-60'
+          placeholder='search'
+          maxLength={20}
+          value={keyword}
+          onChange={setKeyword}
+        />
         <Button loading={isFetching} onClick={() => refetch()}>
           refresh
         </Button>

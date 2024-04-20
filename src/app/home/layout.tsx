@@ -28,7 +28,7 @@ export default function HomeLayout(props: PropsWithChildren) {
     <>
       <section>
         <aside className='fixed top-0 left-0 bottom-0 hidden sm:flex flex-col w-52 bg-primary'>
-          <h1 className='text-3xl italic font-bold text-white text-center' style={{ fontFamily: 'Pacifico' }}>
+          <h1 className='mb-10 text-3xl italic font-bold text-white text-center' style={{ fontFamily: 'Pacifico' }}>
             orzpass
           </h1>
 

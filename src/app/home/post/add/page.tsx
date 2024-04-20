@@ -50,7 +50,7 @@ export default function PostAdd() {
           <Controller
             control={control}
             name='title'
-            render={({ field }) => <Input block maxLength={20} value={field.value} onChange={field.onChange} />}
+            render={({ field }) => <Input block maxLength={100} value={field.value} onChange={field.onChange} />}
           />
         </FormItem>
 
@@ -58,7 +58,7 @@ export default function PostAdd() {
           <Controller
             control={control}
             name='username'
-            render={({ field }) => <Input block maxLength={50} value={field.value} onChange={field.onChange} />}
+            render={({ field }) => <Input block maxLength={100} value={field.value} onChange={field.onChange} />}
           />
         </FormItem>
 
@@ -74,7 +74,7 @@ export default function PostAdd() {
           <Controller
             control={control}
             name='website'
-            render={({ field }) => <Input block maxLength={20} value={field.value} onChange={field.onChange} />}
+            render={({ field }) => <Input block maxLength={100} value={field.value} onChange={field.onChange} />}
           />
         </FormItem>
 
@@ -87,7 +87,7 @@ export default function PostAdd() {
         </FormItem>
 
         <footer className='mt-4 space-x-2'>
-          <Button loading={isPending} onClick={handleSubmit((values) => createPost(values))}>
+          <Button variant='primary' loading={isPending} onClick={handleSubmit((values) => createPost(values))}>
             create
           </Button>
         </footer>

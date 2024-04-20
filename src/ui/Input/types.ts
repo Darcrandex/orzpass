@@ -10,4 +10,6 @@ export type InputProps = {
   maxLength?: number
 
   onEnter?: () => void
+
+  inputClassName?: string
 }

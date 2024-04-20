@@ -9,6 +9,7 @@ import { useMasterKey } from '@/stores/master-key'
 import Button from '@/ui/Button'
 import Modal from '@/ui/Modal'
 import Textarea from '@/ui/Textarea'
+import { isNil } from 'ramda'
 import { PropsWithChildren, useEffect, useState } from 'react'
 
 export default function KeySetter(props: PropsWithChildren<{ className?: string }>) {
@@ -24,8 +25,9 @@ export default function KeySetter(props: PropsWithChildren<{ className?: string 
 
   return (
     <>
-      <Button className={props.className} onClick={() => setOpen(true)}>
+      <Button className={props.className} variant={isNil(key) ? 'primary' : 'default'} onClick={() => setOpen(true)}>
         {props.children || 'Key'}
+        {isNil(key) && <span className='ml-2'>(No key)</span>}
       </Button>
 
       <Modal
