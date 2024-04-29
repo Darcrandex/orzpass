@@ -12,6 +12,7 @@ import Button from '@/ui/Button'
 import Input from '@/ui/Input'
 import { aes } from '@/utils/aes'
 import { randomStr } from '@/utils/randomStr'
+import { isEmpty, isNil, isNotNil } from 'ramda'
 import { useCallback, useMemo } from 'react'
 
 export type PasswordEditProps = {
@@ -21,19 +22,6 @@ export type PasswordEditProps = {
 
 export default function PasswordEdit(props: PasswordEditProps) {
   const { key } = useMasterKey()
-
-  // 加密秘钥是否有错误
-  const isInvalidKey = useMemo(() => {
-    if (key?.trim()) {
-      if (props.value?.trim()) {
-        return aes.decode(props.value, key).length === 0
-      } else {
-        return false
-      }
-    } else {
-      return true
-    }
-  }, [key, props.value])
 
   const value = useMemo(() => {
     let res = ''
@@ -47,7 +35,7 @@ export default function PasswordEdit(props: PasswordEditProps) {
 
   const onChange = useCallback(
     (value: string) => {
-      if (key?.trim()) {
+      if (isNotNil(key)) {
         props.onChange?.(aes.encode(value, key))
       }
     },
@@ -55,6 +43,19 @@ export default function PasswordEdit(props: PasswordEditProps) {
   )
 
   const [copy] = useCopy()
+
+  // 加密秘钥是否有错误
+  const isInvalidKey = useMemo(() => {
+    let res = false
+    if (isNil(key)) return true
+
+    const isNotEmptyValue = !isEmpty(value)
+    const isNotEmptyEncoded = isNotNil(props.value)
+    const butDecodedFail = Boolean(props.value && aes.decode(props.value, key).length === 0)
+
+    if (isNotEmptyValue && isNotEmptyEncoded && butDecodedFail) return true
+    return res
+  }, [key, value, props.value])
 
   if (isInvalidKey)
     return (

@@ -13,24 +13,13 @@ import TextView from '@/ui/TextView'
 import { aes } from '@/utils/aes'
 import { faCopy, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { isEmpty, isNil, isNotNil } from 'ramda'
 import { useMemo, useState } from 'react'
 
 export type PasswordViewProps = { value?: string }
 
 export default function PasswordView(props: PasswordViewProps) {
   const { key } = useMasterKey()
-
-  const isInvalidKey = useMemo(() => {
-    if (key?.trim()) {
-      if (props.value?.trim()) {
-        return aes.decode(props.value, key).length === 0
-      } else {
-        return false
-      }
-    } else {
-      return true
-    }
-  }, [key, props.value])
 
   const value = useMemo(() => {
     let res = ''
@@ -45,6 +34,18 @@ export default function PasswordView(props: PasswordViewProps) {
   const [copy] = useCopy()
 
   const [show, setShow] = useState(false)
+
+  const isInvalidKey = useMemo(() => {
+    let res = false
+    if (isNil(key)) return true
+
+    const isNotEmptyValue = !isEmpty(value)
+    const isNotEmptyEncoded = isNotNil(props.value)
+    const butDecodedFail = Boolean(props.value && aes.decode(props.value, key).length === 0)
+
+    if (isNotEmptyValue && isNotEmptyEncoded && butDecodedFail) return true
+    return res
+  }, [key, value, props.value])
 
   if (isInvalidKey)
     return (

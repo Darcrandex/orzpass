@@ -5,6 +5,7 @@
  */
 
 'use client'
+import Button from '@/ui/Button'
 
 type GlobalErrorProps = {
   error: Error & { digest?: string }
@@ -14,10 +15,13 @@ type GlobalErrorProps = {
 export default function GlobalError(props: GlobalErrorProps) {
   return (
     <>
-      <h1>GlobalError</h1>
-      <p>{props.error.message}</p>
-
-      <button onClick={props.reset}>Reset</button>
+      <section className='text-center'>
+        <h1>GlobalError</h1>
+        <p>
+          <span>{props.error.message}</span>
+          <Button onClick={props.reset}>Reset</Button>
+        </p>
+      </section>
     </>
   )
 }
