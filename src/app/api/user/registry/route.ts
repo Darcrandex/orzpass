@@ -1,4 +1,4 @@
-import { OWNER, REPO } from '@/const/common'
+import { NEXT_MAX_USER_COUNT, OWNER, REPO } from '@/const/common'
 import { db } from '@/lib/db'
 import { CreateUserDto, issueToUser } from '@/types/user'
 import { hashSync } from 'bcryptjs'
@@ -14,8 +14,13 @@ export async function POST(request: NextRequest) {
   })
   const users = res.data.map(issueToUser)
   const user = users.find((u) => u.username === body.username)
+
   if (user) {
     return NextResponse.json({ message: 'username already exists' }, { status: 400 })
+  }
+
+  if (users.length > NEXT_MAX_USER_COUNT) {
+    return NextResponse.json({ message: 'Too many users' }, { status: 400 })
   }
 
   const created = await db.rest.issues.create({
