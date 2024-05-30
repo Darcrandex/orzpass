@@ -14,6 +14,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useDebounce } from 'ahooks'
 import dayjs from 'dayjs'
 import { useRouter } from 'next-nprogress-bar'
+import * as R from 'ramda'
 import { useState } from 'react'
 
 export default function PostList() {
@@ -26,7 +27,17 @@ export default function PostList() {
 
   const [keyword, setKeyword] = useState('')
   const value = useDebounce(keyword, { wait: 500 })
-  const filtered = data?.filter((post) => !value || post.title.includes(value) || post.website?.includes(value)) || []
+  const filtered =
+    data?.filter((post) => {
+      if (R.isEmpty(value.trim())) return true
+
+      const textValue = value.toLocaleLowerCase()
+      const title = post.title.toLocaleLowerCase()
+      const website = post.website?.toLocaleLowerCase()
+      const username = post.username?.toLocaleLowerCase()
+
+      return title.includes(textValue) || website?.includes(textValue) || username?.includes(textValue)
+    }) || []
 
   return (
     <>
